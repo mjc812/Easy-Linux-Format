@@ -1,0 +1,2 @@
+copy all from filesA to folderB if modified by  Harry Kane;
+copy all from filesA if date created on 2020-03-22, AND name contains boob;
