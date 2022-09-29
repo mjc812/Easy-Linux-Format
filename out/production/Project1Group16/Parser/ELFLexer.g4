@@ -33,7 +33,6 @@ ON: 'on' WS* -> mode(TEXT_MODE);
 AFTER: 'after' WS* -> mode(TEXT_MODE);
 INFOLDER: 'in folder'  WS* -> mode(TEXT_MODE);
 ATPATH: 'at path'  WS* -> mode(TEXT_MODE);
-CREATED: 'created';
 MODIFIED: 'modified';
 BY: 'by' WS* -> mode(TEXT_MODE);
 AND: 'AND';

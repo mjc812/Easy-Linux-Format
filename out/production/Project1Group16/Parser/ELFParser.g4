@@ -7,7 +7,7 @@ statement: statementType SEMICOLON;
 statementType: get | command;
 
 get: type VAR_TEXT EQUALS getType getCondition;
-type: FILE | FILES| FOLDER;
+type: FILE | FILES | FOLDER;
 getType: GETFILE | GETFILES RECURSIVELY? | GETFOLDER;
 getCondition: WHERE getClause (COMMA AND getClause)*;
 
@@ -19,7 +19,7 @@ move: moveChoice VAR_TEXT TO VAR_TEXT;
 moveChoice: MOVE | MOVEALLFROM;
 copy: copyChoice VAR_TEXT TO VAR_TEXT;
 copyChoice: COPY | COPYALLFROM;
-rename: RENAME VAR_TEXT TO TEXT;
+rename: RENAME VAR_TEXT AS TEXT;
 commandCondition: (IF commandClause (COMMA AND commandClause)*)?;
 
 getClause: nameClause | modifiedClause | dateClause | folderClause | pathClause;
