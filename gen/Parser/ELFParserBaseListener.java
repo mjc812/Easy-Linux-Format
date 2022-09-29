@@ -208,6 +208,18 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRename(ELFParser.RenameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRename(ELFParser.RenameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCommandCondition(ELFParser.CommandConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}

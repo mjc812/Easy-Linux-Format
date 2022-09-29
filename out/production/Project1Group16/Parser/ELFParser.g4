@@ -12,13 +12,14 @@ getType: GETFILE | GETFILES RECURSIVELY? | GETFOLDER;
 getCondition: WHERE getClause (COMMA AND getClause)*;
 
 command: commandChoice commandCondition;
-commandChoice: delete | move | copy;
+commandChoice: delete | move | copy | rename;
 delete: deleteChoice VAR_TEXT;
 deleteChoice: DELETE | DELETEALLFROM;
 move: moveChoice VAR_TEXT TO VAR_TEXT;
 moveChoice: MOVE | MOVEALLFROM;
 copy: copyChoice VAR_TEXT TO VAR_TEXT;
 copyChoice: COPY | COPYALLFROM;
+rename: RENAME VAR_TEXT TO TEXT;
 commandCondition: (IF commandClause (COMMA AND commandClause)*)?;
 
 getClause: nameClause | modifiedClause | dateClause | folderClause | pathClause;

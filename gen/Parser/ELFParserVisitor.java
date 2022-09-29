@@ -107,6 +107,12 @@ public interface ELFParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCopyChoice(ELFParser.CopyChoiceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ELFParser#rename}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRename(ELFParser.RenameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ELFParser#commandCondition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -168,6 +168,16 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitCopyChoice(ELFParser.CopyChoiceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ELFParser#rename}.
+	 * @param ctx the parse tree
+	 */
+	void enterRename(ELFParser.RenameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#rename}.
+	 * @param ctx the parse tree
+	 */
+	void exitRename(ELFParser.RenameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ELFParser#commandCondition}.
 	 * @param ctx the parse tree
 	 */

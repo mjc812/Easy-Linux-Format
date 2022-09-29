@@ -16,7 +16,7 @@ MOVE: 'move' WS* -> mode(VAR_TEXT_MODE);
 MOVEALLFROM: 'move all from' WS* -> mode(VAR_TEXT_MODE);
 COPY: 'copy' WS* -> mode(VAR_TEXT_MODE);
 COPYALLFROM: 'copy all from' WS* -> mode(VAR_TEXT_MODE);
-RENAME: 'rename';
+RENAME: 'rename' WS* -> mode(VAR_TEXT_MODE);
 TO: 'to' WS* -> mode(VAR_TEXT_MODE);
 IF: 'if';
 
@@ -37,6 +37,7 @@ CREATED: 'created';
 MODIFIED: 'modified';
 BY: 'by' WS* -> mode(TEXT_MODE);
 AND: 'AND';
+AS: 'as' WS* -> mode(TEXT_MODE);
 
 COMMA: ',';
 SEMICOLON: ';';
