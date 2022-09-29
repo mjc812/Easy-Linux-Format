@@ -3,23 +3,30 @@ options { tokenVocab= ELFLexer; }
 
 program : path statement* EOF;
 path: PATH EQUALS GETPATH TEXT SEMICOLON;
-statement: (assignment | command) SEMICOLON;
+statement: statementType SEMICOLON;
+statementType: get | command;
 
-assignment: (FILE | FILES| FOLDER) VAR_TEXT EQUALS get;
-get: (GETFILE | GETFILES RECURSIVELY? | GETFOLDER) getClause (COMMA LOGIC getClause)*;
+get: type VAR_TEXT EQUALS getType getCondition;
+type: FILE | FILES| FOLDER;
+getType: GETFILE | GETFILES RECURSIVELY? | GETFOLDER;
+getCondition: WHERE getClause (COMMA AND getClause)*;
 
-command: (delete | move | copy) (IF commandClause (COMMA LOGIC commandClause)*)? ;
-delete: DELETE VAR_TEXT ;
-move: MOVE VAR_TEXT TO VAR_TEXT ;
-copy: COPY VAR_TEXT TO VAR_TEXT ;
+command: commandChoice commandCondition;
+commandChoice: delete | move | copy;
+delete: deleteChoice VAR_TEXT;
+deleteChoice: DELETE | DELETEALLFROM;
+move: moveChoice VAR_TEXT TO VAR_TEXT;
+moveChoice: MOVE | MOVEALLFROM;
+copy: copyChoice VAR_TEXT TO VAR_TEXT;
+copyChoice: COPY | COPYALLFROM;
+commandCondition: (IF commandClause (COMMA AND commandClause)*)?;
 
-getClause: WHERE (propertyClause | locationClause);
-commandClause: propertyClause;
-propertyClause: nameClause | touchedClause | dateClause;
-locationClause: folderClause | pathClause;
-nameClause: NAME NAMECONDITION TEXT;
-touchedClause: TOUCHED BY TEXT;
-dateClause: DATE TOUCHED DATECONDITION TEXT;
+getClause: nameClause | modifiedClause | dateClause | folderClause | pathClause;
+commandClause: folderClause | pathClause;
+nameClause: NAME nameCondition TEXT;
+nameCondition: IS | CONTAINS | PREFIX | SUFFIX;
+modifiedClause: MODIFIED BY TEXT;
+dateClause: DATE MODIFIED dateCondition TEXT;
+dateCondition: BEFORE | ON | AFTER;
 folderClause: INFOLDER TEXT;
 pathClause: ATPATH TEXT;
-

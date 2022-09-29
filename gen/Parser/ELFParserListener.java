@@ -1,4 +1,4 @@
-// Generated from /Users/michaelchung/Documents/410/ELF/src/Parser/ELFParser.g4 by ANTLR 4.10.1
+// Generated from /Users/michaelchung/Documents/410/DSL Project/Project1Group16/src/Parser/ELFParser.g4 by ANTLR 4.10.1
 package Parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -38,15 +38,15 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitStatement(ELFParser.StatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ELFParser#assignment}.
+	 * Enter a parse tree produced by {@link ELFParser#statementType}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignment(ELFParser.AssignmentContext ctx);
+	void enterStatementType(ELFParser.StatementTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ELFParser#assignment}.
+	 * Exit a parse tree produced by {@link ELFParser#statementType}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignment(ELFParser.AssignmentContext ctx);
+	void exitStatementType(ELFParser.StatementTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#get}.
 	 * @param ctx the parse tree
@@ -58,6 +58,36 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitGet(ELFParser.GetContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ELFParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(ELFParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(ELFParser.TypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#getType}.
+	 * @param ctx the parse tree
+	 */
+	void enterGetType(ELFParser.GetTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#getType}.
+	 * @param ctx the parse tree
+	 */
+	void exitGetType(ELFParser.GetTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#getCondition}.
+	 * @param ctx the parse tree
+	 */
+	void enterGetCondition(ELFParser.GetConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#getCondition}.
+	 * @param ctx the parse tree
+	 */
+	void exitGetCondition(ELFParser.GetConditionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ELFParser#command}.
 	 * @param ctx the parse tree
 	 */
@@ -67,6 +97,16 @@ public interface ELFParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCommand(ELFParser.CommandContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#commandChoice}.
+	 * @param ctx the parse tree
+	 */
+	void enterCommandChoice(ELFParser.CommandChoiceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#commandChoice}.
+	 * @param ctx the parse tree
+	 */
+	void exitCommandChoice(ELFParser.CommandChoiceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#delete}.
 	 * @param ctx the parse tree
@@ -78,6 +118,16 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitDelete(ELFParser.DeleteContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ELFParser#deleteChoice}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeleteChoice(ELFParser.DeleteChoiceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#deleteChoice}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeleteChoice(ELFParser.DeleteChoiceContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ELFParser#move}.
 	 * @param ctx the parse tree
 	 */
@@ -88,6 +138,16 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitMove(ELFParser.MoveContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ELFParser#moveChoice}.
+	 * @param ctx the parse tree
+	 */
+	void enterMoveChoice(ELFParser.MoveChoiceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#moveChoice}.
+	 * @param ctx the parse tree
+	 */
+	void exitMoveChoice(ELFParser.MoveChoiceContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ELFParser#copy}.
 	 * @param ctx the parse tree
 	 */
@@ -97,6 +157,26 @@ public interface ELFParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCopy(ELFParser.CopyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#copyChoice}.
+	 * @param ctx the parse tree
+	 */
+	void enterCopyChoice(ELFParser.CopyChoiceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#copyChoice}.
+	 * @param ctx the parse tree
+	 */
+	void exitCopyChoice(ELFParser.CopyChoiceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#commandCondition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCommandCondition(ELFParser.CommandConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#commandCondition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCommandCondition(ELFParser.CommandConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#getClause}.
 	 * @param ctx the parse tree
@@ -118,26 +198,6 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitCommandClause(ELFParser.CommandClauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ELFParser#propertyClause}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertyClause(ELFParser.PropertyClauseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ELFParser#propertyClause}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertyClause(ELFParser.PropertyClauseContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ELFParser#locationClause}.
-	 * @param ctx the parse tree
-	 */
-	void enterLocationClause(ELFParser.LocationClauseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ELFParser#locationClause}.
-	 * @param ctx the parse tree
-	 */
-	void exitLocationClause(ELFParser.LocationClauseContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ELFParser#nameClause}.
 	 * @param ctx the parse tree
 	 */
@@ -148,15 +208,25 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitNameClause(ELFParser.NameClauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ELFParser#touchedClause}.
+	 * Enter a parse tree produced by {@link ELFParser#nameCondition}.
 	 * @param ctx the parse tree
 	 */
-	void enterTouchedClause(ELFParser.TouchedClauseContext ctx);
+	void enterNameCondition(ELFParser.NameConditionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ELFParser#touchedClause}.
+	 * Exit a parse tree produced by {@link ELFParser#nameCondition}.
 	 * @param ctx the parse tree
 	 */
-	void exitTouchedClause(ELFParser.TouchedClauseContext ctx);
+	void exitNameCondition(ELFParser.NameConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#modifiedClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterModifiedClause(ELFParser.ModifiedClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#modifiedClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitModifiedClause(ELFParser.ModifiedClauseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#dateClause}.
 	 * @param ctx the parse tree
@@ -167,6 +237,16 @@ public interface ELFParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDateClause(ELFParser.DateClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ELFParser#dateCondition}.
+	 * @param ctx the parse tree
+	 */
+	void enterDateCondition(ELFParser.DateConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ELFParser#dateCondition}.
+	 * @param ctx the parse tree
+	 */
+	void exitDateCondition(ELFParser.DateConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#folderClause}.
 	 * @param ctx the parse tree

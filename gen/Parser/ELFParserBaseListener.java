@@ -1,4 +1,4 @@
-// Generated from /Users/michaelchung/Documents/410/ELF/src/Parser/ELFParser.g4 by ANTLR 4.10.1
+// Generated from /Users/michaelchung/Documents/410/DSL Project/Project1Group16/src/Parser/ELFParser.g4 by ANTLR 4.10.1
 package Parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -52,13 +52,13 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignment(ELFParser.AssignmentContext ctx) { }
+	@Override public void enterStatementType(ELFParser.StatementTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignment(ELFParser.AssignmentContext ctx) { }
+	@Override public void exitStatementType(ELFParser.StatementTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -76,6 +76,42 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterType(ELFParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(ELFParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGetType(ELFParser.GetTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGetType(ELFParser.GetTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGetCondition(ELFParser.GetConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGetCondition(ELFParser.GetConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCommand(ELFParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -83,6 +119,18 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCommand(ELFParser.CommandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCommandChoice(ELFParser.CommandChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCommandChoice(ELFParser.CommandChoiceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -100,6 +148,18 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDeleteChoice(ELFParser.DeleteChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeleteChoice(ELFParser.DeleteChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMove(ELFParser.MoveContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -112,6 +172,18 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMoveChoice(ELFParser.MoveChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMoveChoice(ELFParser.MoveChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCopy(ELFParser.CopyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -119,6 +191,30 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCopy(ELFParser.CopyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCopyChoice(ELFParser.CopyChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCopyChoice(ELFParser.CopyChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCommandCondition(ELFParser.CommandConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCommandCondition(ELFParser.CommandConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -148,30 +244,6 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPropertyClause(ELFParser.PropertyClauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPropertyClause(ELFParser.PropertyClauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLocationClause(ELFParser.LocationClauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLocationClause(ELFParser.LocationClauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterNameClause(ELFParser.NameClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -184,13 +256,25 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTouchedClause(ELFParser.TouchedClauseContext ctx) { }
+	@Override public void enterNameCondition(ELFParser.NameConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTouchedClause(ELFParser.TouchedClauseContext ctx) { }
+	@Override public void exitNameCondition(ELFParser.NameConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterModifiedClause(ELFParser.ModifiedClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitModifiedClause(ELFParser.ModifiedClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -203,6 +287,18 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDateClause(ELFParser.DateClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDateCondition(ELFParser.DateConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDateCondition(ELFParser.DateConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

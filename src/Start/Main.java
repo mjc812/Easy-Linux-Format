@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        ELFLexer lexer = new ELFLexer(CharStreams.fromFileName("/Users/michaelchung/Documents/410/ELF/src/input.elf"));
+        ELFLexer lexer = new ELFLexer(CharStreams.fromFileName("/Users/michaelchung/Documents/410/DSL Project/Project1Group16/src/input.elf"));
         for (Token token : lexer.getAllTokens()) {
             System.out.println(token);
         }
