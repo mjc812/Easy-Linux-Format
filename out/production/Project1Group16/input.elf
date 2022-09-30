@@ -1,5 +1,0 @@
-path = get path SOME/PATH/HERE;
-rename file as sometext;
-files listA = get all files recursively where modified by Brandon Symmers, AND where in folder folderD;
-copy all from filesA to folderB if modified by  Harry Kane;
-copy all from filesA to folderB if name contains boob, AND name contains boob;
