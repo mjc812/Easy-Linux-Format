@@ -86,6 +86,8 @@ Task Owner:
 | AST Conversion, Static Checks, Validate AST, Dynamic Checks, Finish Implementation | October 3 - 10 | 1 week |
 | User Story #2, Evaluate & Debug | October 10-17 | 6 days |
 
+---
+
 ## Draft Grammar
 
 ```bash
@@ -129,3 +131,109 @@ TEXT = [does not allow the backslash];
 - [x]  Defined features we want to support in our DSL
 - [x]  Roadmap
 - [x]  Division of responsibilities
+
+---
+
+# Milestone 3:
+
+For this milestone, our focus has been on our user study. We’ve further revised our formal grammar and based on this — we’ve crafted a cheat sheet for our DSL which the subjects of our user studies can use to gain a better understand of ELF (our DSL) and how to use it. You can find our *[cheatSheet.md](http://cheatSheet.md) file located in the root directory of this repo which includes mockups of our language design!*
+
+## User Study #1
+
+Task (given):
+
+You are returning a laptop you borrowed for a couple months and want to clean up the files first.
+
+- Copy all files in the Downloads folder where the name contains the word “receipt” into the folder My Files.
+- Delete all the files in Downloads folder
+- Rename “skdfhkshf.docx” to “quiz1-questions.docx”
+- Move all files in the Documents folder and its subfolders that were created after 2022-08-01 into the folder My Files.
+
+### Examples Given to User Study Participant:
+
+**File Structure Before** 
+
+<img width="296" alt="Screen Shot 2022-09-29 at 11 22 52 PM" src="https://media.github.students.cs.ubc.ca/user/1578/files/cf1329bf-5653-4d5f-9856-f09b76752836">
+
+
+**File Structure After**
+
+<img width="293" alt="Screen Shot 2022-09-29 at 11 23 11 PM" src="https://media.github.students.cs.ubc.ca/user/1578/files/6bdfd61f-660e-40c6-ba40-0d701465db0b">
+
+
+**EXAMPLE INPUT: script.elf**
+
+---
+
+```markdown
+path = get path /home/e/emcd4/cs-410/Documents; // absolute path
+
+folder homeworkFolder = get folder where name is Homework
+
+file igneousFile = get file where name is igneous.jpg, AND in folder homeworkFolder;
+
+rename igneousFile as igneous-rock.jpg;
+
+folder archivedRocks = get folder at path /Archive/Rock Photos;
+
+files rockFiles = get all files where name contains rock, AND in folder homeworkFolder;
+
+move all from rockFiles to archivedRocks;
+
+files oldHwk = get all files recursively where name prefix SFU;
+
+folder archivedHwk = get folder at path /Archive/Homework;
+
+move all from oldHwk to archivedHwk;
+
+folder schoolFolder = get folder at path /Homework/School2020;
+
+delete schoolFolder;
+```
+
+**EXAMPLE OUTPUT: script.sh**
+
+---
+
+```bash
+HOME_PATH="/home/e/emcd4/cs-410/Documents"
+homeworkFolder="$HOME_PATH/Homework"
+igneousFile="igneous.jpg"
+mv $homeworkFolder/$igneousFile $homeworkFolder/igneous-rock.jpg
+archivedRocks="$HOME_PATH/Archive/Rock Photos"
+REGEX=".*(rock).*"
+rockFiles=`ls "$homeworkFolder"`
+for file in $rockFiles
+do
+    if [[ $file =~ $REGEX ]]
+    then
+        mv "$homeworkFolder"/"$file" "$archivedRocks"
+    fi
+done
+archivedHwk="$HOME_PATH/Archive/Homework"
+REGEX="^(SFU).*"
+shopt -s globstar nullglob
+HOME_PATH_FILES_RECURSIVE="$HOME_PATH/**/*"
+for file in $HOME_PATH_FILES_RECURSIVE
+do
+    NAME="$(basename "$file")"
+    if [[ $NAME =~ $REGEX ]]
+    then
+        mv "$file" "$archivedHwk"
+    fi
+done
+schoolFolder="$HOME_PATH/Homework/School2020"
+rm -r "$schoolFolder"
+```
+
+## Changes to original language design:
+
+- We now support rename for files and folders
+- We now use “,” as a delimiter for our AND expressions
+
+## Progress vs Roadmap:
+
+We are currently on schedule according to our roadmap and the only changes have been:
+
+- Doing AST Conversion and the first user study at the same time
+- Potentially eliminating dynamic checking if it doesn’t make sense for our end use case — still TBD
