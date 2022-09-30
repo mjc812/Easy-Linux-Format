@@ -2,7 +2,13 @@ package AST.Clauses;
 
 public class Modified extends Clause {
 
-    public Modified(String text) {
-        this.text = text;
+    private String user;
+
+    public Modified(String user) {
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
     }
 }

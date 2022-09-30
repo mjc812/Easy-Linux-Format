@@ -5,20 +5,34 @@ import AST.Clauses.Clause;
 import java.util.ArrayList;
 
 public class Get extends Statement {
-    private int type;
+    private int variableType;
     private int getType;
-    private String text;
+    private String variable;
     private boolean recursive;
 
-    public Get(int type, int getType, String var, boolean recursive,ArrayList<Clause> clauseList) {
+    public Get(ArrayList<Clause> clauseList, int variableType, int getType, String variable, boolean recursive) {
+        super(clauseList);
         this.clauseList = clauseList;
-        this.type = type;
+        this.variableType = variableType;
         this.getType = getType;
-        this.text = var;
+        this.variable = variable;
         this.recursive = recursive;
+    }
+
+    public int getVariableType() {
+        return variableType;
+    }
+
+    public int getGetType() {
+        return getType;
+    }
+
+    public String getVariable() {
+        return variable;
     }
 
     public boolean isRecursive() {
         return recursive;
     }
+
 }

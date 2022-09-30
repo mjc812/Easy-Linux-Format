@@ -2,7 +2,13 @@ package AST.Clauses;
 
 public class Path extends Clause {
 
-    public Path(String text, int type) {
-        this.text = text;
+    private String path;
+
+    public Path(String path) {
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

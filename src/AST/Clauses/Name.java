@@ -2,8 +2,19 @@ package AST.Clauses;
 
 public class Name extends Clause {
 
-    public Name(String text, int type) {
-        this.text = text;
-        this.type = type;
+    private int condition;
+    private String name;
+
+    public Name(String name, int condition) {
+        this.condition = condition;
+        this.name = name;
+    }
+
+    public int getCondition() {
+        return condition;
+    }
+
+    public String getName() {
+        return name;
     }
 }
