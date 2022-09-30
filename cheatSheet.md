@@ -1,6 +1,6 @@
 # ELF Cheat Sheet
 
-A reference sheet for new users to ELF.
+A reference sheet for new users to ELF. For a better viewing experience: https://common-pyroraptor-456.notion.site/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc
 
 # Object Types
 
