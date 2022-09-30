@@ -153,11 +153,13 @@ You are returning a laptop you borrowed for a couple months and want to clean up
 
 **File Structure Before** 
 
-![Screen Shot 2022-09-29 at 10.57.39 PM.png](milestones%20fad1f3e769aa4d9c9ce75ff8dca74e3f/Screen_Shot_2022-09-29_at_10.57.39_PM.png)
+<img width="296" alt="Screen Shot 2022-09-29 at 11 22 52 PM" src="https://media.github.students.cs.ubc.ca/user/1578/files/cf1329bf-5653-4d5f-9856-f09b76752836">
+
 
 **File Structure After**
 
-![Screen Shot 2022-09-29 at 11.00.15 PM.png](milestones%20fad1f3e769aa4d9c9ce75ff8dca74e3f/Screen_Shot_2022-09-29_at_11.00.15_PM.png)
+<img width="293" alt="Screen Shot 2022-09-29 at 11 23 11 PM" src="https://media.github.students.cs.ubc.ca/user/1578/files/6bdfd61f-660e-40c6-ba40-0d701465db0b">
+
 
 **EXAMPLE INPUT: script.elf**
 
