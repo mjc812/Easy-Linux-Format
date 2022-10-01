@@ -1,3 +1,6 @@
 package AST.Clauses;
 
-public abstract class Clause { }
+import AST.Node.Node;
+
+public abstract class Clause extends Node {
+}

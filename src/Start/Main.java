@@ -1,8 +1,9 @@
 package Start;
 
 import AST.Clauses.*;
-import AST.Program;
-import AST.ProgramPath;
+import AST.Node.Node;
+import AST.Program.Program;
+import AST.Program.ProgramPath;
 import AST.Statements.Command;
 import AST.Statements.Commands.Copy;
 import AST.Statements.Commands.Delete;
