@@ -1,5 +1,10 @@
 path = get path SOME/PATH/HERE;
+
+files listA = get all files recursively where modified by Brandon Symmers, AND in folder folderD, AND at path UBC/CPSC-410/homework;
+files fileA = get all files where date modified after 2020-03-22;
+
+delete fileA;
 rename file as sometext;
-files listA = get all files recursively where modified by Brandon Symmers, AND where in folder folderD;
-copy all from filesA to folderB if modified by  Harry Kane;
 copy all from filesA to folderB if name contains boob, AND name contains boob;
+delete all from folderA if date modified on 2020-03-22, AND name contains boob;
+move all from folderA to folderB if modified by  Harry Kane;

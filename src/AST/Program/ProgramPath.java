@@ -1,6 +1,8 @@
-package AST;
+package AST.Program;
 
-public class ProgramPath {
+import AST.Node.Node;
+
+public class ProgramPath extends Node {
     private String text;
 
     public ProgramPath(String text) {

@@ -6,15 +6,15 @@ import java.util.ArrayList;
 
 public class Get extends Statement {
     private int variableType;
-    private int getType;
+    private int getVariableType;
     private String variable;
     private boolean recursive;
 
-    public Get(ArrayList<Clause> clauseList, int variableType, int getType, String variable, boolean recursive) {
+    public Get(ArrayList<Clause> clauseList, int variableType, int getVariableType, String variable, boolean recursive) {
         super(clauseList);
         this.clauseList = clauseList;
         this.variableType = variableType;
-        this.getType = getType;
+        this.getVariableType = getVariableType;
         this.variable = variable;
         this.recursive = recursive;
     }
@@ -23,8 +23,8 @@ public class Get extends Statement {
         return variableType;
     }
 
-    public int getGetType() {
-        return getType;
+    public int getGetVariableType() {
+        return getVariableType;
     }
 
     public String getVariable() {

@@ -1,12 +1,11 @@
-package AST;
+package AST.Program;
 
-import AST.Clauses.Clause;
+import AST.Node.Node;
 import AST.Statements.Statement;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 
-public class Program {
+public class Program extends Node {
     private ProgramPath path;
     private ArrayList<Statement> statementList;
 

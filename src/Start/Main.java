@@ -1,18 +1,25 @@
 package Start;
 
 import AST.Clauses.*;
-import AST.Program;
-import AST.ProgramPath;
+import AST.Node.Node;
+import AST.Program.Program;
+import AST.Program.ProgramPath;
 import AST.Statements.Command;
 import AST.Statements.Commands.Copy;
 import AST.Statements.Commands.Delete;
 import AST.Statements.Get;
 import AST.Statements.Statement;
 import Parser.ELFLexer;
+import Parser.ELFParser;
+import Parser.ParseTreeToASTVisitor;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Main {
@@ -22,6 +29,10 @@ public class Main {
             //System.out.println(token);
         }
         lexer.reset();
-        System.out.println("Done tokenizing");
+        TokenStream tokens = new CommonTokenStream(lexer);
+
+        ELFParser parser = new ELFParser(tokens);
+        ParseTreeToASTVisitor visitor = new ParseTreeToASTVisitor();
+        Node parsedProgram = parser.program().accept(visitor);
     }
 }

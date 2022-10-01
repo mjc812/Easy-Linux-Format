@@ -6,12 +6,11 @@ path: PATH EQUALS GETPATH TEXT SEMICOLON;
 statement: statementType SEMICOLON;
 statementType: get | command;
 
-get: type VAR_TEXT EQUALS getType getCondition;
+get: type VAR_TEXT EQUALS getType WHERE getClause (COMMA AND getClause)*;
 type: FILE | FILES | FOLDER;
 getType: GETFILE | GETFILES RECURSIVELY? | GETFOLDER;
-getCondition: WHERE getClause (COMMA AND getClause)*;
 
-command: commandChoice commandCondition;
+command: commandChoice (IF commandClause (COMMA AND commandClause)*)?;
 commandChoice: delete | move | copy | rename;
 delete: deleteChoice VAR_TEXT;
 deleteChoice: DELETE | DELETEALLFROM;
@@ -20,7 +19,6 @@ moveChoice: MOVE | MOVEALLFROM;
 copy: copyChoice VAR_TEXT TO VAR_TEXT;
 copyChoice: COPY | COPYALLFROM;
 rename: RENAME VAR_TEXT AS TEXT;
-commandCondition: (IF commandClause (COMMA AND commandClause)*)?;
 
 getClause: nameClause | modifiedClause | dateClause | folderClause | pathClause;
 commandClause: nameClause | modifiedClause | dateClause;
