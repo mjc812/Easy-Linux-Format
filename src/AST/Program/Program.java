@@ -24,7 +24,7 @@ public class Program extends Node {
     }
 
     @Override
-    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
+    public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
         // TODO
         return null;
     }
