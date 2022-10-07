@@ -1,5 +1,7 @@
 package AST.Clauses;
 
+import AST.ASTVisitor;
+
 public class Date extends Clause {
 
     private String date;
@@ -16,5 +18,11 @@ public class Date extends Clause {
 
     public int getCondition() {
         return condition;
+    }
+
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
+        // TODO
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package AST.Clauses;
 
+import AST.ASTVisitor;
+
 public class Path extends Clause {
 
     private String path;
@@ -10,5 +12,11 @@ public class Path extends Clause {
 
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
+        // TODO
+        return null;
     }
 }

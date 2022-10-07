@@ -1,5 +1,6 @@
 package AST.Statements;
 
+import AST.ASTVisitor;
 import AST.Clauses.Clause;
 
 import java.util.ArrayList;
@@ -35,4 +36,9 @@ public class Get extends Statement {
         return recursive;
     }
 
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
+        // TODO
+        return null;
+    }
 }

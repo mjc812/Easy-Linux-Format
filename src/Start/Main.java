@@ -34,5 +34,7 @@ public class Main {
         ELFParser parser = new ELFParser(tokens);
         ParseTreeToASTVisitor visitor = new ParseTreeToASTVisitor();
         Node parsedProgram = parser.program().accept(visitor);
+
+        // TODO: create the file
     }
 }

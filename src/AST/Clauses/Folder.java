@@ -1,5 +1,7 @@
 package AST.Clauses;
 
+import AST.ASTVisitor;
+
 public class Folder extends Clause {
 
     private String folder;
@@ -10,5 +12,11 @@ public class Folder extends Clause {
 
     public String getFolder() {
         return folder;
+    }
+
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
+        // TODO
+        return null;
     }
 }
