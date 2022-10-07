@@ -33,7 +33,6 @@ public class Copy extends Command {
 
     @Override
     public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
-        // TODO
-        return null;
+        return visitor.visit(this, param);
     }
 }

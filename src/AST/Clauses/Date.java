@@ -22,7 +22,6 @@ public class Date extends Clause {
 
     @Override
     public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
-        // TODO
-        return null;
+        return visitor.visit(this, param);
     }
 }

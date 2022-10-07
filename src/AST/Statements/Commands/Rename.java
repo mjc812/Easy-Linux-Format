@@ -26,8 +26,7 @@ public class Rename extends Command {
     }
 
     @Override
-    public <U, T> T accept(U param, ASTVisitor<T, U> visitor) {
-        // TODO
-        return null;
+    public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
+        return visitor.visit(this, param);
     }
 }
