@@ -5,22 +5,17 @@ import AST.Statements.*;
 import AST.Statements.Commands.*;
 import AST.Clauses.*;
 
-import java.io.PrintWriter;
-
 public interface ASTVisitor<U, T> {
-    // Program
-    public T visit(Program p, U param);
-    public T visit(ProgramPath p, U param);
-    // Statements
-    public T visit(Get g, U param);
-    public T visit(Copy c, U param);
-    public T visit(Delete d, U param);
-    public T visit(Move m, U param);
-    public T visit(Rename r, U param);
-    // Clauses
-    public T visit(Date d, U param);
-    public T visit(Folder f, U param);
-    public T visit(Modified m, U param);
-    public T visit(Name n, U param);
-    public T visit(Path p, U param);
+    T visit(Program p, U param);
+    T visit(ProgramPath p, U param);
+    T visit(Get g, U param);
+    T visit(Copy c, U param);
+    T visit(Delete d, U param);
+    T visit(Move m, U param);
+    T visit(Rename r, U param);
+    T visit(DateModifiedClause d, U param);
+    T visit(InFolderClause f, U param);
+    T visit(ModifiedByUserClause m, U param);
+    T visit(NameClause n, U param);
+    T visit(AtPathClause p, U param);
 }

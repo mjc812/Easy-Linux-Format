@@ -4,14 +4,14 @@ import AST.ASTVisitor;
 import AST.Node.Node;
 
 public class ProgramPath extends Node {
-    private String text;
+    private final String path;
 
     public ProgramPath(String text) {
-        this.text = text;
+        this.path = text;
     }
 
-    public String getText() {
-        return text;
+    public String getPath() {
+        return path;
     }
 
     @Override

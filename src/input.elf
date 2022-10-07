@@ -1,10 +1,16 @@
-path = get path SOME/PATH/HERE;
+path = get path /home/c/cwl/cs-410/Documents;
 
-files listA = get all files recursively where modified by Brandon Symmers, AND in folder folderD, AND at path UBC/CPSC-410/homework;
-files fileA = get all files where date modified after 2020-03-22;
+folder homeworkFolder = get folder where name is Homework;
+file igneousFile = get file where name is igneous.jpg, AND in folder homeworkFolder;
+rename igneousFile as igneous-rock.jpg;
 
-delete fileA;
-rename file as sometext;
-copy all from filesA to folderB if name contains boob, AND name contains boob;
-delete all from folderA if date modified on 2020-03-22, AND name contains boob;
-move all from folderA to folderB if modified by  Harry Kane;
+folder archivedRocks = get folder where at path /Archive/Rock Photos;
+files rockFiles = get all files where name contains rock, AND in folder homeworkFolder;
+move all from rockFiles to archivedRocks;
+
+files oldHwk = get all files recursively where name prefix SFU;
+folder archivedHwk = get folder where at path /Archive/Homework;
+move all from oldHwk to archivedHwk;
+
+folder schoolFolder = get folder where at path /Homework/School2020;
+delete schoolFolder;

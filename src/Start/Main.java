@@ -1,6 +1,8 @@
 package Start;
 
+import AST.ASTVisitor;
 import AST.Clauses.*;
+import AST.Evaluator;
 import AST.Node.Node;
 import AST.Program.Program;
 import AST.Program.ProgramPath;
@@ -35,6 +37,11 @@ public class Main {
         ParseTreeToASTVisitor visitor = new ParseTreeToASTVisitor();
         Node parsedProgram = parser.program().accept(visitor);
 
-        // TODO: create the file
+        // write the file
+        ASTVisitor<PrintWriter, String> astVisitor = new Evaluator();
+        PrintWriter writer = new PrintWriter(new FileWriter("output.sh"));
+        parsedProgram.accept(writer, astVisitor);
+        writer.close();
+        System.out.println("Done");
     }
 }

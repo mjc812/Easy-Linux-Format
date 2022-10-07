@@ -1,13 +1,14 @@
 package AST.Clauses;
 
 import AST.ASTVisitor;
+import Parser.ELFLexer;
 
-public class Date extends Clause {
+public class DateModifiedClause extends Clause {
 
     private String date;
     private int condition;
 
-    public Date(String date, int type) {
+    public DateModifiedClause(String date, int type) {
         this.date = date;
         this.condition = type;
     }
@@ -23,5 +24,10 @@ public class Date extends Clause {
     @Override
     public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public int getType() {
+        return ELFLexer.DATE;
     }
 }

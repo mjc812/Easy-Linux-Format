@@ -1,13 +1,14 @@
 package AST.Clauses;
 
 import AST.ASTVisitor;
+import Parser.ELFLexer;
 
-public class Name extends Clause {
+public class NameClause extends Clause {
 
     private int condition;
     private String name;
 
-    public Name(String name, int condition) {
+    public NameClause(String name, int condition) {
         this.condition = condition;
         this.name = name;
     }
@@ -23,5 +24,10 @@ public class Name extends Clause {
     @Override
     public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public int getType() {
+        return ELFLexer.NAME;
     }
 }
