@@ -19,7 +19,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     private final static String HOME_PATH_VAR = "HOME_PATH";
 
-//    private final Set<String> variables = new HashSet<>();
+    // TODO: possibly make map value some sort of Variable object so we can retain info like recursive, and stuff
     // Map to store current variable assignments, with value being the variables's path representation
     private final Map<String, String> variables = new HashMap<>();
 
@@ -44,13 +44,9 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         // TODO: finish implementing
 
         if (g.getGetVariableType() == ELFLexer.GETFOLDER || g.getGetVariableType() == ELFLexer.GETFILE) {
-//            StringBuilder filePath = new StringBuilder();
-//            filePath.append("\"$").append(HOME_PATH_VAR);
+            String filePath = processFilePathClauses(g);
 
-            String filePath = processFilePathClauses(g, "");
             // TODO: Process Date clause, Modified clause
-
-//            filePath.append("\"");
             variables.put(g.getVariable(), filePath);
             writer.println(String.format("%s=\"%s\"", g.getVariable(), filePath));
         }
@@ -60,17 +56,13 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     /**
      * returns a file path to use based on the given statement's at path, folder, and name clauses
      * @param s statement
-     * @param rootPath the root path to append to the beginning of the file path
      * @return the file path filtered by given name and folder clauses
      */
-    private String processFilePathClauses(Statement s, String rootPath) {
+    private String processFilePathClauses(Statement s) {
         Map<Integer, List<Clause>> clauseMap = new HashMap<>();
         StringBuilder filePath = new StringBuilder();
-        filePath.append("$").append(HOME_PATH_VAR);
 
-        if (!rootPath.isEmpty()) {
-            filePath.append("/$").append(rootPath);
-        }
+        filePath.append("$").append(HOME_PATH_VAR);
 
         for (Clause c : s.getClauseList()) {
             if (!clauseMap.containsKey(c.getType())) {
@@ -147,18 +139,30 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     @Override
     public String visit(Move m, PrintWriter writer) {
         int moveType = m.getType();
+        // TODO: remove when get all is implemented
+        variables.put("rockFiles", "$homeworkFolder/*rock*");
+        variables.put("oldHwk", "$HOME_PATH/SFU*");
 
-        String fromPath = processFilePathClauses(m, m.getFromVariable());
-        // TODO: modified, date clauses
-        // TODO: recursive
+        if (!isVarDeclared(m.getToVariable()) || !isVarDeclared(m.getFromVariable())) {
+            // TODO: static check failed - variable(s) not declared
+        }
+
+        String fromPath = variables.get(m.getFromVariable());
 
         switch (moveType) {
             case MOVEALLFROM:
-                // find Documents/* -mtime -58  -exec mv "{}" "Documents/My Files/" \;
+                Path path = Paths.get(fromPath);
+                String folderPath = path.getParent().toString();
+                String fileFilter = path.getFileName().toString();
+
                 // TODO: add modified and date and recursively with -mtime and -mindepth
-                writer.println(String.format("find \"%s\" -exec mv '{}' \"$%s\" \\;", fromPath, m.getToVariable()));
+                writer.println(String.format(
+                        "find \"%s\" -name \"%s\" -exec mv '{}' \"$%s\" \\;",
+                        folderPath, fileFilter, m.getToVariable()));
+                break;
             case MOVE:
                 writer.println(String.format("mv \"%s\" \"$%s\"", fromPath, m.getToVariable()));
+                break;
         }
         return null;
     }
@@ -166,13 +170,14 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     @Override
     public String visit(Rename r, PrintWriter writer) {
         if (!r.getClauseList().isEmpty()) {
-            // TODO: don't support clauses on rename
+            // TODO: do something
         }
 
         if (!isVarDeclared(r.getVariable())) {
             // TODO: static error, nonexistent variable
         }
 
+        // need to put the full path in the rename target
         String fromPath = variables.get(r.getVariable());
         Path path = Paths.get(fromPath);
         String folderPath = path.getParent().toString();
