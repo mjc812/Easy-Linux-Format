@@ -104,9 +104,28 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         }
     }
 
+    // Copy cases: (1) copy one file to a folder, (2) copy many files to a folder
+    // (3) copy a folder to a folder
     @Override
     public String visit(Copy c, PrintWriter writer) {
-        // TODO
+        String result = "cp ";
+        String destFolderName = "";
+        String sourceFileName = "";
+        String[] tempfiles = {"file1", "file2"};
+        // TODO : figure out inputs, do linux copy command
+
+        if(c.getType() == ELFLexer.COPY) {
+            // single file/folder -> folder
+            // does get from variable need the path in front of it??
+            result += c.getFromVariable() + " " + c.getToVariable();
+        } else if (c.getType() == ELFLexer.COPYALLFROM) {
+            // multiple files -> folder
+            // find folder (at c.getFromVariable) and then get path of each file and then iterate over all
+            for (String s : tempfiles) {
+                result += s + " ";
+            }
+        }
+
         return null;
     }
 
