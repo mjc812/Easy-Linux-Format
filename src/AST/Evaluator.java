@@ -10,6 +10,9 @@ import Parser.ELFParser;
 import java.io.PrintWriter;
 import java.util.*;
 
+import static Parser.ELFLexer.MOVE;
+import static Parser.ELFLexer.MOVEALLFROM;
+
 public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     private final static String HOME_PATH_VAR = "HOME_PATH";
@@ -35,63 +38,84 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     @Override
     public String visit(Get g, PrintWriter writer) {
         // TODO: finish implementing
-        Map<Integer, List<Clause>> clauseMap = new HashMap<>();
 
         if (g.getGetVariableType() == ELFLexer.GETFOLDER || g.getGetVariableType() == ELFLexer.GETFILE) {
-            StringBuilder filePath = new StringBuilder();
-            filePath.append("\"$").append(HOME_PATH_VAR);
+//            StringBuilder filePath = new StringBuilder();
+//            filePath.append("\"$").append(HOME_PATH_VAR);
 
-            // process the clauses
-            for (Clause c : g.getClauseList()) {
-                if (!clauseMap.containsKey(c.getType())) {
-                    clauseMap.put(c.getType(), new ArrayList<>());
-                }
-                clauseMap.get(c.getType()).add(c);
-            }
-
-            if (clauseMap.containsKey(ELFParser.ATPATH)) {
-                if (clauseMap.size() > 1) {
-                    // TODO: static error - cannot have multiple clauses when one is "at path" clause
-                }
-                AtPathClause apc = (AtPathClause) clauseMap.get(ELFParser.ATPATH).get(0);
-                filePath.append(apc.getPath());
-            }
-
-            if (clauseMap.containsKey(ELFParser.INFOLDER)) {
-                processInFolderClause(clauseMap, filePath);
-            }
-
-            if (clauseMap.containsKey(ELFParser.NAME)) {
-                // "is" = only clause
-                // "prefix = 1 clause
-                // "suffix" = 1 clause
-                // "contains" = n clauses
-                List<Clause> nameClauseList = clauseMap.get(ELFParser.NAME);
-                for (Clause c : nameClauseList) {
-                    NameClause nc = (NameClause) c;
-                    if (nc.getCondition() == ELFLexer.IS) {
-                        if (nameClauseList.size() > 1) {
-                            // TODO: static error - cannot have more than 1 clause with a "name is" clause
-                        }
-                        filePath.append("/").append(nc.getName());
-                    } else if (nc.getCondition() == ELFLexer.PREFIX) {
-                        // TODO: prefix
-                    } else if (nc.getCondition() == ELFLexer.SUFFIX) {
-                        // TODO: suffix
-                    } else {
-                        // TODO: contains
-                    }
-                }
-            }
+            String filePath = processFilePathClauses(g, "");
             // TODO: Date clause, Modified clause
 
-
-            filePath.append("\"");
+//            filePath.append("\"");
             variables.add(g.getVariable());
-            writer.println(g.getVariable() + "=" + filePath.toString());
+            writer.println(g.getVariable() + "=" + filePath);
         }
         return null;
     }
+
+    /**
+     * returns a file path to use based on the given statement's at path, folder, and name clauses
+     * @param s statement
+     * @param rootPath the root path to append to the beginning of the file path
+     * @return
+     */
+    private String processFilePathClauses(Statement s, String rootPath) {
+        Map<Integer, List<Clause>> clauseMap = new HashMap<>();
+        StringBuilder filePath = new StringBuilder();
+        filePath.append("\"$").append(HOME_PATH_VAR);
+
+        if (!rootPath.isEmpty()) {
+            filePath.append("/$").append(rootPath);
+        }
+
+        for (Clause c : s.getClauseList()) {
+            if (!clauseMap.containsKey(c.getType())) {
+                clauseMap.put(c.getType(), new ArrayList<>());
+            }
+            clauseMap.get(c.getType()).add(c);
+        }
+
+        if (clauseMap.containsKey(ELFParser.ATPATH)) {
+            if (clauseMap.size() > 1) {
+                // TODO: static error - cannot have multiple clauses when one is "at path" clause
+            }
+            AtPathClause apc = (AtPathClause) clauseMap.get(ELFParser.ATPATH).get(0);
+            filePath.append(apc.getPath());
+        }
+
+        if (clauseMap.containsKey(ELFParser.INFOLDER)) {
+            processInFolderClause(clauseMap, filePath);
+        }
+
+        if (clauseMap.containsKey(ELFParser.NAME)) {
+            // "is" = only clause
+            // "prefix = 1 clause
+            // "suffix" = 1 clause
+            // "contains" = n clauses
+            List<Clause> nameClauseList = clauseMap.get(ELFParser.NAME);
+            for (Clause c : nameClauseList) {
+                NameClause nc = (NameClause) c;
+                if (nc.getCondition() == ELFLexer.IS) {
+                    if (nameClauseList.size() > 1) {
+                        // TODO: static error - cannot have more than 1 clause with a "name is" clause
+                    }
+                    filePath.append("/").append(nc.getName());
+                } else if (nc.getCondition() == ELFLexer.PREFIX) {
+                    // TODO: prefix
+                    filePath.append("/").append(nc.getName()+ "*");
+                } else if (nc.getCondition() == ELFLexer.SUFFIX) {
+                    // TODO: suffix
+                    filePath.append("/").append("*" + nc.getName());
+                } else {
+                    // TODO: contains
+                    filePath.append("/").append("*" + nc.getName() + "*");
+                }
+            }
+        }
+        filePath.append("\"");
+        return filePath.toString();
+    }
+
 
     private void processInFolderClause(Map<Integer, List<Clause>> clauseMap, StringBuilder filePath) {
         InFolderClause inFolderClause = (InFolderClause) clauseMap.get(ELFParser.INFOLDER).get(0);
@@ -118,13 +142,30 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     @Override
     public String visit(Move m, PrintWriter writer) {
-        // TODO
+        int moveType = m.getType();
+
+        String fromPath = processFilePathClauses(m, m.getToVariable());
+        // TODO: modified, date clauses
+        // TODO: recursive
+        String toPath = String.format("\"$%s/$%s\"", HOME_PATH_VAR, m.getToVariable());
+
+        switch (moveType) {
+            case MOVEALLFROM:
+                // find Documents/* -mtime -58  -exec mv "{}" "Documents/My Files/" \;
+                // TODO: add modified and date and recursively with -mtime and -mindepth
+                writer.println(String.format("find %s -exec mv '{}' %s", fromPath, toPath));
+            case MOVE:
+                writer.println(String.format("mv %s %s", fromPath, toPath));
+        }
         return null;
     }
 
     @Override
     public String visit(Rename r, PrintWriter writer) {
-        // TODO
+        if (!r.getClauseList().isEmpty()) {
+            // TODO: don't support clauses on rename
+        }
+        writer.println(String.format("mv $%s \"%s\"", r.getVariable(), r.getName()));
         return null;
     }
 
