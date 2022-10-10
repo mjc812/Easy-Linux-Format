@@ -8,6 +8,8 @@ import Parser.ELFLexer;
 import Parser.ELFParser;
 
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static Parser.ELFLexer.MOVE;
@@ -17,7 +19,9 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     private final static String HOME_PATH_VAR = "HOME_PATH";
 
-    private final Set<String> variables = new HashSet<>();
+//    private final Set<String> variables = new HashSet<>();
+    // Map to store current variable assignments, with value being the variables's path representation
+    private final Map<String, String> variables = new HashMap<>();
 
     @Override
     public String visit(Program p, PrintWriter writer) {
@@ -44,11 +48,11 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 //            filePath.append("\"$").append(HOME_PATH_VAR);
 
             String filePath = processFilePathClauses(g, "");
-            // TODO: Date clause, Modified clause
+            // TODO: Process Date clause, Modified clause
 
 //            filePath.append("\"");
-            variables.add(g.getVariable());
-            writer.println(g.getVariable() + "=" + filePath);
+            variables.put(g.getVariable(), filePath);
+            writer.println(String.format("%s=\"%s\"", g.getVariable(), filePath));
         }
         return null;
     }
@@ -57,12 +61,12 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
      * returns a file path to use based on the given statement's at path, folder, and name clauses
      * @param s statement
      * @param rootPath the root path to append to the beginning of the file path
-     * @return
+     * @return the file path filtered by given name and folder clauses
      */
     private String processFilePathClauses(Statement s, String rootPath) {
         Map<Integer, List<Clause>> clauseMap = new HashMap<>();
         StringBuilder filePath = new StringBuilder();
-        filePath.append("\"$").append(HOME_PATH_VAR);
+        filePath.append("$").append(HOME_PATH_VAR);
 
         if (!rootPath.isEmpty()) {
             filePath.append("/$").append(rootPath);
@@ -112,7 +116,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                 }
             }
         }
-        filePath.append("\"");
+
         return filePath.toString();
     }
 
@@ -120,7 +124,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     private void processInFolderClause(Map<Integer, List<Clause>> clauseMap, StringBuilder filePath) {
         InFolderClause inFolderClause = (InFolderClause) clauseMap.get(ELFParser.INFOLDER).get(0);
         String folderVar = inFolderClause.getFolder();
-        if (!variables.contains(folderVar)) {
+        if (!variables.containsKey(folderVar)) {
             // TODO: static error - attempt to access folder variable that does not exist
         } else {
             filePath.setLength(0);
@@ -144,18 +148,17 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     public String visit(Move m, PrintWriter writer) {
         int moveType = m.getType();
 
-        String fromPath = processFilePathClauses(m, m.getToVariable());
+        String fromPath = processFilePathClauses(m, m.getFromVariable());
         // TODO: modified, date clauses
         // TODO: recursive
-        String toPath = String.format("\"$%s/$%s\"", HOME_PATH_VAR, m.getToVariable());
 
         switch (moveType) {
             case MOVEALLFROM:
                 // find Documents/* -mtime -58  -exec mv "{}" "Documents/My Files/" \;
                 // TODO: add modified and date and recursively with -mtime and -mindepth
-                writer.println(String.format("find %s -exec mv '{}' %s", fromPath, toPath));
+                writer.println(String.format("find \"%s\" -exec mv '{}' \"$%s\" \\;", fromPath, m.getToVariable()));
             case MOVE:
-                writer.println(String.format("mv %s %s", fromPath, toPath));
+                writer.println(String.format("mv \"%s\" \"$%s\"", fromPath, m.getToVariable()));
         }
         return null;
     }
@@ -165,7 +168,16 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         if (!r.getClauseList().isEmpty()) {
             // TODO: don't support clauses on rename
         }
-        writer.println(String.format("mv $%s \"%s\"", r.getVariable(), r.getName()));
+
+        if (!isVarDeclared(r.getVariable())) {
+            // TODO: static error, nonexistent variable
+        }
+
+        String fromPath = variables.get(r.getVariable());
+        Path path = Paths.get(fromPath);
+        String folderPath = path.getParent().toString();
+
+        writer.println(String.format("mv \"$%s\" \"%s/%s\"", r.getVariable(), folderPath, r.getName()));
         return null;
     }
 
@@ -193,5 +205,9 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     @Override
     public String visit(AtPathClause p, PrintWriter param) {
         return null;
+    }
+
+    private boolean isVarDeclared(String variable) {
+        return variables.containsKey((variable));
     }
 }
