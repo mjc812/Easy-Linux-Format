@@ -76,7 +76,7 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
         } else if (ctx.getType().GETFILES() != null) {
             getVariableType = ELFLexer.GETFILES;
         } else {
-            getVariableType = ELFLexer.FOLDER;
+            getVariableType = ELFLexer.GETFOLDER;
         }
 
         for (ELFParser.GetClauseContext getClause : ctx.getClause()) {
@@ -188,7 +188,7 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
     }
 
     @Override
-    public Name visitNameClause(ELFParser.NameClauseContext ctx) {
+    public NameClause visitNameClause(ELFParser.NameClauseContext ctx) {
         String text = ctx.TEXT().getText();
         int condition;
 
@@ -202,18 +202,18 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
             condition = ELFLexer.SUFFIX;
         }
 
-        return new Name(text, condition);
+        return new NameClause(text, condition);
     }
 
     @Override
-    public Modified visitModifiedClause(ELFParser.ModifiedClauseContext ctx) {
+    public ModifiedByUserClause visitModifiedClause(ELFParser.ModifiedClauseContext ctx) {
         String text = ctx.TEXT().getText();
 
-        return new Modified(text);
+        return new ModifiedByUserClause(text);
     }
 
     @Override
-    public Date visitDateClause(ELFParser.DateClauseContext ctx) {
+    public DateModifiedClause visitDateClause(ELFParser.DateClauseContext ctx) {
         String dateText = ctx.TEXT().getText();
         int condition;
 
@@ -225,20 +225,20 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
             condition = ELFLexer.AFTER;
         }
 
-        return new Date(dateText, condition);
+        return new DateModifiedClause(dateText, condition);
     }
 
     @Override
-    public Folder visitFolderClause(ELFParser.FolderClauseContext ctx) {
+    public InFolderClause visitFolderClause(ELFParser.FolderClauseContext ctx) {
         String text = ctx.TEXT().getText();
 
-        return new Folder(text);
+        return new InFolderClause(text);
     }
 
     @Override
-    public Path visitPathClause(ELFParser.PathClauseContext ctx) {
+    public AtPathClause visitPathClause(ELFParser.PathClauseContext ctx) {
         String text = ctx.TEXT().getText();
 
-        return new Path(text);
+        return new AtPathClause(text);
     }
 }

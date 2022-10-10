@@ -1,5 +1,6 @@
 package AST.Program;
 
+import AST.ASTVisitor;
 import AST.Node.Node;
 import AST.Statements.Statement;
 
@@ -20,5 +21,10 @@ public class Program extends Node {
 
     public ArrayList<Statement> getStatementList() {
         return statementList;
+    }
+
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
+        return visitor.visit(this, param);
     }
 }

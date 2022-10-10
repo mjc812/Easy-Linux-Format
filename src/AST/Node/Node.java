@@ -1,3 +1,7 @@
 package AST.Node;
 
-public abstract class Node { }
+import AST.ASTVisitor;
+
+public abstract class Node {
+    abstract public <U,T> T accept(U param, ASTVisitor<U,T> visitor);
+}

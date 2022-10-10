@@ -1,5 +1,6 @@
 package AST.Statements.Commands;
 
+import AST.ASTVisitor;
 import AST.Clauses.Clause;
 import AST.Statements.Command;
 
@@ -28,5 +29,10 @@ public class Move extends Command {
 
     public int getType() {
         return type;
+    }
+
+    @Override
+    public <U, T> T accept(U param, ASTVisitor<U, T> visitor) {
+        return visitor.visit(this, param);
     }
 }
