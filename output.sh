@@ -4,6 +4,7 @@ mathCourse=$(find "$homeworkFolder" -maxdepth 1 -type d -name "math-100" -print 
 photosFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "*Photo*" -print -quit)
 recentFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -newermt 2022-10-10 ! -newermt 2022-10-11 -print -quit)
 biol=$(find "$HOME_PATH" -maxdepth 1 -type d -name "biol-111" -print -quit)
+anotherFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "New Folder*" -print -quit)
 special=$(find "$HOME_PATH" -maxdepth 1 -type f -name "mySpecialTextFile.txt" -print -quit)
 containsString=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*string*" -print -quit)
 photo=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*.png" -print -quit)
@@ -29,12 +30,3 @@ parentDir=$(dirname "$suffering")
 mv "$suffering" "$parentDir/torment.txt"
 parentDir=$(dirname "$fileZ")
 mv "$fileZ" "$parentDir/somethingDifferent.txt"
-parentDir=$(dirname "$mathCourse")
-mv "$mathCourse" "$parentDir/MATH-100"
-InnerFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "Inner" -print -quit)
-torment=$(find "$InnerFolder" -maxdepth 1 -type f -name "*torment*" -print -quit)
-cp "$torment" "$homeworkFolder"
-for file in $pictures
-do
-	cp "$file" "$photosFolder"
-done

@@ -4,6 +4,7 @@ folder mathCourse = get folder where name is math-100, AND in folder homeworkFol
 folder photosFolder = get folder where name contains Photo;
 folder recentFolder = get folder where date modified on 2022-10-10;
 folder biol = get folder where name is biol-111;
+folder anotherFolder = get folder where name prefix New Folder;
 file special = get file where name is mySpecialTextFile.txt;
 file containsString = get file where name contains string;
 file photo = get file where name suffix .png;
@@ -37,3 +38,7 @@ folder InnerFolder = get folder where name is Inner;
 file torment = get file where name contains torment, AND in folder InnerFolder;
 copy torment to homeworkFolder;
 copy all from pictures to photosFolder;
+
+delete containsString;
+delete anotherFolder;
+delete all from filesThisYear;
