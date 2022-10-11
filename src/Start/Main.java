@@ -8,7 +8,6 @@ import Parser.ELFParser;
 import Parser.ParseTreeToASTVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 
 import java.io.FileWriter;
@@ -18,9 +17,6 @@ import java.io.PrintWriter;
 public class Main {
     public static void main(String[] args) throws IOException {
         ELFLexer lexer = new ELFLexer(CharStreams.fromFileName("src/input.elf"));
-        for (Token token : lexer.getAllTokens()) {
-            //System.out.println(token);
-        }
         lexer.reset();
         TokenStream tokens = new CommonTokenStream(lexer);
 
@@ -29,10 +25,14 @@ public class Main {
         Node parsedProgram = parser.program().accept(visitor);
 
         // write the file
-        ASTVisitor<PrintWriter, String> astVisitor = new Evaluator();
+        ASTVisitor<PrintWriter, Boolean> astVisitor = new Evaluator();
         PrintWriter writer = new PrintWriter(new FileWriter("output.sh"));
-        parsedProgram.accept(writer, astVisitor);
+        boolean success = parsedProgram.accept(writer, astVisitor);
+        if (success) {
+            System.out.println("Done");
+        } else {
+            System.out.println("Failed");
+        }
         writer.close();
-        System.out.println("Done");
     }
 }

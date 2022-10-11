@@ -4,7 +4,6 @@ import AST.ASTVisitor;
 import Parser.ELFLexer;
 
 public class NameClause extends Clause {
-
     private final int condition;
     private final String name;
 
