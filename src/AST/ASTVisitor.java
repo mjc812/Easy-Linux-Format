@@ -15,7 +15,7 @@ public interface ASTVisitor<U, T> {
     T visit(Rename r, U param);
     T visit(DateModifiedClause d, U param);
     T visit(InFolderClause f, U param);
-    T visit(OwnedByUserClause m, U param);
+    T visit(OwnedByUserClause o, U param);
     T visit(NameClause n, U param);
     T visit(AtPathClause p, U param);
 }
