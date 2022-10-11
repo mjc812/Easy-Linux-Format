@@ -15,13 +15,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Evaluator implements ASTVisitor<PrintWriter, String> {
-
+public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
     private final static String HOME_PATH_VAR = "HOME_PATH";
     private final Map<String, Integer> variables = new HashMap<>(); // <Name, Type>
 
     @Override
-    public String visit(Program p, PrintWriter writer) {
+    public Boolean visit(Program p, PrintWriter writer) {
         p.getProgramPath().accept(writer, this);
         List<Statement> statements = p.getStatementList();
         for (Statement s : statements) {
@@ -31,21 +30,21 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     }
 
     @Override
-    public String visit(ProgramPath p, PrintWriter writer) {
+    public Boolean visit(ProgramPath p, PrintWriter writer) {
         writer.println(HOME_PATH_VAR + "=\"" + p.getPath() + "\"");
         return null;
     }
 
     @Override
-    public String visit(Get g, PrintWriter writer) {
+    public Boolean visit(Get g, PrintWriter writer) {
         String findCommand;
         try {
-            findCommand = FindCommand.createFindCommand(g, writer, variables);
+            findCommand = FindCommand.createFindCommand(g, variables);
         } catch (ClauseException e) {
-            System.err.println("ERROR - Clause Exception: " + e.toString());
+            System.err.println("ERROR - Clause Exception: " + e);
             return null;
         } catch (VariableNotDeclaredException e) {
-            System.err.println("ERROR - Variable Exception: " + e.toString());
+            System.err.println("ERROR - Variable Exception: " + e);
             return null;
         }
 
@@ -57,19 +56,19 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     }
 
     @Override
-    public String visit(Copy c, PrintWriter writer) {
+    public Boolean visit(Copy c, PrintWriter writer) {
         // TODO
         return null;
     }
 
     @Override
-    public String visit(Delete d, PrintWriter writer) {
+    public Boolean visit(Delete d, PrintWriter writer) {
         // TODO
         return null;
     }
 
     @Override
-    public String visit(Move m, PrintWriter writer) {
+    public Boolean visit(Move m, PrintWriter writer) {
         String fromVar = m.getFromVariable();
         String toVar = m.getToVariable();
 
@@ -91,8 +90,16 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         }
 
         if (m.getType() == ELFLexer.MOVE) {
+            if (variables.get(fromVar) == ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"move\" command cannot be a list type");
+                return null;
+            }
             writer.println("mv \"$" + fromVar + "\" \"$" + toVar + "\"");
         } else {
+            if (variables.get(fromVar) != ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"move all\" command must be a list type");
+                return null;
+            }
             writer.println("for file in $" + fromVar);
             writer.println("do");
             writer.println("\tmv \"$file\" \"$" + toVar + "\"");
@@ -103,7 +110,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     }
 
     @Override
-    public String visit(Rename r, PrintWriter writer) {
+    public Boolean visit(Rename r, PrintWriter writer) {
         String var = r.getVariable();
         String newName = r.getName();
 
@@ -123,27 +130,27 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     // NOT USED
     @Override
-    public String visit(DateModifiedClause d, PrintWriter param) {
+    public Boolean visit(DateModifiedClause d, PrintWriter param) {
         return null;
     }
 
     @Override
-    public String visit(InFolderClause f, PrintWriter param) {
+    public Boolean visit(InFolderClause f, PrintWriter param) {
         return null;
     }
 
     @Override
-    public String visit(OwnedByUserClause m, PrintWriter param) {
+    public Boolean visit(OwnedByUserClause m, PrintWriter param) {
         return null;
     }
 
     @Override
-    public String visit(NameClause n, PrintWriter param) {
+    public Boolean visit(NameClause n, PrintWriter param) {
         return null;
     }
 
     @Override
-    public String visit(AtPathClause p, PrintWriter param) {
+    public Boolean visit(AtPathClause p, PrintWriter param) {
         return null;
     }
 
@@ -153,7 +160,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
 
     public static class FindCommand {
-        public static String createFindCommand(Get g, PrintWriter writer, Map<String, Integer> variables) throws ClauseException, VariableNotDeclaredException {
+        public static String createFindCommand(Get g, Map<String, Integer> variables) throws ClauseException, VariableNotDeclaredException {
             Map<Integer, List<Clause>> clauseMap = new HashMap<>();
 
             StringBuilder findCommand = new StringBuilder();
@@ -203,15 +210,10 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                 Date dayAfter = getDayAfter(date);
                 String dayAfterDateStr = formatDate(dayAfter);
                 switch (dc.getCondition()) {
-                    case ELFLexer.ON:
-                        findCommand.append(" -newermt ").append(dateStr).append(" ! -newermt ").append(dayAfterDateStr);
-                        break;
-                    case ELFLexer.BEFORE:
-                        findCommand.append(" ! -newermt ").append(dateStr);
-                        break;
-                    case ELFLexer.AFTER:
-                        findCommand.append(" -newermt ").append(dayAfterDateStr);
-                        break;
+                    case ELFLexer.ON ->
+                            findCommand.append(" -newermt ").append(dateStr).append(" ! -newermt ").append(dayAfterDateStr);
+                    case ELFLexer.BEFORE -> findCommand.append(" ! -newermt ").append(dateStr);
+                    case ELFLexer.AFTER -> findCommand.append(" -newermt ").append(dayAfterDateStr);
                 }
             }
         }
@@ -241,29 +243,27 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                 NameClause nc = (NameClause) c;
                 findCommandStr.append(" -name ");
                 switch (nc.getCondition()) {
-                    case ELFLexer.IS:
+                    case ELFLexer.IS -> {
                         if (nameClauseList.size() > 1) {
                             throw new ClauseException("Cannot have multiple name clauses when one is a \"name is\" clauses");
                         }
                         findCommandStr.append("\"").append(nc.getName()).append("\"");
-                        break;
-                    case ELFLexer.CONTAINS:
-                        findCommandStr.append("\"*").append(nc.getName()).append("*\"");
-                        break;
-                    case ELFLexer.PREFIX:
+                    }
+                    case ELFLexer.CONTAINS -> findCommandStr.append("\"*").append(nc.getName()).append("*\"");
+                    case ELFLexer.PREFIX -> {
                         if (hasPrefixClause) {
                             throw new ClauseException("Cannot have multiple \"prefix\" clauses");
                         }
                         findCommandStr.append("\"").append(nc.getName()).append("*\"");
                         hasPrefixClause = true;
-                        break;
-                    case ELFLexer.SUFFIX:
+                    }
+                    case ELFLexer.SUFFIX -> {
                         if (hasSuffixClause) {
                             throw new ClauseException("Cannot have multiple \"suffix\" clauses");
                         }
                         findCommandStr.append("\"*").append(nc.getName()).append("\"");
                         hasSuffixClause = true;
-                        break;
+                    }
                 }
             }
         }

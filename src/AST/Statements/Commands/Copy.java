@@ -7,10 +7,9 @@ import AST.Statements.Command;
 import java.util.ArrayList;
 
 public class Copy extends Command {
-
-   private String fromVariable;
-   private String toVariable;
-   private int type;
+   private final String fromVariable;
+   private final String toVariable;
+   private final int type;
 
    public Copy(ArrayList<Clause> clauseList, String fromVariable, String toVariable, int type) {
        super(clauseList);

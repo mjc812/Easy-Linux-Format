@@ -4,9 +4,8 @@ import AST.ASTVisitor;
 import Parser.ELFLexer;
 
 public class DateModifiedClause extends Clause {
-
-    private String date;
-    private int condition;
+    private final String date;
+    private final int condition;
 
     public DateModifiedClause(String date, int type) {
         this.date = date;

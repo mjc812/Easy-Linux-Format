@@ -6,10 +6,10 @@ import AST.Clauses.Clause;
 import java.util.ArrayList;
 
 public class Get extends Statement {
-    private int variableType;
-    private int getVariableType;
-    private String variable;
-    private boolean recursive;
+    private final int variableType;
+    private final int getVariableType;
+    private final String variable;
+    private final boolean recursive;
 
     public Get(ArrayList<Clause> clauseList, int variableType, int getVariableType, String variable, boolean recursive) {
         super(clauseList);
