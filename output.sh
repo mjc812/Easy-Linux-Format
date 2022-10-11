@@ -1,5 +1,6 @@
 HOME_PATH="/home/c/cwl/cs-410/Documents"
 homeworkFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "Homework" -print -quit)
+anotherFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "New Folder*" -print -quit)
 special=$(find "$HOME_PATH" -maxdepth 1 -type f -name "mySpecialTextFile.txt" -print -quit)
 containsString=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*string*" -print -quit)
 photo=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*.png" -print -quit)
@@ -23,3 +24,9 @@ parentDir=$(dirname "$suffering")
 mv "$suffering" "$parentDir/torment.txt"
 parentDir=$(dirname "$fileZ")
 mv "$fileZ" "$parentDir/somethingDifferent.txt"
+rm -r "$containsString"
+rm -r "$anotherFolder"
+for file in $filesThisYear
+do
+	rm -r "$file"
+done

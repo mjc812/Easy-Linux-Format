@@ -1,5 +1,6 @@
 path = get path /home/c/cwl/cs-410/Documents;
 folder homeworkFolder = get folder where name is Homework;
+folder anotherFolder = get folder where name prefix New Folder;
 file special = get file where name is mySpecialTextFile.txt;
 file containsString = get file where name contains string;
 file photo = get file where name suffix .png;
@@ -25,3 +26,7 @@ move PBAndJ to homeworkFolder;
 
 rename suffering as torment.txt;
 rename fileZ as somethingDifferent.txt;
+
+delete containsString;
+delete anotherFolder;
+delete all from filesThisYear;
