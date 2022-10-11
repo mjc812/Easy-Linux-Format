@@ -21,5 +21,7 @@ files myFiles = get all files where owned by cwl;
 
 move special to homeworkFolder;
 move all from prefixUBCFiles to homeworkFolder;
+move PBAndJ to homeworkFolder;
 
 rename suffering as torment.txt;
+rename fileZ as somethingDifferent.txt;

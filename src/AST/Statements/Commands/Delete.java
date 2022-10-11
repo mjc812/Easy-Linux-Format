@@ -7,9 +7,8 @@ import AST.Statements.Command;
 import java.util.ArrayList;
 
 public class Delete extends Command {
-
-    private String variable;
-    private int type;
+    private final String variable;
+    private final int type;
 
     public Delete(ArrayList<Clause> clauseList, String variable, int type) {
         super(clauseList);

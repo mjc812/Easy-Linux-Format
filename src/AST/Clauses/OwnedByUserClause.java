@@ -4,8 +4,7 @@ import AST.ASTVisitor;
 import Parser.ELFParser;
 
 public class OwnedByUserClause extends Clause {
-
-    private String user;
+    private final String user;
 
     public OwnedByUserClause(String user) {
         this.user = user;

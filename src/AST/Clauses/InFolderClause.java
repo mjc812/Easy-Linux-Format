@@ -4,8 +4,7 @@ import AST.ASTVisitor;
 import Parser.ELFParser;
 
 public class InFolderClause extends Clause {
-
-    private String folder;
+    private final String folder;
 
     public InFolderClause(String folder) {
         this.folder = folder;

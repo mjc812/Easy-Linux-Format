@@ -7,9 +7,8 @@ import AST.Statements.Command;
 import java.util.ArrayList;
 
 public class Rename extends Command {
-
-    private String variable;
-    private String name;
+    private final String variable;
+    private final String name;
 
     public Rename(ArrayList<Clause> clauseList, String variable, String name) {
         super(clauseList);
