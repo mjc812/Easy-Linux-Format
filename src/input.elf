@@ -1,16 +1,25 @@
 path = get path /home/c/cwl/cs-410/Documents;
-
 folder homeworkFolder = get folder where name is Homework;
-file igneousFile = get file where name is igneous.jpg, AND in folder homeworkFolder;
-rename igneousFile as igneous-rock.jpg;
+file special = get file where name is mySpecialTextFile.txt;
+file containsString = get file where name contains string;
+file photo = get file where name suffix .png;
+file firstHomework = get file where in folder homeworkFolder;
+file suffering = get file where at path /Inner/turmoil.txt;
+file PBAndJ = get file where name contains peanut butter, AND name contains jelly;
+file modBeforeFile = get file where date modified before 2022-10-11;
+file modAfterFile = get file where date modified after 2022-10-09;
+file fileZ = get file where in folder homeworkFolder,
+    AND name prefix ian,
+    AND owned by cwl,
+    AND date modified on 2022-10-09,
+    AND name contains lark;
 
-folder archivedRocks = get folder where at path /Archive/Rock Photos;
-files rockFiles = get all files where name contains rock, AND in folder homeworkFolder;
-move all from rockFiles to archivedRocks;
+files prefixUBCFiles = get all files recursively where name prefix UBC;
+files homeworkFiles = get all files where in folder homeworkFolder;
+files filesThisYear = get all files where date modified after 2022-01-01;
+files myFiles = get all files where owned by cwl;
 
-files oldHwk = get all files recursively where name prefix SFU;
-folder archivedHwk = get folder where at path /Archive/Homework;
-move all from oldHwk to archivedHwk;
+move special to homeworkFolder;
+move all from prefixUBCFiles to homeworkFolder;
 
-folder schoolFolder = get folder where at path /Homework/School2020;
-delete schoolFolder;
+rename suffering as torment.txt;

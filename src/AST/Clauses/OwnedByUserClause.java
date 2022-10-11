@@ -3,11 +3,11 @@ package AST.Clauses;
 import AST.ASTVisitor;
 import Parser.ELFParser;
 
-public class ModifiedByUserClause extends Clause {
+public class OwnedByUserClause extends Clause {
 
     private String user;
 
-    public ModifiedByUserClause(String user) {
+    public OwnedByUserClause(String user) {
         this.user = user;
     }
 
@@ -22,6 +22,6 @@ public class ModifiedByUserClause extends Clause {
 
     @Override
     public int getType() {
-        return ELFParser.MODIFIED;
+        return ELFParser.OWNED;
     }
 }
