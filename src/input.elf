@@ -1,11 +1,13 @@
 path = get path /home/c/cwl/cs-410/Documents;
+
 folder homeworkFolder = get folder where name is Homework;
-file special = get file recursively where name is mySpecialTextFile.txt;
 folder mathCourse = get folder where name is math-100, AND in folder homeworkFolder;
 folder photosFolder = get folder where name contains Photo;
 folder recentFolder = get folder where date modified on 2022-10-10;
 folder biol = get folder where name is biol-111;
 folder anotherFolder = get folder where name prefix New Folder;
+
+file special = get file recursively where name is mySpecialTextFile.txt;
 file special = get file where name is mySpecialTextFile.txt;
 file containsString = get file where name contains string;
 file photo = get file where name suffix .png;
@@ -26,21 +28,20 @@ files filesThisYear = get all files where date modified after 2022-01-01;
 files myFiles = get all files where owned by cwl;
 files pictures = get all files where name suffix .jpg;
 
-move special to homeworkFolder;
-move all from prefixUBCFiles to homeworkFolder;
-move PBAndJ to homeworkFolder;
 move biol to homeworkFolder;
+move all from prefixUBCFiles to homeworkFolder;
 
-rename suffering as torment.txt;
-rename photo as this is the first .png file I could find;
 rename fileZ as somethingDifferent.txt;
 rename mathCourse as MATH-100;
 
+delete anotherFolder;
+delete all from pictures;
+
+copy modBeforeFile to recentFolder;
+copy all from filesThisYear to recentFolder;
+
+rename suffering as torment.txt;
 folder InnerFolder = get folder where name is Inner;
 file torment = get file where name contains torment, AND in folder InnerFolder;
 copy torment to homeworkFolder;
-copy all from pictures to photosFolder;
 
-delete containsString;
-delete anotherFolder;
-delete all from filesThisYear;
