@@ -64,8 +64,32 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
 
     @Override
     public Boolean visit(Delete d, PrintWriter writer) {
-        // TODO
-        return null;
+        String var = d.getVariable();
+
+        if (varNotDeclared(var)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + var + " which does not exist");
+            return false;
+        }
+
+        if (d.getType() == ELFLexer.DELETE) {
+            if (variables.get(var) == ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: parameter of \"delete\" command cannot be a list type");
+                return false;
+            }
+            writer.println("rm -r \"$" + var + "\"");
+        } else {
+            if (variables.get(var) != ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: parameter of \"delete\" command must be a list type");
+                return false;
+            }
+            writer.println("for file in $" + var);
+            writer.println("do");
+            writer.println("\trm -r \"$file\"");
+            writer.println("done");
+        }
+
+        return true;
     }
 
     @Override
