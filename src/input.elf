@@ -10,11 +10,11 @@ file modBeforeFile = get file where date modified before 2022-10-11;
 file modAfterFile = get file where date modified after 2022-10-09;
 file fileZ = get file where in folder homeworkFolder,
     AND name prefix ian,
-    AND owned by cwl
+    AND owned by cwl,
     AND date modified on 2022-10-09,
     AND name contains lark;
 
-files prefixUBCFiles = get all files where name prefix UBC;
+files prefixUBCFiles = get all files recursively where name prefix UBC;
 files homeworkFiles = get all files where in folder homeworkFolder;
 files filesThisYear = get all files where date modified after 2022-01-01;
 files myFiles = get all files where owned by cwl;

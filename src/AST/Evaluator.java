@@ -11,22 +11,14 @@ import Parser.ELFLexer;
 import Parser.ELFParser;
 
 import java.io.PrintWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static Parser.ELFLexer.MOVE;
-import static Parser.ELFLexer.MOVEALLFROM;
-
 public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     private final static String HOME_PATH_VAR = "HOME_PATH";
-
-    // TODO: possibly make map value some sort of Variable object so we can retain info like recursive, and stuff
-    // Map to store current variable assignments, with value being the variables's path representation
-    private final Map<String, Integer> variables = new HashMap<>(); // Name, Type
+    private final Map<String, Integer> variables = new HashMap<>(); // <Name, Type>
 
     @Override
     public String visit(Program p, PrintWriter writer) {
@@ -46,9 +38,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     @Override
     public String visit(Get g, PrintWriter writer) {
-        // TODO: finish implementing
-
-        String findCommand = null;
+        String findCommand;
         try {
             findCommand = FindCommand.createFindCommand(g, writer, variables);
         } catch (ClauseException e) {
@@ -62,8 +52,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         String var = g.getVariable();
         variables.put(var, g.getVariableType());
         writer.println(var + "=" + findCommand);
-        // writer.println("echo \"" + var + ": $" + var + "\"");
-        // writer.println();
 
         return null;
     }
@@ -85,11 +73,11 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         String fromVar = m.getFromVariable();
         String toVar = m.getToVariable();
 
-        if (!isVarDeclared(fromVar)) {
+        if (varNotDeclared(fromVar)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + fromVar + " which does not exist");
             return null;
-        } else if (!isVarDeclared(toVar)) {
+        } else if (varNotDeclared(toVar)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + toVar + " which does not exist");
             return null;
@@ -119,7 +107,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         String var = r.getVariable();
         String newName = r.getName();
 
-        if (!isVarDeclared(var)) {
+        if (varNotDeclared(var)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable \""
                     + var + "\" which does not exist");
             return null;
@@ -159,8 +147,8 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
         return null;
     }
 
-    private boolean isVarDeclared(String variable) {
-        return variables.containsKey((variable));
+    private boolean varNotDeclared(String variable) {
+        return !variables.containsKey((variable));
     }
 
 
@@ -181,7 +169,13 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
             String result = processAtPathClause(clauseMap, g, findCommand);
             if (result != null) return result;
-            processInFolderClause(clauseMap, variables, findCommand, type);
+            processInFolderClause(clauseMap, variables, findCommand);
+
+            if (!g.isRecursive()) {
+                findCommand.append(" -maxdepth 1");
+            }
+            findCommand.append(" -type ").append(type);
+
             processNameClause(clauseMap, findCommand);
             processOwnedByUserClause(clauseMap, findCommand);
             processDateClause(clauseMap, findCommand);
@@ -274,9 +268,9 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
             }
         }
 
-        private static void processInFolderClause(Map<Integer, List<Clause>> clauseMap, Map<String, Integer> variables, StringBuilder findCommandStr, String type) throws ClauseException, VariableNotDeclaredException {
+        private static void processInFolderClause(Map<Integer, List<Clause>> clauseMap, Map<String, Integer> variables, StringBuilder findCommandStr) throws ClauseException, VariableNotDeclaredException {
             if (!clauseMap.containsKey(ELFParser.INFOLDER)) {
-                findCommandStr.append(" \"").append("$HOME_PATH").append("\"").append(" -type ").append(type);
+                findCommandStr.append(" \"").append("$HOME_PATH").append("\"");
                 return;
             }
 
@@ -289,7 +283,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
             if (!variables.containsKey(folderVar)) {
                 throw new VariableNotDeclaredException("Tried to access folder variable that does not exist");
             } else {
-                findCommandStr.append(" \"").append("$").append(folderVar).append("\"").append(" -type ").append(type);
+                findCommandStr.append(" \"").append("$").append(folderVar).append("\"");
             }
         }
 
