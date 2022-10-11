@@ -1,20 +1,25 @@
-path = get path /home/e/emcd4/cs-410/Canucks;
-folder folderVar = get folder where name is Coaches;
-file fileA = get file where name is quinnhughes.txt;
-file fileB = get file where name contains ill;
-file fileC = get file where name prefix pet;
-file fileD = get file where name suffix .png;
-file fileE = get file where in folder folderVar;
-file fileF = get file where at path /Mascots/Finn.txt;
-file fileG = get file where name contains mill, AND name contains iller;
-file fileH = get file where name prefix F_, AND name contains iller;
-file fileI = get file where owned by emcd4;
-file fileJ = get file where date modified on 2022-10-10;
-file fileK = get file where date modified before 2022-10-10;
-file fileL = get file where date modified after 2022-10-09;
-
-file fileZ = get file where in folder folderVar,
+path = get path /home/c/cwl/cs-410/Documents;
+folder homeworkFolder = get folder where name is Homework;
+file special = get file where name is mySpecialTextFile.txt;
+file containsString = get file where name contains string;
+file photo = get file where name suffix .png;
+file firstHomework = get file where in folder homeworkFolder;
+file suffering = get file where at path /Inner/turmoil.txt;
+file PBAndJ = get file where name contains peanut butter, AND name contains jelly;
+file modBeforeFile = get file where date modified before 2022-10-11;
+file modAfterFile = get file where date modified after 2022-10-09;
+file fileZ = get file where in folder homeworkFolder,
     AND name prefix ian,
-    AND owned by emcd4,
+    AND owned by cwl
     AND date modified on 2022-10-09,
     AND name contains lark;
+
+files prefixUBCFiles = get all files where name prefix UBC;
+files homeworkFiles = get all files where in folder homeworkFolder;
+files filesThisYear = get all files where date modified after 2022-01-01;
+files myFiles = get all files where owned by cwl;
+
+move special to homeworkFolder;
+move all from prefixUBCFiles to homeworkFolder;
+
+rename suffering as torment.txt;

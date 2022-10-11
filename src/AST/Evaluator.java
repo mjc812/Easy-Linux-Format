@@ -6,6 +6,7 @@ import AST.Statements.*;
 import AST.Statements.Commands.*;
 import Exceptions.ClauseException;
 import Exceptions.InvalidDateException;
+import Exceptions.VariableNotDeclaredException;
 import Parser.ELFLexer;
 import Parser.ELFParser;
 
@@ -25,8 +26,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     // TODO: possibly make map value some sort of Variable object so we can retain info like recursive, and stuff
     // Map to store current variable assignments, with value being the variables's path representation
-    private final Map<String, String> variables = new HashMap<>();
-    private final Map<String, List<String>> listOfPaths = new HashMap<>();
+    private final Map<String, Integer> variables = new HashMap<>(); // Name, Type
 
     @Override
     public String visit(Program p, PrintWriter writer) {
@@ -48,97 +48,24 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     public String visit(Get g, PrintWriter writer) {
         // TODO: finish implementing
 
-        String findCommand;
+        String findCommand = null;
         try {
             findCommand = FindCommand.createFindCommand(g, writer, variables);
         } catch (ClauseException e) {
-            // TODO: static error - clause exception
             System.err.println("ERROR - Clause Exception: " + e.toString());
+            return null;
+        } catch (VariableNotDeclaredException e) {
+            System.err.println("ERROR - Variable Exception: " + e.toString());
             return null;
         }
 
         String var = g.getVariable();
-        if (g.getGetVariableType() == ELFLexer.GETFILES) {
-            // TODO - print get files case
-            writer.println("GET FILES");
-        } else {
-            variables.put(var, null);
-            writer.println(var + "=" + findCommand);
-        }
+        variables.put(var, g.getVariableType());
+        writer.println(var + "=" + findCommand);
+        // writer.println("echo \"" + var + ": $" + var + "\"");
+        // writer.println();
 
         return null;
-    }
-
-    /**
-     * returns a file path to use based on the given statement's at path, folder, and name clauses
-     *
-     * @param s statement
-     * @return the file path filtered by given name and folder clauses
-     */
-    private String processFilePathClauses(Statement s) {
-        Map<Integer, List<Clause>> clauseMap = new HashMap<>();
-        StringBuilder filePath = new StringBuilder();
-
-        filePath.append("$").append(HOME_PATH_VAR);
-
-        for (Clause c : s.getClauseList()) {
-            if (!clauseMap.containsKey(c.getType())) {
-                clauseMap.put(c.getType(), new ArrayList<>());
-            }
-            clauseMap.get(c.getType()).add(c);
-        }
-
-        if (clauseMap.containsKey(ELFParser.ATPATH)) {
-            if (clauseMap.size() > 1) {
-                // TODO: static error - cannot have multiple clauses when one is "at path" clause
-            }
-            AtPathClause apc = (AtPathClause) clauseMap.get(ELFParser.ATPATH).get(0);
-            filePath.append(apc.getPath());
-        }
-
-        if (clauseMap.containsKey(ELFParser.INFOLDER)) {
-            processInFolderClause(clauseMap, filePath);
-        }
-
-        if (clauseMap.containsKey(ELFParser.NAME)) {
-            // "is" = only clause
-            // "prefix = 1 clause
-            // "suffix" = 1 clause
-            // "contains" = n clauses
-            List<Clause> nameClauseList = clauseMap.get(ELFParser.NAME);
-            for (Clause c : nameClauseList) {
-                NameClause nc = (NameClause) c;
-                if (nc.getCondition() == ELFLexer.IS) {
-                    if (nameClauseList.size() > 1) {
-                        // TODO: static error - cannot have more than 1 clause with a "name is" clause
-                    }
-                    filePath.append("/").append(nc.getName());
-                } else if (nc.getCondition() == ELFLexer.PREFIX) {
-                    // TODO: prefix
-                    filePath.append("/").append(nc.getName() + "*");
-                } else if (nc.getCondition() == ELFLexer.SUFFIX) {
-                    // TODO: suffix
-                    filePath.append("/").append("*" + nc.getName());
-                } else {
-                    // TODO: contains
-                    filePath.append("/").append("*" + nc.getName() + "*");
-                }
-            }
-        }
-
-        return filePath.toString();
-    }
-
-
-    private void processInFolderClause(Map<Integer, List<Clause>> clauseMap, StringBuilder filePath) {
-        InFolderClause inFolderClause = (InFolderClause) clauseMap.get(ELFParser.INFOLDER).get(0);
-        String folderVar = inFolderClause.getFolder();
-        if (!variables.containsKey(folderVar)) {
-            // TODO: static error - attempt to access folder variable that does not exist
-        } else {
-            filePath.setLength(0);
-            filePath.append("$").append(folderVar);
-        }
     }
 
     @Override
@@ -155,51 +82,54 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     @Override
     public String visit(Move m, PrintWriter writer) {
-        int moveType = m.getType();
-        // TODO: remove when get all is implemented
-        variables.put("rockFiles", "$homeworkFolder/*rock*");
-        variables.put("oldHwk", "$HOME_PATH/SFU*");
+        String fromVar = m.getFromVariable();
+        String toVar = m.getToVariable();
 
-        if (!isVarDeclared(m.getToVariable()) || !isVarDeclared(m.getFromVariable())) {
-            // TODO: static check failed - variable(s) not declared
+        if (!isVarDeclared(fromVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + fromVar + " which does not exist");
+            return null;
+        } else if (!isVarDeclared(toVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + toVar + " which does not exist");
+            return null;
         }
 
-        String fromPath = variables.get(m.getFromVariable());
+        // TODO: Handle Clause Checks
 
-        switch (moveType) {
-            case MOVEALLFROM:
-                Path path = Paths.get(fromPath);
-                String folderPath = path.getParent().toString();
-                String fileFilter = path.getFileName().toString();
-
-                // TODO: add modified and date and recursively with -mtime and -mindepth
-                writer.println(String.format(
-                        "find \"%s\" -name \"%s\" -exec mv '{}' \"$%s\" \\;",
-                        folderPath, fileFilter, m.getToVariable()));
-                break;
-            case MOVE:
-                writer.println(String.format("mv \"%s\" \"$%s\"", fromPath, m.getToVariable()));
-                break;
+        if (variables.get(toVar) != ELFLexer.FOLDER) {
+            System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
+            return null;
         }
+
+        if (m.getType() == ELFLexer.MOVE) {
+            writer.println("mv \"$" + fromVar + "\" \"$" + toVar + "\"");
+        } else {
+            writer.println("for file in $" + fromVar);
+            writer.println("do");
+            writer.println("\tmv \"$file\" \"$" + toVar + "\"");
+            writer.println("done");
+        }
+
         return null;
     }
 
     @Override
     public String visit(Rename r, PrintWriter writer) {
-        if (!r.getClauseList().isEmpty()) {
-            // TODO: do something
+        String var = r.getVariable();
+        String newName = r.getName();
+
+        if (!isVarDeclared(var)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable \""
+                    + var + "\" which does not exist");
+            return null;
         }
 
-        if (!isVarDeclared(r.getVariable())) {
-            // TODO: static error, nonexistent variable
-        }
+        // TODO: Handle Clause Checks
 
-        // need to put the full path in the rename target
-        String fromPath = variables.get(r.getVariable());
-        Path path = Paths.get(fromPath);
-        String folderPath = path.getParent().toString();
+        writer.println("parentDir=$(dirname \"$" + var + "\")");
+        writer.println("mv \"$" + var + "\" \"$parentDir/" + newName + "\"");
 
-        writer.println(String.format("mv \"$%s\" \"%s/%s\"", r.getVariable(), folderPath, r.getName()));
         return null;
     }
 
@@ -235,7 +165,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
 
     public static class FindCommand {
-        public static String createFindCommand(Get g, PrintWriter writer, Map<String, String> variables) throws ClauseException {
+        public static String createFindCommand(Get g, PrintWriter writer, Map<String, Integer> variables) throws ClauseException, VariableNotDeclaredException {
             Map<Integer, List<Clause>> clauseMap = new HashMap<>();
 
             StringBuilder findCommand = new StringBuilder();
@@ -249,7 +179,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                 clauseMap.get(c.getType()).add(c);
             }
 
-            String result = processAtPathClause(clauseMap, g, writer, variables, findCommand);
+            String result = processAtPathClause(clauseMap, g, findCommand);
             if (result != null) return result;
             processInFolderClause(clauseMap, variables, findCommand, type);
             processNameClause(clauseMap, findCommand);
@@ -344,7 +274,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
             }
         }
 
-        private static void processInFolderClause(Map<Integer, List<Clause>> clauseMap, Map<String, String> variables, StringBuilder findCommandStr, String type) throws ClauseException {
+        private static void processInFolderClause(Map<Integer, List<Clause>> clauseMap, Map<String, Integer> variables, StringBuilder findCommandStr, String type) throws ClauseException, VariableNotDeclaredException {
             if (!clauseMap.containsKey(ELFParser.INFOLDER)) {
                 findCommandStr.append(" \"").append("$HOME_PATH").append("\"").append(" -type ").append(type);
                 return;
@@ -357,15 +287,19 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
             InFolderClause inFolderClause = (InFolderClause) inFolderClauses.get(0);
             String folderVar = inFolderClause.getFolder();
             if (!variables.containsKey(folderVar)) {
-                throw new ClauseException("Tried to access folder variable that does not exist");
+                throw new VariableNotDeclaredException("Tried to access folder variable that does not exist");
             } else {
                 findCommandStr.append(" \"").append("$").append(folderVar).append("\"").append(" -type ").append(type);
             }
         }
 
-        private static String processAtPathClause(Map<Integer, List<Clause>> clauseMap, Get g, PrintWriter writer, Map<String, String> variables, StringBuilder findCommandStr) throws ClauseException {
+        private static String processAtPathClause(Map<Integer, List<Clause>> clauseMap, Get g, StringBuilder findCommandStr) throws ClauseException {
             if (!clauseMap.containsKey(ELFParser.ATPATH)) {
                 return null;
+            }
+
+            if (g.getGetVariableType() == ELFLexer.GETFILES) {
+                throw new ClauseException("Cannot have an \"at path\" clause on type \"files\"");
             }
 
             if (clauseMap.size() > 1) {
@@ -373,9 +307,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
             }
             AtPathClause apc = (AtPathClause) clauseMap.get(ELFParser.ATPATH).get(0);
             String filePath = "\"$HOME_PATH\"" + apc.getPath();
-            writer.println("filePath=" + filePath);
-            variables.put("filePath", filePath);
-            findCommandStr.append(" \"").append("$filePath").append("\"");
+            findCommandStr.append(" ").append(filePath);
             endFindCommand(g, findCommandStr);
             return findCommandStr.toString();
         }
