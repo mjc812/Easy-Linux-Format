@@ -11,8 +11,7 @@ public class Copy extends Command {
    private final String toVariable;
    private final int type;
 
-   public Copy(ArrayList<Clause> clauseList, String fromVariable, String toVariable, int type) {
-       super(clauseList);
+   public Copy(String fromVariable, String toVariable, int type) {
        this.fromVariable = fromVariable;
        this.toVariable = toVariable;
        this.type = type;

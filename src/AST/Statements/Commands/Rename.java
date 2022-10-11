@@ -10,8 +10,7 @@ public class Rename extends Command {
     private final String variable;
     private final String name;
 
-    public Rename(ArrayList<Clause> clauseList, String variable, String name) {
-        super(clauseList);
+    public Rename(String variable, String name) {
         this.variable = variable;
         this.name = name;
     }

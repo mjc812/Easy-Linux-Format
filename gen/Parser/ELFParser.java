@@ -25,19 +25,18 @@ public class ELFParser extends Parser {
 		SEMICOLON=37, EQUALS=38, WS=39, VAR_TEXT=40, TEXT=41;
 	public static final int
 		RULE_program = 0, RULE_path = 1, RULE_statement = 2, RULE_statementType = 3, 
-		RULE_get = 4, RULE_type = 5, RULE_getType = 6, RULE_command = 7, RULE_commandChoice = 8, 
-		RULE_delete = 9, RULE_deleteChoice = 10, RULE_move = 11, RULE_moveChoice = 12, 
-		RULE_copy = 13, RULE_copyChoice = 14, RULE_rename = 15, RULE_getClause = 16, 
-		RULE_commandClause = 17, RULE_nameClause = 18, RULE_nameCondition = 19, 
-		RULE_ownedClause = 20, RULE_dateClause = 21, RULE_dateCondition = 22, 
-		RULE_folderClause = 23, RULE_pathClause = 24;
+		RULE_get = 4, RULE_type = 5, RULE_getType = 6, RULE_command = 7, RULE_delete = 8, 
+		RULE_deleteChoice = 9, RULE_move = 10, RULE_moveChoice = 11, RULE_copy = 12, 
+		RULE_copyChoice = 13, RULE_rename = 14, RULE_getClause = 15, RULE_commandClause = 16, 
+		RULE_nameClause = 17, RULE_nameCondition = 18, RULE_ownedClause = 19, 
+		RULE_dateClause = 20, RULE_dateCondition = 21, RULE_folderClause = 22, 
+		RULE_pathClause = 23;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "path", "statement", "statementType", "get", "type", "getType", 
-			"command", "commandChoice", "delete", "deleteChoice", "move", "moveChoice", 
-			"copy", "copyChoice", "rename", "getClause", "commandClause", "nameClause", 
-			"nameCondition", "ownedClause", "dateClause", "dateCondition", "folderClause", 
-			"pathClause"
+			"command", "delete", "deleteChoice", "move", "moveChoice", "copy", "copyChoice", 
+			"rename", "getClause", "commandClause", "nameClause", "nameCondition", 
+			"ownedClause", "dateClause", "dateCondition", "folderClause", "pathClause"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -150,23 +149,23 @@ public class ELFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(50);
+			setState(48);
 			path();
-			setState(54);
+			setState(52);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FILE) | (1L << FILES) | (1L << FOLDER) | (1L << DELETE) | (1L << DELETEALLFROM) | (1L << MOVE) | (1L << MOVEALLFROM) | (1L << COPY) | (1L << COPYALLFROM) | (1L << RENAME))) != 0)) {
 				{
 				{
-				setState(51);
+				setState(49);
 				statement();
 				}
 				}
-				setState(56);
+				setState(54);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(57);
+			setState(55);
 			match(EOF);
 			}
 		}
@@ -212,15 +211,15 @@ public class ELFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(59);
+			setState(57);
 			match(PATH);
-			setState(60);
+			setState(58);
 			match(EQUALS);
-			setState(61);
+			setState(59);
 			match(GETPATH);
-			setState(62);
+			setState(60);
 			match(TEXT);
-			setState(63);
+			setState(61);
 			match(SEMICOLON);
 			}
 		}
@@ -265,9 +264,9 @@ public class ELFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
+			setState(63);
 			statementType();
-			setState(66);
+			setState(64);
 			match(SEMICOLON);
 			}
 		}
@@ -312,7 +311,7 @@ public class ELFParser extends Parser {
 		StatementTypeContext _localctx = new StatementTypeContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_statementType);
 		try {
-			setState(70);
+			setState(68);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case FILE:
@@ -320,7 +319,7 @@ public class ELFParser extends Parser {
 			case FOLDER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(68);
+				setState(66);
 				get();
 				}
 				break;
@@ -333,7 +332,7 @@ public class ELFParser extends Parser {
 			case RENAME:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(69);
+				setState(67);
 				command();
 				}
 				break;
@@ -368,6 +367,7 @@ public class ELFParser extends Parser {
 		public GetClauseContext getClause(int i) {
 			return getRuleContext(GetClauseContext.class,i);
 		}
+		public TerminalNode RECURSIVELY() { return getToken(ELFParser.RECURSIVELY, 0); }
 		public List<TerminalNode> COMMA() { return getTokens(ELFParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(ELFParser.COMMA, i);
@@ -402,33 +402,43 @@ public class ELFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(70);
 			type();
-			setState(73);
+			setState(71);
 			match(VAR_TEXT);
-			setState(74);
+			setState(72);
 			match(EQUALS);
-			setState(75);
+			setState(73);
 			getType();
-			setState(76);
-			match(WHERE);
+			setState(75);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==RECURSIVELY) {
+				{
+				setState(74);
+				match(RECURSIVELY);
+				}
+			}
+
 			setState(77);
+			match(WHERE);
+			setState(78);
 			getClause();
-			setState(83);
+			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(78);
-				match(COMMA);
 				setState(79);
-				match(AND);
+				match(COMMA);
 				setState(80);
+				match(AND);
+				setState(81);
 				getClause();
 				}
 				}
-				setState(85);
+				setState(86);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -475,7 +485,7 @@ public class ELFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(86);
+			setState(87);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FILE) | (1L << FILES) | (1L << FOLDER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -501,7 +511,6 @@ public class ELFParser extends Parser {
 	public static class GetTypeContext extends ParserRuleContext {
 		public TerminalNode GETFILE() { return getToken(ELFParser.GETFILE, 0); }
 		public TerminalNode GETFILES() { return getToken(ELFParser.GETFILES, 0); }
-		public TerminalNode RECURSIVELY() { return getToken(ELFParser.RECURSIVELY, 0); }
 		public TerminalNode GETFOLDER() { return getToken(ELFParser.GETFOLDER, 0); }
 		public GetTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -527,42 +536,18 @@ public class ELFParser extends Parser {
 		enterRule(_localctx, 12, RULE_getType);
 		int _la;
 		try {
-			setState(94);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case GETFILE:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(88);
-				match(GETFILE);
-				}
-				break;
-			case GETFILES:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(89);
-				match(GETFILES);
-				setState(91);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==RECURSIVELY) {
-					{
-					setState(90);
-					match(RECURSIVELY);
-					}
-				}
-
-				}
-				break;
-			case GETFOLDER:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(93);
-				match(GETFOLDER);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(89);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << GETFILE) | (1L << GETFILES) | (1L << GETFOLDER))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -577,23 +562,17 @@ public class ELFParser extends Parser {
 	}
 
 	public static class CommandContext extends ParserRuleContext {
-		public CommandChoiceContext commandChoice() {
-			return getRuleContext(CommandChoiceContext.class,0);
+		public DeleteContext delete() {
+			return getRuleContext(DeleteContext.class,0);
 		}
-		public TerminalNode IF() { return getToken(ELFParser.IF, 0); }
-		public List<CommandClauseContext> commandClause() {
-			return getRuleContexts(CommandClauseContext.class);
+		public MoveContext move() {
+			return getRuleContext(MoveContext.class,0);
 		}
-		public CommandClauseContext commandClause(int i) {
-			return getRuleContext(CommandClauseContext.class,i);
+		public CopyContext copy() {
+			return getRuleContext(CopyContext.class,0);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(ELFParser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(ELFParser.COMMA, i);
-		}
-		public List<TerminalNode> AND() { return getTokens(ELFParser.AND); }
-		public TerminalNode AND(int i) {
-			return getToken(ELFParser.AND, i);
+		public RenameContext rename() {
+			return getRuleContext(RenameContext.class,0);
 		}
 		public CommandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -617,99 +596,15 @@ public class ELFParser extends Parser {
 	public final CommandContext command() throws RecognitionException {
 		CommandContext _localctx = new CommandContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_command);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(96);
-			commandChoice();
-			setState(107);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==IF) {
-				{
-				setState(97);
-				match(IF);
-				setState(98);
-				commandClause();
-				setState(104);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==COMMA) {
-					{
-					{
-					setState(99);
-					match(COMMA);
-					setState(100);
-					match(AND);
-					setState(101);
-					commandClause();
-					}
-					}
-					setState(106);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-			}
-
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class CommandChoiceContext extends ParserRuleContext {
-		public DeleteContext delete() {
-			return getRuleContext(DeleteContext.class,0);
-		}
-		public MoveContext move() {
-			return getRuleContext(MoveContext.class,0);
-		}
-		public CopyContext copy() {
-			return getRuleContext(CopyContext.class,0);
-		}
-		public RenameContext rename() {
-			return getRuleContext(RenameContext.class,0);
-		}
-		public CommandChoiceContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_commandChoice; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).enterCommandChoice(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).exitCommandChoice(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ELFParserVisitor ) return ((ELFParserVisitor<? extends T>)visitor).visitCommandChoice(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final CommandChoiceContext commandChoice() throws RecognitionException {
-		CommandChoiceContext _localctx = new CommandChoiceContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_commandChoice);
-		try {
-			setState(113);
+			setState(95);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DELETE:
 			case DELETEALLFROM:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(109);
+				setState(91);
 				delete();
 				}
 				break;
@@ -717,7 +612,7 @@ public class ELFParser extends Parser {
 			case MOVEALLFROM:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(110);
+				setState(92);
 				move();
 				}
 				break;
@@ -725,14 +620,14 @@ public class ELFParser extends Parser {
 			case COPYALLFROM:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(111);
+				setState(93);
 				copy();
 				}
 				break;
 			case RENAME:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(112);
+				setState(94);
 				rename();
 				}
 				break;
@@ -777,13 +672,13 @@ public class ELFParser extends Parser {
 
 	public final DeleteContext delete() throws RecognitionException {
 		DeleteContext _localctx = new DeleteContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_delete);
+		enterRule(_localctx, 16, RULE_delete);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(115);
+			setState(97);
 			deleteChoice();
-			setState(116);
+			setState(98);
 			match(VAR_TEXT);
 			}
 		}
@@ -822,12 +717,12 @@ public class ELFParser extends Parser {
 
 	public final DeleteChoiceContext deleteChoice() throws RecognitionException {
 		DeleteChoiceContext _localctx = new DeleteChoiceContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_deleteChoice);
+		enterRule(_localctx, 18, RULE_deleteChoice);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(118);
+			setState(100);
 			_la = _input.LA(1);
 			if ( !(_la==DELETE || _la==DELETEALLFROM) ) {
 			_errHandler.recoverInline(this);
@@ -880,17 +775,17 @@ public class ELFParser extends Parser {
 
 	public final MoveContext move() throws RecognitionException {
 		MoveContext _localctx = new MoveContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_move);
+		enterRule(_localctx, 20, RULE_move);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(120);
+			setState(102);
 			moveChoice();
-			setState(121);
+			setState(103);
 			match(VAR_TEXT);
-			setState(122);
+			setState(104);
 			match(TO);
-			setState(123);
+			setState(105);
 			match(VAR_TEXT);
 			}
 		}
@@ -929,12 +824,12 @@ public class ELFParser extends Parser {
 
 	public final MoveChoiceContext moveChoice() throws RecognitionException {
 		MoveChoiceContext _localctx = new MoveChoiceContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_moveChoice);
+		enterRule(_localctx, 22, RULE_moveChoice);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(125);
+			setState(107);
 			_la = _input.LA(1);
 			if ( !(_la==MOVE || _la==MOVEALLFROM) ) {
 			_errHandler.recoverInline(this);
@@ -987,17 +882,17 @@ public class ELFParser extends Parser {
 
 	public final CopyContext copy() throws RecognitionException {
 		CopyContext _localctx = new CopyContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_copy);
+		enterRule(_localctx, 24, RULE_copy);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(127);
+			setState(109);
 			copyChoice();
-			setState(128);
+			setState(110);
 			match(VAR_TEXT);
-			setState(129);
+			setState(111);
 			match(TO);
-			setState(130);
+			setState(112);
 			match(VAR_TEXT);
 			}
 		}
@@ -1036,12 +931,12 @@ public class ELFParser extends Parser {
 
 	public final CopyChoiceContext copyChoice() throws RecognitionException {
 		CopyChoiceContext _localctx = new CopyChoiceContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_copyChoice);
+		enterRule(_localctx, 26, RULE_copyChoice);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(132);
+			setState(114);
 			_la = _input.LA(1);
 			if ( !(_la==COPY || _la==COPYALLFROM) ) {
 			_errHandler.recoverInline(this);
@@ -1090,17 +985,17 @@ public class ELFParser extends Parser {
 
 	public final RenameContext rename() throws RecognitionException {
 		RenameContext _localctx = new RenameContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_rename);
+		enterRule(_localctx, 28, RULE_rename);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(134);
+			setState(116);
 			match(RENAME);
-			setState(135);
+			setState(117);
 			match(VAR_TEXT);
-			setState(136);
+			setState(118);
 			match(AS);
-			setState(137);
+			setState(119);
 			match(TEXT);
 			}
 		}
@@ -1152,43 +1047,43 @@ public class ELFParser extends Parser {
 
 	public final GetClauseContext getClause() throws RecognitionException {
 		GetClauseContext _localctx = new GetClauseContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_getClause);
+		enterRule(_localctx, 30, RULE_getClause);
 		try {
-			setState(144);
+			setState(126);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(139);
+				setState(121);
 				nameClause();
 				}
 				break;
 			case OWNED:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(140);
+				setState(122);
 				ownedClause();
 				}
 				break;
 			case DATE:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(141);
+				setState(123);
 				dateClause();
 				}
 				break;
 			case INFOLDER:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(142);
+				setState(124);
 				folderClause();
 				}
 				break;
 			case ATPATH:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(143);
+				setState(125);
 				pathClause();
 				}
 				break;
@@ -1238,29 +1133,29 @@ public class ELFParser extends Parser {
 
 	public final CommandClauseContext commandClause() throws RecognitionException {
 		CommandClauseContext _localctx = new CommandClauseContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_commandClause);
+		enterRule(_localctx, 32, RULE_commandClause);
 		try {
-			setState(149);
+			setState(131);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(146);
+				setState(128);
 				nameClause();
 				}
 				break;
 			case OWNED:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(147);
+				setState(129);
 				ownedClause();
 				}
 				break;
 			case DATE:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(148);
+				setState(130);
 				dateClause();
 				}
 				break;
@@ -1306,15 +1201,15 @@ public class ELFParser extends Parser {
 
 	public final NameClauseContext nameClause() throws RecognitionException {
 		NameClauseContext _localctx = new NameClauseContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_nameClause);
+		enterRule(_localctx, 34, RULE_nameClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(151);
+			setState(133);
 			match(NAME);
-			setState(152);
+			setState(134);
 			nameCondition();
-			setState(153);
+			setState(135);
 			match(TEXT);
 			}
 		}
@@ -1355,12 +1250,12 @@ public class ELFParser extends Parser {
 
 	public final NameConditionContext nameCondition() throws RecognitionException {
 		NameConditionContext _localctx = new NameConditionContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_nameCondition);
+		enterRule(_localctx, 36, RULE_nameCondition);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155);
+			setState(137);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IS) | (1L << CONTAINS) | (1L << PREFIX) | (1L << SUFFIX))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1408,15 +1303,15 @@ public class ELFParser extends Parser {
 
 	public final OwnedClauseContext ownedClause() throws RecognitionException {
 		OwnedClauseContext _localctx = new OwnedClauseContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_ownedClause);
+		enterRule(_localctx, 38, RULE_ownedClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(157);
+			setState(139);
 			match(OWNED);
-			setState(158);
+			setState(140);
 			match(BY);
-			setState(159);
+			setState(141);
 			match(TEXT);
 			}
 		}
@@ -1459,17 +1354,17 @@ public class ELFParser extends Parser {
 
 	public final DateClauseContext dateClause() throws RecognitionException {
 		DateClauseContext _localctx = new DateClauseContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_dateClause);
+		enterRule(_localctx, 40, RULE_dateClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(161);
+			setState(143);
 			match(DATE);
-			setState(162);
+			setState(144);
 			match(MODIFIED);
-			setState(163);
+			setState(145);
 			dateCondition();
-			setState(164);
+			setState(146);
 			match(TEXT);
 			}
 		}
@@ -1509,12 +1404,12 @@ public class ELFParser extends Parser {
 
 	public final DateConditionContext dateCondition() throws RecognitionException {
 		DateConditionContext _localctx = new DateConditionContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_dateCondition);
+		enterRule(_localctx, 42, RULE_dateCondition);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(166);
+			setState(148);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BEFORE) | (1L << ON) | (1L << AFTER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1561,13 +1456,13 @@ public class ELFParser extends Parser {
 
 	public final FolderClauseContext folderClause() throws RecognitionException {
 		FolderClauseContext _localctx = new FolderClauseContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_folderClause);
+		enterRule(_localctx, 44, RULE_folderClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(168);
+			setState(150);
 			match(INFOLDER);
-			setState(169);
+			setState(151);
 			match(TEXT);
 			}
 		}
@@ -1606,13 +1501,13 @@ public class ELFParser extends Parser {
 
 	public final PathClauseContext pathClause() throws RecognitionException {
 		PathClauseContext _localctx = new PathClauseContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_pathClause);
+		enterRule(_localctx, 46, RULE_pathClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(171);
+			setState(153);
 			match(ATPATH);
-			setState(172);
+			setState(154);
 			match(TEXT);
 			}
 		}
@@ -1628,104 +1523,92 @@ public class ELFParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001)\u00af\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001)\u009d\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
 		"\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0002\u000f\u0007\u000f"+
 		"\u0002\u0010\u0007\u0010\u0002\u0011\u0007\u0011\u0002\u0012\u0007\u0012"+
 		"\u0002\u0013\u0007\u0013\u0002\u0014\u0007\u0014\u0002\u0015\u0007\u0015"+
-		"\u0002\u0016\u0007\u0016\u0002\u0017\u0007\u0017\u0002\u0018\u0007\u0018"+
-		"\u0001\u0000\u0001\u0000\u0005\u00005\b\u0000\n\u0000\f\u00008\t\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
-		"\u0001\u0003\u0003\u0003G\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0005\u0004R\b\u0004\n\u0004\f\u0004U\t\u0004\u0001\u0005\u0001\u0005"+
-		"\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006\\\b\u0006\u0001\u0006"+
-		"\u0003\u0006_\b\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007"+
-		"\u0001\u0007\u0001\u0007\u0005\u0007g\b\u0007\n\u0007\f\u0007j\t\u0007"+
-		"\u0003\u0007l\b\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0003\br\b\b\u0001"+
-		"\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\r\u0001"+
-		"\r\u0001\r\u0001\u000e\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f"+
-		"\u0001\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010"+
-		"\u0001\u0010\u0003\u0010\u0091\b\u0010\u0001\u0011\u0001\u0011\u0001\u0011"+
-		"\u0003\u0011\u0096\b\u0011\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012"+
-		"\u0001\u0013\u0001\u0013\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014"+
-		"\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0016"+
-		"\u0001\u0016\u0001\u0017\u0001\u0017\u0001\u0017\u0001\u0018\u0001\u0018"+
-		"\u0001\u0018\u0001\u0018\u0000\u0000\u0019\u0000\u0002\u0004\u0006\b\n"+
-		"\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.0\u0000"+
-		"\u0006\u0001\u0000\u0002\u0004\u0001\u0000\t\n\u0001\u0000\u000b\f\u0001"+
-		"\u0000\r\u000e\u0001\u0000\u0015\u0018\u0001\u0000\u001a\u001c\u00a6\u0000"+
-		"2\u0001\u0000\u0000\u0000\u0002;\u0001\u0000\u0000\u0000\u0004A\u0001"+
-		"\u0000\u0000\u0000\u0006F\u0001\u0000\u0000\u0000\bH\u0001\u0000\u0000"+
-		"\u0000\nV\u0001\u0000\u0000\u0000\f^\u0001\u0000\u0000\u0000\u000e`\u0001"+
-		"\u0000\u0000\u0000\u0010q\u0001\u0000\u0000\u0000\u0012s\u0001\u0000\u0000"+
-		"\u0000\u0014v\u0001\u0000\u0000\u0000\u0016x\u0001\u0000\u0000\u0000\u0018"+
-		"}\u0001\u0000\u0000\u0000\u001a\u007f\u0001\u0000\u0000\u0000\u001c\u0084"+
-		"\u0001\u0000\u0000\u0000\u001e\u0086\u0001\u0000\u0000\u0000 \u0090\u0001"+
-		"\u0000\u0000\u0000\"\u0095\u0001\u0000\u0000\u0000$\u0097\u0001\u0000"+
-		"\u0000\u0000&\u009b\u0001\u0000\u0000\u0000(\u009d\u0001\u0000\u0000\u0000"+
-		"*\u00a1\u0001\u0000\u0000\u0000,\u00a6\u0001\u0000\u0000\u0000.\u00a8"+
-		"\u0001\u0000\u0000\u00000\u00ab\u0001\u0000\u0000\u000026\u0003\u0002"+
-		"\u0001\u000035\u0003\u0004\u0002\u000043\u0001\u0000\u0000\u000058\u0001"+
-		"\u0000\u0000\u000064\u0001\u0000\u0000\u000067\u0001\u0000\u0000\u0000"+
-		"79\u0001\u0000\u0000\u000086\u0001\u0000\u0000\u00009:\u0005\u0000\u0000"+
-		"\u0001:\u0001\u0001\u0000\u0000\u0000;<\u0005\u0001\u0000\u0000<=\u0005"+
-		"&\u0000\u0000=>\u0005\b\u0000\u0000>?\u0005)\u0000\u0000?@\u0005%\u0000"+
-		"\u0000@\u0003\u0001\u0000\u0000\u0000AB\u0003\u0006\u0003\u0000BC\u0005"+
-		"%\u0000\u0000C\u0005\u0001\u0000\u0000\u0000DG\u0003\b\u0004\u0000EG\u0003"+
-		"\u000e\u0007\u0000FD\u0001\u0000\u0000\u0000FE\u0001\u0000\u0000\u0000"+
-		"G\u0007\u0001\u0000\u0000\u0000HI\u0003\n\u0005\u0000IJ\u0005(\u0000\u0000"+
-		"JK\u0005&\u0000\u0000KL\u0003\f\u0006\u0000LM\u0005\u0012\u0000\u0000"+
-		"MS\u0003 \u0010\u0000NO\u0005$\u0000\u0000OP\u0005\"\u0000\u0000PR\u0003"+
-		" \u0010\u0000QN\u0001\u0000\u0000\u0000RU\u0001\u0000\u0000\u0000SQ\u0001"+
-		"\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000T\t\u0001\u0000\u0000\u0000"+
-		"US\u0001\u0000\u0000\u0000VW\u0007\u0000\u0000\u0000W\u000b\u0001\u0000"+
-		"\u0000\u0000X_\u0005\u0005\u0000\u0000Y[\u0005\u0006\u0000\u0000Z\\\u0005"+
-		"\u0013\u0000\u0000[Z\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000"+
-		"\\_\u0001\u0000\u0000\u0000]_\u0005\u0007\u0000\u0000^X\u0001\u0000\u0000"+
-		"\u0000^Y\u0001\u0000\u0000\u0000^]\u0001\u0000\u0000\u0000_\r\u0001\u0000"+
-		"\u0000\u0000`k\u0003\u0010\b\u0000ab\u0005\u0011\u0000\u0000bh\u0003\""+
-		"\u0011\u0000cd\u0005$\u0000\u0000de\u0005\"\u0000\u0000eg\u0003\"\u0011"+
-		"\u0000fc\u0001\u0000\u0000\u0000gj\u0001\u0000\u0000\u0000hf\u0001\u0000"+
-		"\u0000\u0000hi\u0001\u0000\u0000\u0000il\u0001\u0000\u0000\u0000jh\u0001"+
-		"\u0000\u0000\u0000ka\u0001\u0000\u0000\u0000kl\u0001\u0000\u0000\u0000"+
-		"l\u000f\u0001\u0000\u0000\u0000mr\u0003\u0012\t\u0000nr\u0003\u0016\u000b"+
-		"\u0000or\u0003\u001a\r\u0000pr\u0003\u001e\u000f\u0000qm\u0001\u0000\u0000"+
-		"\u0000qn\u0001\u0000\u0000\u0000qo\u0001\u0000\u0000\u0000qp\u0001\u0000"+
-		"\u0000\u0000r\u0011\u0001\u0000\u0000\u0000st\u0003\u0014\n\u0000tu\u0005"+
-		"(\u0000\u0000u\u0013\u0001\u0000\u0000\u0000vw\u0007\u0001\u0000\u0000"+
-		"w\u0015\u0001\u0000\u0000\u0000xy\u0003\u0018\f\u0000yz\u0005(\u0000\u0000"+
-		"z{\u0005\u0010\u0000\u0000{|\u0005(\u0000\u0000|\u0017\u0001\u0000\u0000"+
-		"\u0000}~\u0007\u0002\u0000\u0000~\u0019\u0001\u0000\u0000\u0000\u007f"+
-		"\u0080\u0003\u001c\u000e\u0000\u0080\u0081\u0005(\u0000\u0000\u0081\u0082"+
-		"\u0005\u0010\u0000\u0000\u0082\u0083\u0005(\u0000\u0000\u0083\u001b\u0001"+
-		"\u0000\u0000\u0000\u0084\u0085\u0007\u0003\u0000\u0000\u0085\u001d\u0001"+
-		"\u0000\u0000\u0000\u0086\u0087\u0005\u000f\u0000\u0000\u0087\u0088\u0005"+
-		"(\u0000\u0000\u0088\u0089\u0005#\u0000\u0000\u0089\u008a\u0005)\u0000"+
-		"\u0000\u008a\u001f\u0001\u0000\u0000\u0000\u008b\u0091\u0003$\u0012\u0000"+
-		"\u008c\u0091\u0003(\u0014\u0000\u008d\u0091\u0003*\u0015\u0000\u008e\u0091"+
-		"\u0003.\u0017\u0000\u008f\u0091\u00030\u0018\u0000\u0090\u008b\u0001\u0000"+
-		"\u0000\u0000\u0090\u008c\u0001\u0000\u0000\u0000\u0090\u008d\u0001\u0000"+
-		"\u0000\u0000\u0090\u008e\u0001\u0000\u0000\u0000\u0090\u008f\u0001\u0000"+
-		"\u0000\u0000\u0091!\u0001\u0000\u0000\u0000\u0092\u0096\u0003$\u0012\u0000"+
-		"\u0093\u0096\u0003(\u0014\u0000\u0094\u0096\u0003*\u0015\u0000\u0095\u0092"+
-		"\u0001\u0000\u0000\u0000\u0095\u0093\u0001\u0000\u0000\u0000\u0095\u0094"+
-		"\u0001\u0000\u0000\u0000\u0096#\u0001\u0000\u0000\u0000\u0097\u0098\u0005"+
-		"\u0014\u0000\u0000\u0098\u0099\u0003&\u0013\u0000\u0099\u009a\u0005)\u0000"+
-		"\u0000\u009a%\u0001\u0000\u0000\u0000\u009b\u009c\u0007\u0004\u0000\u0000"+
-		"\u009c\'\u0001\u0000\u0000\u0000\u009d\u009e\u0005\u001f\u0000\u0000\u009e"+
-		"\u009f\u0005!\u0000\u0000\u009f\u00a0\u0005)\u0000\u0000\u00a0)\u0001"+
-		"\u0000\u0000\u0000\u00a1\u00a2\u0005\u0019\u0000\u0000\u00a2\u00a3\u0005"+
-		" \u0000\u0000\u00a3\u00a4\u0003,\u0016\u0000\u00a4\u00a5\u0005)\u0000"+
-		"\u0000\u00a5+\u0001\u0000\u0000\u0000\u00a6\u00a7\u0007\u0005\u0000\u0000"+
-		"\u00a7-\u0001\u0000\u0000\u0000\u00a8\u00a9\u0005\u001d\u0000\u0000\u00a9"+
-		"\u00aa\u0005)\u0000\u0000\u00aa/\u0001\u0000\u0000\u0000\u00ab\u00ac\u0005"+
-		"\u001e\u0000\u0000\u00ac\u00ad\u0005)\u0000\u0000\u00ad1\u0001\u0000\u0000"+
-		"\u0000\n6FS[^hkq\u0090\u0095";
+		"\u0002\u0016\u0007\u0016\u0002\u0017\u0007\u0017\u0001\u0000\u0001\u0000"+
+		"\u0005\u00003\b\u0000\n\u0000\f\u00006\t\u0000\u0001\u0000\u0001\u0000"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0003\u0003"+
+		"E\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0003\u0004L\b\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0001\u0004\u0005\u0004S\b\u0004\n\u0004\f\u0004V\t\u0004\u0001\u0005"+
+		"\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007"+
+		"\u0001\u0007\u0003\u0007`\b\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001"+
+		"\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001"+
+		"\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e"+
+		"\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f"+
+		"\u0001\u000f\u0001\u000f\u0003\u000f\u007f\b\u000f\u0001\u0010\u0001\u0010"+
+		"\u0001\u0010\u0003\u0010\u0084\b\u0010\u0001\u0011\u0001\u0011\u0001\u0011"+
+		"\u0001\u0011\u0001\u0012\u0001\u0012\u0001\u0013\u0001\u0013\u0001\u0013"+
+		"\u0001\u0013\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014"+
+		"\u0001\u0015\u0001\u0015\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0017"+
+		"\u0001\u0017\u0001\u0017\u0001\u0017\u0000\u0000\u0018\u0000\u0002\u0004"+
+		"\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \""+
+		"$&(*,.\u0000\u0007\u0001\u0000\u0002\u0004\u0001\u0000\u0005\u0007\u0001"+
+		"\u0000\t\n\u0001\u0000\u000b\f\u0001\u0000\r\u000e\u0001\u0000\u0015\u0018"+
+		"\u0001\u0000\u001a\u001c\u0091\u00000\u0001\u0000\u0000\u0000\u00029\u0001"+
+		"\u0000\u0000\u0000\u0004?\u0001\u0000\u0000\u0000\u0006D\u0001\u0000\u0000"+
+		"\u0000\bF\u0001\u0000\u0000\u0000\nW\u0001\u0000\u0000\u0000\fY\u0001"+
+		"\u0000\u0000\u0000\u000e_\u0001\u0000\u0000\u0000\u0010a\u0001\u0000\u0000"+
+		"\u0000\u0012d\u0001\u0000\u0000\u0000\u0014f\u0001\u0000\u0000\u0000\u0016"+
+		"k\u0001\u0000\u0000\u0000\u0018m\u0001\u0000\u0000\u0000\u001ar\u0001"+
+		"\u0000\u0000\u0000\u001ct\u0001\u0000\u0000\u0000\u001e~\u0001\u0000\u0000"+
+		"\u0000 \u0083\u0001\u0000\u0000\u0000\"\u0085\u0001\u0000\u0000\u0000"+
+		"$\u0089\u0001\u0000\u0000\u0000&\u008b\u0001\u0000\u0000\u0000(\u008f"+
+		"\u0001\u0000\u0000\u0000*\u0094\u0001\u0000\u0000\u0000,\u0096\u0001\u0000"+
+		"\u0000\u0000.\u0099\u0001\u0000\u0000\u000004\u0003\u0002\u0001\u0000"+
+		"13\u0003\u0004\u0002\u000021\u0001\u0000\u0000\u000036\u0001\u0000\u0000"+
+		"\u000042\u0001\u0000\u0000\u000045\u0001\u0000\u0000\u000057\u0001\u0000"+
+		"\u0000\u000064\u0001\u0000\u0000\u000078\u0005\u0000\u0000\u00018\u0001"+
+		"\u0001\u0000\u0000\u00009:\u0005\u0001\u0000\u0000:;\u0005&\u0000\u0000"+
+		";<\u0005\b\u0000\u0000<=\u0005)\u0000\u0000=>\u0005%\u0000\u0000>\u0003"+
+		"\u0001\u0000\u0000\u0000?@\u0003\u0006\u0003\u0000@A\u0005%\u0000\u0000"+
+		"A\u0005\u0001\u0000\u0000\u0000BE\u0003\b\u0004\u0000CE\u0003\u000e\u0007"+
+		"\u0000DB\u0001\u0000\u0000\u0000DC\u0001\u0000\u0000\u0000E\u0007\u0001"+
+		"\u0000\u0000\u0000FG\u0003\n\u0005\u0000GH\u0005(\u0000\u0000HI\u0005"+
+		"&\u0000\u0000IK\u0003\f\u0006\u0000JL\u0005\u0013\u0000\u0000KJ\u0001"+
+		"\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000LM\u0001\u0000\u0000\u0000"+
+		"MN\u0005\u0012\u0000\u0000NT\u0003\u001e\u000f\u0000OP\u0005$\u0000\u0000"+
+		"PQ\u0005\"\u0000\u0000QS\u0003\u001e\u000f\u0000RO\u0001\u0000\u0000\u0000"+
+		"SV\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000\u0000TU\u0001\u0000\u0000"+
+		"\u0000U\t\u0001\u0000\u0000\u0000VT\u0001\u0000\u0000\u0000WX\u0007\u0000"+
+		"\u0000\u0000X\u000b\u0001\u0000\u0000\u0000YZ\u0007\u0001\u0000\u0000"+
+		"Z\r\u0001\u0000\u0000\u0000[`\u0003\u0010\b\u0000\\`\u0003\u0014\n\u0000"+
+		"]`\u0003\u0018\f\u0000^`\u0003\u001c\u000e\u0000_[\u0001\u0000\u0000\u0000"+
+		"_\\\u0001\u0000\u0000\u0000_]\u0001\u0000\u0000\u0000_^\u0001\u0000\u0000"+
+		"\u0000`\u000f\u0001\u0000\u0000\u0000ab\u0003\u0012\t\u0000bc\u0005(\u0000"+
+		"\u0000c\u0011\u0001\u0000\u0000\u0000de\u0007\u0002\u0000\u0000e\u0013"+
+		"\u0001\u0000\u0000\u0000fg\u0003\u0016\u000b\u0000gh\u0005(\u0000\u0000"+
+		"hi\u0005\u0010\u0000\u0000ij\u0005(\u0000\u0000j\u0015\u0001\u0000\u0000"+
+		"\u0000kl\u0007\u0003\u0000\u0000l\u0017\u0001\u0000\u0000\u0000mn\u0003"+
+		"\u001a\r\u0000no\u0005(\u0000\u0000op\u0005\u0010\u0000\u0000pq\u0005"+
+		"(\u0000\u0000q\u0019\u0001\u0000\u0000\u0000rs\u0007\u0004\u0000\u0000"+
+		"s\u001b\u0001\u0000\u0000\u0000tu\u0005\u000f\u0000\u0000uv\u0005(\u0000"+
+		"\u0000vw\u0005#\u0000\u0000wx\u0005)\u0000\u0000x\u001d\u0001\u0000\u0000"+
+		"\u0000y\u007f\u0003\"\u0011\u0000z\u007f\u0003&\u0013\u0000{\u007f\u0003"+
+		"(\u0014\u0000|\u007f\u0003,\u0016\u0000}\u007f\u0003.\u0017\u0000~y\u0001"+
+		"\u0000\u0000\u0000~z\u0001\u0000\u0000\u0000~{\u0001\u0000\u0000\u0000"+
+		"~|\u0001\u0000\u0000\u0000~}\u0001\u0000\u0000\u0000\u007f\u001f\u0001"+
+		"\u0000\u0000\u0000\u0080\u0084\u0003\"\u0011\u0000\u0081\u0084\u0003&"+
+		"\u0013\u0000\u0082\u0084\u0003(\u0014\u0000\u0083\u0080\u0001\u0000\u0000"+
+		"\u0000\u0083\u0081\u0001\u0000\u0000\u0000\u0083\u0082\u0001\u0000\u0000"+
+		"\u0000\u0084!\u0001\u0000\u0000\u0000\u0085\u0086\u0005\u0014\u0000\u0000"+
+		"\u0086\u0087\u0003$\u0012\u0000\u0087\u0088\u0005)\u0000\u0000\u0088#"+
+		"\u0001\u0000\u0000\u0000\u0089\u008a\u0007\u0005\u0000\u0000\u008a%\u0001"+
+		"\u0000\u0000\u0000\u008b\u008c\u0005\u001f\u0000\u0000\u008c\u008d\u0005"+
+		"!\u0000\u0000\u008d\u008e\u0005)\u0000\u0000\u008e\'\u0001\u0000\u0000"+
+		"\u0000\u008f\u0090\u0005\u0019\u0000\u0000\u0090\u0091\u0005 \u0000\u0000"+
+		"\u0091\u0092\u0003*\u0015\u0000\u0092\u0093\u0005)\u0000\u0000\u0093)"+
+		"\u0001\u0000\u0000\u0000\u0094\u0095\u0007\u0006\u0000\u0000\u0095+\u0001"+
+		"\u0000\u0000\u0000\u0096\u0097\u0005\u001d\u0000\u0000\u0097\u0098\u0005"+
+		")\u0000\u0000\u0098-\u0001\u0000\u0000\u0000\u0099\u009a\u0005\u001e\u0000"+
+		"\u0000\u009a\u009b\u0005)\u0000\u0000\u009b/\u0001\u0000\u0000\u0000\u0007"+
+		"4DKT_~\u0083";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,5 +1,6 @@
 path = get path /home/c/cwl/cs-410/Documents;
 folder homeworkFolder = get folder where name is Homework;
+file special = get file recursively where name is mySpecialTextFile.txt;
 folder mathCourse = get folder where name is math-100, AND in folder homeworkFolder;
 folder photosFolder = get folder where name contains Photo;
 folder recentFolder = get folder where date modified on 2022-10-10;
@@ -31,6 +32,7 @@ move PBAndJ to homeworkFolder;
 move biol to homeworkFolder;
 
 rename suffering as torment.txt;
+rename photo as this is the first .png file I could find;
 rename fileZ as somethingDifferent.txt;
 rename mathCourse as MATH-100;
 

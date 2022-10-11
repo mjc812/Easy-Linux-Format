@@ -10,8 +10,7 @@ public class Delete extends Command {
     private final String variable;
     private final int type;
 
-    public Delete(ArrayList<Clause> clauseList, String variable, int type) {
-        super(clauseList);
+    public Delete(String variable, int type) {
         this.variable = variable;
         this.type = type;
     }

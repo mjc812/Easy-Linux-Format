@@ -88,16 +88,6 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitCommand(ELFParser.CommandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ELFParser#commandChoice}.
-	 * @param ctx the parse tree
-	 */
-	void enterCommandChoice(ELFParser.CommandChoiceContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ELFParser#commandChoice}.
-	 * @param ctx the parse tree
-	 */
-	void exitCommandChoice(ELFParser.CommandChoiceContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ELFParser#delete}.
 	 * @param ctx the parse tree
 	 */

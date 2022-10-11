@@ -73,8 +73,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             return false;
         }
 
-        // TODO: Handle Clause Checks
-
         if (variables.get(toVar) != ELFLexer.FOLDER) {
             System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
             return false;
@@ -183,8 +181,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
                     + var + "\" which does not exist");
             return false;
         }
-
-        // TODO: Handle Clause Checks
 
         writer.println("parentDir=$(dirname \"$" + var + "\")");
         writer.println("mv \"$" + var + "\" \"$parentDir/" + newName + "\"");

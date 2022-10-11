@@ -58,7 +58,7 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
     @Override
     public Get visitGet(ELFParser.GetContext ctx) {
         String variable = ctx.VAR_TEXT().getText();
-        boolean recursive = ctx.getType().RECURSIVELY() != null;
+        boolean recursive = ctx.RECURSIVELY() != null;
         int variableType;
         int getVariableType;
         ArrayList<Clause> clauseArrayList = new ArrayList<>();
@@ -94,20 +94,14 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
 
         Command command;
 
-        clauseArrayList = new ArrayList<>();
-        for (ELFParser.CommandClauseContext commandClauseContext : ctx.commandClause()) {
-            Clause clause = visitCommandClause(commandClauseContext);
-            clauseArrayList.add(clause);
-        }
-
-        if (ctx.commandChoice().delete() != null) {
-            command = visitDelete(ctx.commandChoice().delete());
-        } else if (ctx.commandChoice().move() != null) {
-            command = visitMove(ctx.commandChoice().move());
-        } else if (ctx.commandChoice().copy() != null) {
-            command = visitCopy(ctx.commandChoice().copy());
+        if (ctx.delete() != null) {
+            command = visitDelete(ctx.delete());
+        } else if (ctx.move() != null) {
+            command = visitMove(ctx.move());
+        } else if (ctx.copy() != null) {
+            command = visitCopy(ctx.copy());
         } else {
-            command = visitRename(ctx.commandChoice().rename());
+            command = visitRename(ctx.rename());
         }
 
         return command;
@@ -122,7 +116,7 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
         } else {
             type = ELFLexer.DELETEALLFROM;
         }
-        return new Delete(clauseArrayList, variable, type);
+        return new Delete(variable, type);
     }
 
     @Override
@@ -135,7 +129,7 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
         } else {
             type = ELFLexer.MOVEALLFROM;
         }
-        return new Move(clauseArrayList, fromVariable, toVariable, type);
+        return new Move(fromVariable, toVariable, type);
     }
 
     @Override
@@ -148,15 +142,14 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
         } else {
             type = ELFLexer.COPYALLFROM;
         }
-        return new Copy(clauseArrayList, fromVariable, toVariable, type);
+        return new Copy(fromVariable, toVariable, type);
     }
 
     @Override
     public Rename visitRename(ELFParser.RenameContext ctx) {
         String variable = ctx.VAR_TEXT().getText();
         String name = ctx.TEXT().getText();
-
-        return new Rename(clauseArrayList, variable, name);
+        return new Rename(variable, name);
     }
 
     //clause
