@@ -256,13 +256,13 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterModifiedClause(ELFParser.ModifiedClauseContext ctx) { }
+	@Override public void enterOwnedClause(ELFParser.OwnedClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitModifiedClause(ELFParser.ModifiedClauseContext ctx) { }
+	@Override public void exitOwnedClause(ELFParser.OwnedClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

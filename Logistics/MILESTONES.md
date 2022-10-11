@@ -237,3 +237,23 @@ We are currently on schedule according to our roadmap and the only changes have 
 
 - Doing AST Conversion and the first user study at the same time
 - Potentially eliminating dynamic checking if it doesn’t make sense for our end use case — still TBD
+
+# Milestone 4
+
+## Status of implementation:
+
+- We have our grammar finalized and we have finished the AST conversion step
+- We are currently working on implementing the core functionality of our language including integrating a visitor pattern, processing the commands defined in our DSL and generating our output
+
+## Planning our final user study:
+
+- We plan on doing a user study once our MVP has been completed and our DSL is fully functioning
+- Our second user study will be similar to our first user study except the participant will be expected to carry out the outlined tasks using our DSL (not on paper)
+- There will be more of a focus on how the user is interacting with the DSL and potential errors vs the usability of the language syntax (which was our focus for the first user study)
+
+## Planned timeline for the remaining days:
+
+- We hope to finish the implementation, static and dynamic checks by October 14th so that we can carry out our user study on the 15th
+- We will be creating the video after the 14th
+
+

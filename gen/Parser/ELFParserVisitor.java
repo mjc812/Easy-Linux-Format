@@ -131,11 +131,11 @@ public interface ELFParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNameCondition(ELFParser.NameConditionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ELFParser#modifiedClause}.
+	 * Visit a parse tree produced by {@link ELFParser#ownedClause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitModifiedClause(ELFParser.ModifiedClauseContext ctx);
+	T visitOwnedClause(ELFParser.OwnedClauseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ELFParser#dateClause}.
 	 * @param ctx the parse tree

@@ -21,22 +21,22 @@ public class ELFParser extends Parser {
 		GETPATH=8, DELETE=9, DELETEALLFROM=10, MOVE=11, MOVEALLFROM=12, COPY=13, 
 		COPYALLFROM=14, RENAME=15, TO=16, IF=17, WHERE=18, RECURSIVELY=19, NAME=20, 
 		IS=21, CONTAINS=22, PREFIX=23, SUFFIX=24, DATE=25, BEFORE=26, ON=27, AFTER=28, 
-		INFOLDER=29, ATPATH=30, MODIFIED=31, BY=32, AND=33, AS=34, COMMA=35, SEMICOLON=36, 
-		EQUALS=37, WS=38, VAR_TEXT=39, TEXT=40;
+		INFOLDER=29, ATPATH=30, OWNED=31, MODIFIED=32, BY=33, AND=34, AS=35, COMMA=36, 
+		SEMICOLON=37, EQUALS=38, WS=39, VAR_TEXT=40, TEXT=41;
 	public static final int
 		RULE_program = 0, RULE_path = 1, RULE_statement = 2, RULE_statementType = 3, 
 		RULE_get = 4, RULE_type = 5, RULE_getType = 6, RULE_command = 7, RULE_commandChoice = 8, 
 		RULE_delete = 9, RULE_deleteChoice = 10, RULE_move = 11, RULE_moveChoice = 12, 
 		RULE_copy = 13, RULE_copyChoice = 14, RULE_rename = 15, RULE_getClause = 16, 
 		RULE_commandClause = 17, RULE_nameClause = 18, RULE_nameCondition = 19, 
-		RULE_modifiedClause = 20, RULE_dateClause = 21, RULE_dateCondition = 22, 
+		RULE_ownedClause = 20, RULE_dateClause = 21, RULE_dateCondition = 22, 
 		RULE_folderClause = 23, RULE_pathClause = 24;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "path", "statement", "statementType", "get", "type", "getType", 
 			"command", "commandChoice", "delete", "deleteChoice", "move", "moveChoice", 
 			"copy", "copyChoice", "rename", "getClause", "commandClause", "nameClause", 
-			"nameCondition", "modifiedClause", "dateClause", "dateCondition", "folderClause", 
+			"nameCondition", "ownedClause", "dateClause", "dateCondition", "folderClause", 
 			"pathClause"
 		};
 	}
@@ -47,7 +47,8 @@ public class ELFParser extends Parser {
 			null, "'path'", null, null, null, "'get file'", "'get all files'", "'get folder'", 
 			null, null, null, null, null, null, null, null, null, "'if'", "'where'", 
 			"'recursively'", "'name'", null, null, null, null, "'date'", null, null, 
-			null, null, null, "'modified'", null, "'AND'", null, "','", "';'", "'='"
+			null, null, null, "'owned'", "'modified'", null, "'AND'", null, "','", 
+			"';'", "'='"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -57,8 +58,8 @@ public class ELFParser extends Parser {
 			"GETPATH", "DELETE", "DELETEALLFROM", "MOVE", "MOVEALLFROM", "COPY", 
 			"COPYALLFROM", "RENAME", "TO", "IF", "WHERE", "RECURSIVELY", "NAME", 
 			"IS", "CONTAINS", "PREFIX", "SUFFIX", "DATE", "BEFORE", "ON", "AFTER", 
-			"INFOLDER", "ATPATH", "MODIFIED", "BY", "AND", "AS", "COMMA", "SEMICOLON", 
-			"EQUALS", "WS", "VAR_TEXT", "TEXT"
+			"INFOLDER", "ATPATH", "OWNED", "MODIFIED", "BY", "AND", "AS", "COMMA", 
+			"SEMICOLON", "EQUALS", "WS", "VAR_TEXT", "TEXT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1118,8 +1119,8 @@ public class ELFParser extends Parser {
 		public NameClauseContext nameClause() {
 			return getRuleContext(NameClauseContext.class,0);
 		}
-		public ModifiedClauseContext modifiedClause() {
-			return getRuleContext(ModifiedClauseContext.class,0);
+		public OwnedClauseContext ownedClause() {
+			return getRuleContext(OwnedClauseContext.class,0);
 		}
 		public DateClauseContext dateClause() {
 			return getRuleContext(DateClauseContext.class,0);
@@ -1163,11 +1164,11 @@ public class ELFParser extends Parser {
 				nameClause();
 				}
 				break;
-			case MODIFIED:
+			case OWNED:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(140);
-				modifiedClause();
+				ownedClause();
 				}
 				break;
 			case DATE:
@@ -1210,8 +1211,8 @@ public class ELFParser extends Parser {
 		public NameClauseContext nameClause() {
 			return getRuleContext(NameClauseContext.class,0);
 		}
-		public ModifiedClauseContext modifiedClause() {
-			return getRuleContext(ModifiedClauseContext.class,0);
+		public OwnedClauseContext ownedClause() {
+			return getRuleContext(OwnedClauseContext.class,0);
 		}
 		public DateClauseContext dateClause() {
 			return getRuleContext(DateClauseContext.class,0);
@@ -1249,11 +1250,11 @@ public class ELFParser extends Parser {
 				nameClause();
 				}
 				break;
-			case MODIFIED:
+			case OWNED:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(147);
-				modifiedClause();
+				ownedClause();
 				}
 				break;
 			case DATE:
@@ -1382,37 +1383,37 @@ public class ELFParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ModifiedClauseContext extends ParserRuleContext {
-		public TerminalNode MODIFIED() { return getToken(ELFParser.MODIFIED, 0); }
+	public static class OwnedClauseContext extends ParserRuleContext {
+		public TerminalNode OWNED() { return getToken(ELFParser.OWNED, 0); }
 		public TerminalNode BY() { return getToken(ELFParser.BY, 0); }
 		public TerminalNode TEXT() { return getToken(ELFParser.TEXT, 0); }
-		public ModifiedClauseContext(ParserRuleContext parent, int invokingState) {
+		public OwnedClauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_modifiedClause; }
+		@Override public int getRuleIndex() { return RULE_ownedClause; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).enterModifiedClause(this);
+			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).enterOwnedClause(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).exitModifiedClause(this);
+			if ( listener instanceof ELFParserListener ) ((ELFParserListener)listener).exitOwnedClause(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ELFParserVisitor ) return ((ELFParserVisitor<? extends T>)visitor).visitModifiedClause(this);
+			if ( visitor instanceof ELFParserVisitor ) return ((ELFParserVisitor<? extends T>)visitor).visitOwnedClause(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ModifiedClauseContext modifiedClause() throws RecognitionException {
-		ModifiedClauseContext _localctx = new ModifiedClauseContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_modifiedClause);
+	public final OwnedClauseContext ownedClause() throws RecognitionException {
+		OwnedClauseContext _localctx = new OwnedClauseContext(_ctx, getState());
+		enterRule(_localctx, 40, RULE_ownedClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(157);
-			match(MODIFIED);
+			match(OWNED);
 			setState(158);
 			match(BY);
 			setState(159);
@@ -1627,7 +1628,7 @@ public class ELFParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001(\u00af\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001)\u00af\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -1673,22 +1674,22 @@ public class ELFParser extends Parser {
 		"\u0000\u0000\u000064\u0001\u0000\u0000\u000067\u0001\u0000\u0000\u0000"+
 		"79\u0001\u0000\u0000\u000086\u0001\u0000\u0000\u00009:\u0005\u0000\u0000"+
 		"\u0001:\u0001\u0001\u0000\u0000\u0000;<\u0005\u0001\u0000\u0000<=\u0005"+
-		"%\u0000\u0000=>\u0005\b\u0000\u0000>?\u0005(\u0000\u0000?@\u0005$\u0000"+
+		"&\u0000\u0000=>\u0005\b\u0000\u0000>?\u0005)\u0000\u0000?@\u0005%\u0000"+
 		"\u0000@\u0003\u0001\u0000\u0000\u0000AB\u0003\u0006\u0003\u0000BC\u0005"+
-		"$\u0000\u0000C\u0005\u0001\u0000\u0000\u0000DG\u0003\b\u0004\u0000EG\u0003"+
+		"%\u0000\u0000C\u0005\u0001\u0000\u0000\u0000DG\u0003\b\u0004\u0000EG\u0003"+
 		"\u000e\u0007\u0000FD\u0001\u0000\u0000\u0000FE\u0001\u0000\u0000\u0000"+
-		"G\u0007\u0001\u0000\u0000\u0000HI\u0003\n\u0005\u0000IJ\u0005\'\u0000"+
-		"\u0000JK\u0005%\u0000\u0000KL\u0003\f\u0006\u0000LM\u0005\u0012\u0000"+
-		"\u0000MS\u0003 \u0010\u0000NO\u0005#\u0000\u0000OP\u0005!\u0000\u0000"+
-		"PR\u0003 \u0010\u0000QN\u0001\u0000\u0000\u0000RU\u0001\u0000\u0000\u0000"+
-		"SQ\u0001\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000T\t\u0001\u0000\u0000"+
-		"\u0000US\u0001\u0000\u0000\u0000VW\u0007\u0000\u0000\u0000W\u000b\u0001"+
-		"\u0000\u0000\u0000X_\u0005\u0005\u0000\u0000Y[\u0005\u0006\u0000\u0000"+
-		"Z\\\u0005\u0013\u0000\u0000[Z\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000"+
-		"\u0000\\_\u0001\u0000\u0000\u0000]_\u0005\u0007\u0000\u0000^X\u0001\u0000"+
-		"\u0000\u0000^Y\u0001\u0000\u0000\u0000^]\u0001\u0000\u0000\u0000_\r\u0001"+
-		"\u0000\u0000\u0000`k\u0003\u0010\b\u0000ab\u0005\u0011\u0000\u0000bh\u0003"+
-		"\"\u0011\u0000cd\u0005#\u0000\u0000de\u0005!\u0000\u0000eg\u0003\"\u0011"+
+		"G\u0007\u0001\u0000\u0000\u0000HI\u0003\n\u0005\u0000IJ\u0005(\u0000\u0000"+
+		"JK\u0005&\u0000\u0000KL\u0003\f\u0006\u0000LM\u0005\u0012\u0000\u0000"+
+		"MS\u0003 \u0010\u0000NO\u0005$\u0000\u0000OP\u0005\"\u0000\u0000PR\u0003"+
+		" \u0010\u0000QN\u0001\u0000\u0000\u0000RU\u0001\u0000\u0000\u0000SQ\u0001"+
+		"\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000T\t\u0001\u0000\u0000\u0000"+
+		"US\u0001\u0000\u0000\u0000VW\u0007\u0000\u0000\u0000W\u000b\u0001\u0000"+
+		"\u0000\u0000X_\u0005\u0005\u0000\u0000Y[\u0005\u0006\u0000\u0000Z\\\u0005"+
+		"\u0013\u0000\u0000[Z\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000"+
+		"\\_\u0001\u0000\u0000\u0000]_\u0005\u0007\u0000\u0000^X\u0001\u0000\u0000"+
+		"\u0000^Y\u0001\u0000\u0000\u0000^]\u0001\u0000\u0000\u0000_\r\u0001\u0000"+
+		"\u0000\u0000`k\u0003\u0010\b\u0000ab\u0005\u0011\u0000\u0000bh\u0003\""+
+		"\u0011\u0000cd\u0005$\u0000\u0000de\u0005\"\u0000\u0000eg\u0003\"\u0011"+
 		"\u0000fc\u0001\u0000\u0000\u0000gj\u0001\u0000\u0000\u0000hf\u0001\u0000"+
 		"\u0000\u0000hi\u0001\u0000\u0000\u0000il\u0001\u0000\u0000\u0000jh\u0001"+
 		"\u0000\u0000\u0000ka\u0001\u0000\u0000\u0000kl\u0001\u0000\u0000\u0000"+
@@ -1696,35 +1697,35 @@ public class ELFParser extends Parser {
 		"\u0000or\u0003\u001a\r\u0000pr\u0003\u001e\u000f\u0000qm\u0001\u0000\u0000"+
 		"\u0000qn\u0001\u0000\u0000\u0000qo\u0001\u0000\u0000\u0000qp\u0001\u0000"+
 		"\u0000\u0000r\u0011\u0001\u0000\u0000\u0000st\u0003\u0014\n\u0000tu\u0005"+
-		"\'\u0000\u0000u\u0013\u0001\u0000\u0000\u0000vw\u0007\u0001\u0000\u0000"+
-		"w\u0015\u0001\u0000\u0000\u0000xy\u0003\u0018\f\u0000yz\u0005\'\u0000"+
-		"\u0000z{\u0005\u0010\u0000\u0000{|\u0005\'\u0000\u0000|\u0017\u0001\u0000"+
-		"\u0000\u0000}~\u0007\u0002\u0000\u0000~\u0019\u0001\u0000\u0000\u0000"+
-		"\u007f\u0080\u0003\u001c\u000e\u0000\u0080\u0081\u0005\'\u0000\u0000\u0081"+
-		"\u0082\u0005\u0010\u0000\u0000\u0082\u0083\u0005\'\u0000\u0000\u0083\u001b"+
-		"\u0001\u0000\u0000\u0000\u0084\u0085\u0007\u0003\u0000\u0000\u0085\u001d"+
-		"\u0001\u0000\u0000\u0000\u0086\u0087\u0005\u000f\u0000\u0000\u0087\u0088"+
-		"\u0005\'\u0000\u0000\u0088\u0089\u0005\"\u0000\u0000\u0089\u008a\u0005"+
-		"(\u0000\u0000\u008a\u001f\u0001\u0000\u0000\u0000\u008b\u0091\u0003$\u0012"+
-		"\u0000\u008c\u0091\u0003(\u0014\u0000\u008d\u0091\u0003*\u0015\u0000\u008e"+
-		"\u0091\u0003.\u0017\u0000\u008f\u0091\u00030\u0018\u0000\u0090\u008b\u0001"+
-		"\u0000\u0000\u0000\u0090\u008c\u0001\u0000\u0000\u0000\u0090\u008d\u0001"+
-		"\u0000\u0000\u0000\u0090\u008e\u0001\u0000\u0000\u0000\u0090\u008f\u0001"+
-		"\u0000\u0000\u0000\u0091!\u0001\u0000\u0000\u0000\u0092\u0096\u0003$\u0012"+
-		"\u0000\u0093\u0096\u0003(\u0014\u0000\u0094\u0096\u0003*\u0015\u0000\u0095"+
-		"\u0092\u0001\u0000\u0000\u0000\u0095\u0093\u0001\u0000\u0000\u0000\u0095"+
-		"\u0094\u0001\u0000\u0000\u0000\u0096#\u0001\u0000\u0000\u0000\u0097\u0098"+
-		"\u0005\u0014\u0000\u0000\u0098\u0099\u0003&\u0013\u0000\u0099\u009a\u0005"+
-		"(\u0000\u0000\u009a%\u0001\u0000\u0000\u0000\u009b\u009c\u0007\u0004\u0000"+
-		"\u0000\u009c\'\u0001\u0000\u0000\u0000\u009d\u009e\u0005\u001f\u0000\u0000"+
-		"\u009e\u009f\u0005 \u0000\u0000\u009f\u00a0\u0005(\u0000\u0000\u00a0)"+
-		"\u0001\u0000\u0000\u0000\u00a1\u00a2\u0005\u0019\u0000\u0000\u00a2\u00a3"+
-		"\u0005\u001f\u0000\u0000\u00a3\u00a4\u0003,\u0016\u0000\u00a4\u00a5\u0005"+
-		"(\u0000\u0000\u00a5+\u0001\u0000\u0000\u0000\u00a6\u00a7\u0007\u0005\u0000"+
-		"\u0000\u00a7-\u0001\u0000\u0000\u0000\u00a8\u00a9\u0005\u001d\u0000\u0000"+
-		"\u00a9\u00aa\u0005(\u0000\u0000\u00aa/\u0001\u0000\u0000\u0000\u00ab\u00ac"+
-		"\u0005\u001e\u0000\u0000\u00ac\u00ad\u0005(\u0000\u0000\u00ad1\u0001\u0000"+
-		"\u0000\u0000\n6FS[^hkq\u0090\u0095";
+		"(\u0000\u0000u\u0013\u0001\u0000\u0000\u0000vw\u0007\u0001\u0000\u0000"+
+		"w\u0015\u0001\u0000\u0000\u0000xy\u0003\u0018\f\u0000yz\u0005(\u0000\u0000"+
+		"z{\u0005\u0010\u0000\u0000{|\u0005(\u0000\u0000|\u0017\u0001\u0000\u0000"+
+		"\u0000}~\u0007\u0002\u0000\u0000~\u0019\u0001\u0000\u0000\u0000\u007f"+
+		"\u0080\u0003\u001c\u000e\u0000\u0080\u0081\u0005(\u0000\u0000\u0081\u0082"+
+		"\u0005\u0010\u0000\u0000\u0082\u0083\u0005(\u0000\u0000\u0083\u001b\u0001"+
+		"\u0000\u0000\u0000\u0084\u0085\u0007\u0003\u0000\u0000\u0085\u001d\u0001"+
+		"\u0000\u0000\u0000\u0086\u0087\u0005\u000f\u0000\u0000\u0087\u0088\u0005"+
+		"(\u0000\u0000\u0088\u0089\u0005#\u0000\u0000\u0089\u008a\u0005)\u0000"+
+		"\u0000\u008a\u001f\u0001\u0000\u0000\u0000\u008b\u0091\u0003$\u0012\u0000"+
+		"\u008c\u0091\u0003(\u0014\u0000\u008d\u0091\u0003*\u0015\u0000\u008e\u0091"+
+		"\u0003.\u0017\u0000\u008f\u0091\u00030\u0018\u0000\u0090\u008b\u0001\u0000"+
+		"\u0000\u0000\u0090\u008c\u0001\u0000\u0000\u0000\u0090\u008d\u0001\u0000"+
+		"\u0000\u0000\u0090\u008e\u0001\u0000\u0000\u0000\u0090\u008f\u0001\u0000"+
+		"\u0000\u0000\u0091!\u0001\u0000\u0000\u0000\u0092\u0096\u0003$\u0012\u0000"+
+		"\u0093\u0096\u0003(\u0014\u0000\u0094\u0096\u0003*\u0015\u0000\u0095\u0092"+
+		"\u0001\u0000\u0000\u0000\u0095\u0093\u0001\u0000\u0000\u0000\u0095\u0094"+
+		"\u0001\u0000\u0000\u0000\u0096#\u0001\u0000\u0000\u0000\u0097\u0098\u0005"+
+		"\u0014\u0000\u0000\u0098\u0099\u0003&\u0013\u0000\u0099\u009a\u0005)\u0000"+
+		"\u0000\u009a%\u0001\u0000\u0000\u0000\u009b\u009c\u0007\u0004\u0000\u0000"+
+		"\u009c\'\u0001\u0000\u0000\u0000\u009d\u009e\u0005\u001f\u0000\u0000\u009e"+
+		"\u009f\u0005!\u0000\u0000\u009f\u00a0\u0005)\u0000\u0000\u00a0)\u0001"+
+		"\u0000\u0000\u0000\u00a1\u00a2\u0005\u0019\u0000\u0000\u00a2\u00a3\u0005"+
+		" \u0000\u0000\u00a3\u00a4\u0003,\u0016\u0000\u00a4\u00a5\u0005)\u0000"+
+		"\u0000\u00a5+\u0001\u0000\u0000\u0000\u00a6\u00a7\u0007\u0005\u0000\u0000"+
+		"\u00a7-\u0001\u0000\u0000\u0000\u00a8\u00a9\u0005\u001d\u0000\u0000\u00a9"+
+		"\u00aa\u0005)\u0000\u0000\u00aa/\u0001\u0000\u0000\u0000\u00ab\u00ac\u0005"+
+		"\u001e\u0000\u0000\u00ac\u00ad\u0005)\u0000\u0000\u00ad1\u0001\u0000\u0000"+
+		"\u0000\n6FS[^hkq\u0090\u0095";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

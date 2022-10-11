@@ -165,8 +165,8 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
     public Clause visitGetClause(ELFParser.GetClauseContext ctx) {
         if (ctx.nameClause() != null) {
             return visitNameClause(ctx.nameClause());
-        } else if (ctx.modifiedClause() != null) {
-            return visitModifiedClause(ctx.modifiedClause());
+        } else if (ctx.ownedClause() != null) {
+            return visitOwnedClause(ctx.ownedClause());
         } else if (ctx.dateClause() != null) {
             return visitDateClause(ctx.dateClause());
         } else if (ctx.folderClause() != null) {
@@ -180,8 +180,8 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
     public Clause visitCommandClause(ELFParser.CommandClauseContext ctx) {
         if (ctx.nameClause() != null) {
             return visitNameClause(ctx.nameClause());
-        } else if (ctx.modifiedClause() != null) {
-            return visitModifiedClause(ctx.modifiedClause());
+        } else if (ctx.ownedClause() != null) {
+            return visitOwnedClause(ctx.ownedClause());
         } else {
             return visitDateClause(ctx.dateClause());
         }
@@ -206,10 +206,10 @@ public class ParseTreeToASTVisitor extends ELFParserBaseVisitor<Node> {
     }
 
     @Override
-    public ModifiedByUserClause visitModifiedClause(ELFParser.ModifiedClauseContext ctx) {
+    public OwnedByUserClause visitOwnedClause(ELFParser.OwnedClauseContext ctx) {
         String text = ctx.TEXT().getText();
 
-        return new ModifiedByUserClause(text);
+        return new OwnedByUserClause(text);
     }
 
     @Override
