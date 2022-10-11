@@ -5,7 +5,7 @@ import Parser.ELFLexer;
 
 public class AtPathClause extends Clause {
 
-    private String path;
+    private final String path;
 
     public AtPathClause(String path) {
         this.path = path;

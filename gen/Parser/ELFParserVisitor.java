@@ -59,12 +59,6 @@ public interface ELFParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCommand(ELFParser.CommandContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ELFParser#commandChoice}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCommandChoice(ELFParser.CommandChoiceContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link ELFParser#delete}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

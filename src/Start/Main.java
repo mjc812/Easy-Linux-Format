@@ -1,16 +1,8 @@
 package Start;
 
 import AST.ASTVisitor;
-import AST.Clauses.*;
 import AST.Evaluator;
 import AST.Node.Node;
-import AST.Program.Program;
-import AST.Program.ProgramPath;
-import AST.Statements.Command;
-import AST.Statements.Commands.Copy;
-import AST.Statements.Commands.Delete;
-import AST.Statements.Get;
-import AST.Statements.Statement;
 import Parser.ELFLexer;
 import Parser.ELFParser;
 import Parser.ParseTreeToASTVisitor;
@@ -22,7 +14,6 @@ import org.antlr.v4.runtime.TokenStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {

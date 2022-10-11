@@ -58,13 +58,13 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     @Override
     public String visit(Copy c, PrintWriter writer) {
-        // TODO
+        // TODO: Implement Copy
         return null;
     }
 
     @Override
     public String visit(Delete d, PrintWriter writer) {
-        // TODO
+        // TODO: Implement Delete
         return null;
     }
 
@@ -82,8 +82,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                     + toVar + " which does not exist");
             return null;
         }
-
-        // TODO: Handle Clause Checks
 
         if (variables.get(toVar) != ELFLexer.FOLDER) {
             System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
@@ -112,8 +110,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                     + var + "\" which does not exist");
             return null;
         }
-
-        // TODO: Handle Clause Checks
 
         writer.println("parentDir=$(dirname \"$" + var + "\")");
         writer.println("mv \"$" + var + "\" \"$parentDir/" + newName + "\"");

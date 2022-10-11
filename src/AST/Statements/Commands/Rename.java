@@ -7,12 +7,10 @@ import AST.Statements.Command;
 import java.util.ArrayList;
 
 public class Rename extends Command {
+    private final String variable;
+    private final String name;
 
-    private String variable;
-    private String name;
-
-    public Rename(ArrayList<Clause> clauseList, String variable, String name) {
-        super(clauseList);
+    public Rename(String variable, String name) {
         this.variable = variable;
         this.name = name;
     }

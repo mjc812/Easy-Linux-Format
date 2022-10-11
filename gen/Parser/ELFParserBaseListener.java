@@ -112,18 +112,6 @@ public class ELFParserBaseListener implements ELFParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCommandChoice(ELFParser.CommandChoiceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCommandChoice(ELFParser.CommandChoiceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDelete(ELFParser.DeleteContext ctx) { }
 	/**
 	 * {@inheritDoc}

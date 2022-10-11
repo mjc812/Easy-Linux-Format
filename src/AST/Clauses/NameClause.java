@@ -5,8 +5,8 @@ import Parser.ELFLexer;
 
 public class NameClause extends Clause {
 
-    private int condition;
-    private String name;
+    private final int condition;
+    private final String name;
 
     public NameClause(String name, int condition) {
         this.condition = condition;

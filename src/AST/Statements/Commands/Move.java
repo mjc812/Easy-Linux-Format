@@ -7,13 +7,11 @@ import AST.Statements.Command;
 import java.util.ArrayList;
 
 public class Move extends Command {
+    private final String fromVariable;
+    private final String toVariable;
+    private final int type;
 
-    private String fromVariable;
-    private String toVariable;
-    private int type;
-
-    public Move(ArrayList<Clause> clauseList, String fromVariable, String toVariable, int type) {
-        super(clauseList);
+    public Move(String fromVariable, String toVariable, int type) {
         this.fromVariable = fromVariable;
         this.toVariable = toVariable;
         this.type = type;

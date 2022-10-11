@@ -1,6 +1,6 @@
 HOME_PATH="/home/c/cwl/cs-410/Documents"
 homeworkFolder=$(find "$HOME_PATH" -maxdepth 1 -type d -name "Homework" -print -quit)
-special=$(find "$HOME_PATH" -maxdepth 1 -type f -name "mySpecialTextFile.txt" -print -quit)
+special=$(find "$HOME_PATH" -type f -name "mySpecialTextFile.txt" -print -quit)
 containsString=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*string*" -print -quit)
 photo=$(find "$HOME_PATH" -maxdepth 1 -type f -name "*.png" -print -quit)
 firstHomework=$(find "$homeworkFolder" -maxdepth 1 -type f -print -quit)
@@ -20,3 +20,5 @@ do
 done
 parentDir=$(dirname "$suffering")
 mv "$suffering" "$parentDir/torment.txt"
+parentDir=$(dirname "$photo")
+mv "$photo" "$parentDir/this is the first .png file I could find"

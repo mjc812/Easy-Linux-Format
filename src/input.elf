@@ -1,6 +1,6 @@
 path = get path /home/c/cwl/cs-410/Documents;
 folder homeworkFolder = get folder where name is Homework;
-file special = get file where name is mySpecialTextFile.txt;
+file special = get file recursively where name is mySpecialTextFile.txt;
 file containsString = get file where name contains string;
 file photo = get file where name suffix .png;
 file firstHomework = get file where in folder homeworkFolder;
@@ -23,3 +23,4 @@ move special to homeworkFolder;
 move all from prefixUBCFiles to homeworkFolder;
 
 rename suffering as torment.txt;
+rename photo as this is the first .png file I could find;
