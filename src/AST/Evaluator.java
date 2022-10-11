@@ -60,22 +60,41 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
     // (3) copy a folder to a folder
     @Override
     public Boolean visit(Copy c, PrintWriter writer) {
-        String result = "cp ";
-        String destFolderName = "";
-        String sourceFileName = "";
-        String[] tempfiles = {"file1", "file2"};
-        // TODO : figure out inputs, do linux copy command
+        String toVar = c.getToVariable();
+        String fromVar = c.getFromVariable();
+
+        if (varNotDeclared(fromVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + fromVar + " which does not exist");
+            return false;
+        } else if (varNotDeclared(toVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + toVar + " which does not exist");
+            return false;
+        }
+
+        // TODO: Handle Clause Checks
+
+        if (variables.get(toVar) != ELFLexer.FOLDER) {
+            System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
+            return false;
+        }
 
         if(c.getType() == ELFLexer.COPY) {
-            // single file/folder -> folder
-            // does get from variable need the path in front of it??
-            result += c.getFromVariable() + " " + c.getToVariable();
-        } else if (c.getType() == ELFLexer.COPYALLFROM) {
-            // multiple files -> folder
-            // find folder (at c.getFromVariable) and then get path of each file and then iterate over all
-            for (String s : tempfiles) {
-                result += s + " ";
+            if (variables.get(fromVar) == ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"copy\" command cannot be a list type");
+                return false;
             }
+            writer.println("cp \"$" + fromVar + "\" \"$" + toVar + "\"");
+        } else {
+            if (variables.get(fromVar) != ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"copy all\" command must be a list type");
+                return false;
+            }
+            writer.println("for file in $" + fromVar);
+            writer.println("do");
+            writer.println("\tcp \"$file\" \"$" + toVar + "\"");
+            writer.println("done");
         }
         return true;
     }
