@@ -56,10 +56,47 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         return true;
     }
 
+    // Copy cases: (1) copy one file to a folder, (2) copy many files to a folder
+    // (3) copy a folder to a folder
     @Override
     public Boolean visit(Copy c, PrintWriter writer) {
-        // TODO
-        return null;
+        String toVar = c.getToVariable();
+        String fromVar = c.getFromVariable();
+
+        if (varNotDeclared(fromVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + fromVar + " which does not exist");
+            return false;
+        } else if (varNotDeclared(toVar)) {
+            System.err.println("ERROR - Variable Exception: attempted to access variable "
+                    + toVar + " which does not exist");
+            return false;
+        }
+
+        // TODO: Handle Clause Checks
+
+        if (variables.get(toVar) != ELFLexer.FOLDER) {
+            System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
+            return false;
+        }
+
+        if(c.getType() == ELFLexer.COPY) {
+            if (variables.get(fromVar) == ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"copy\" command cannot be a list type");
+                return false;
+            }
+            writer.println("cp \"$" + fromVar + "\" \"$" + toVar + "\"");
+        } else {
+            if (variables.get(fromVar) != ELFLexer.FILES) {
+                System.err.println("ERROR - Type Error: first parameter of \"copy all\" command must be a list type");
+                return false;
+            }
+            writer.println("for file in $" + fromVar);
+            writer.println("do");
+            writer.println("\tcp \"$file\" \"$" + toVar + "\"");
+            writer.println("done");
+        }
+        return true;
     }
 
     @Override
