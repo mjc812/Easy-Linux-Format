@@ -182,6 +182,11 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             return false;
         }
 
+        if (variables.get(var) == ELFLexer.FILES) {
+            System.err.println("ERROR - Type Exception: parameter of \"rename\" cannot be a list type.");
+            return false;
+        }
+
         writer.println("parentDir=$(dirname \"$" + var + "\")");
         writer.println("mv \"$" + var + "\" \"$parentDir/" + newName + "\"");
 
