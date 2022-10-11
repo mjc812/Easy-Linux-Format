@@ -27,8 +27,12 @@ public class Main {
         // write the file
         ASTVisitor<PrintWriter, Boolean> astVisitor = new Evaluator();
         PrintWriter writer = new PrintWriter(new FileWriter("output.sh"));
-        parsedProgram.accept(writer, astVisitor);
+        boolean success = parsedProgram.accept(writer, astVisitor);
+        if (success) {
+            System.out.println("Done");
+        } else {
+            System.out.println("Failed");
+        }
         writer.close();
-        System.out.println("Done");
     }
 }

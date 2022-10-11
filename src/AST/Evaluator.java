@@ -23,16 +23,17 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
     public Boolean visit(Program p, PrintWriter writer) {
         p.getProgramPath().accept(writer, this);
         List<Statement> statements = p.getStatementList();
+        boolean success = true;
         for (Statement s : statements) {
-            s.accept(writer, this);
+            success = success && s.accept(writer, this);
         }
-        return null;
+        return success;
     }
 
     @Override
     public Boolean visit(ProgramPath p, PrintWriter writer) {
         writer.println(HOME_PATH_VAR + "=\"" + p.getPath() + "\"");
-        return null;
+        return true;
     }
 
     @Override
@@ -42,17 +43,17 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             findCommand = FindCommand.createFindCommand(g, variables);
         } catch (ClauseException e) {
             System.err.println("ERROR - Clause Exception: " + e);
-            return null;
+            return false;
         } catch (VariableNotDeclaredException e) {
             System.err.println("ERROR - Variable Exception: " + e);
-            return null;
+            return false;
         }
 
         String var = g.getVariable();
         variables.put(var, g.getVariableType());
         writer.println(var + "=" + findCommand);
 
-        return null;
+        return true;
     }
 
     @Override
@@ -75,30 +76,30 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         if (varNotDeclared(fromVar)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + fromVar + " which does not exist");
-            return null;
+            return false;
         } else if (varNotDeclared(toVar)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + toVar + " which does not exist");
-            return null;
+            return false;
         }
 
         // TODO: Handle Clause Checks
 
         if (variables.get(toVar) != ELFLexer.FOLDER) {
             System.err.println("ERROR - Type Error: " + toVar + " is not a folder");
-            return null;
+            return false;
         }
 
         if (m.getType() == ELFLexer.MOVE) {
             if (variables.get(fromVar) == ELFLexer.FILES) {
                 System.err.println("ERROR - Type Error: first parameter of \"move\" command cannot be a list type");
-                return null;
+                return false;
             }
             writer.println("mv \"$" + fromVar + "\" \"$" + toVar + "\"");
         } else {
             if (variables.get(fromVar) != ELFLexer.FILES) {
                 System.err.println("ERROR - Type Error: first parameter of \"move all\" command must be a list type");
-                return null;
+                return false;
             }
             writer.println("for file in $" + fromVar);
             writer.println("do");
@@ -106,7 +107,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             writer.println("done");
         }
 
-        return null;
+        return true;
     }
 
     @Override
@@ -117,7 +118,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         if (varNotDeclared(var)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable \""
                     + var + "\" which does not exist");
-            return null;
+            return false;
         }
 
         // TODO: Handle Clause Checks
@@ -125,7 +126,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         writer.println("parentDir=$(dirname \"$" + var + "\")");
         writer.println("mv \"$" + var + "\" \"$parentDir/" + newName + "\"");
 
-        return null;
+        return true;
     }
 
     // NOT USED

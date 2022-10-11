@@ -18,5 +18,8 @@ for file in $prefixUBCFiles
 do
 	mv "$file" "$homeworkFolder"
 done
+mv "$PBAndJ" "$homeworkFolder"
 parentDir=$(dirname "$suffering")
 mv "$suffering" "$parentDir/torment.txt"
+parentDir=$(dirname "$fileZ")
+mv "$fileZ" "$parentDir/somethingDifferent.txt"
