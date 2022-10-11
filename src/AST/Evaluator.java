@@ -72,6 +72,8 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             return false;
         }
 
+        // TODO: Clause checks
+
         if (d.getType() == ELFLexer.DELETE) {
             if (variables.get(var) == ELFLexer.FILES) {
                 System.err.println("ERROR - Type Error: parameter of \"delete\" command cannot be a list type");
