@@ -1,0 +1,16 @@
+HOME_PATH="/home/e/emcd4/cs-410/Canucks"
+folderVar=$(find "$HOME_PATH" -type d -name "Coaches" -print -quit)
+fileA=$(find "$HOME_PATH" -type f -name "quinnhughes.txt" -print -quit)
+fileB=$(find "$HOME_PATH" -type f -name "*ill*" -print -quit)
+fileC=$(find "$HOME_PATH" -type f -name "pet*" -print -quit)
+fileD=$(find "$HOME_PATH" -type f -name "*.png" -print -quit)
+fileE=$(find "$folderVar" -type f -print -quit)
+filePath="$HOME_PATH"/Mascots/Finn.txt
+fileF=$(find "$filePath" -print -quit)
+fileG=$(find "$HOME_PATH" -type f -name "*mill*" -name "*iller*" -print -quit)
+fileH=$(find "$HOME_PATH" -type f -name "F_*" -name "*iller*" -print -quit)
+fileI=$(find "$HOME_PATH" -type f -user emcd4 -print -quit)
+fileJ=$(find "$HOME_PATH" -type f -newermt 2022-10-10 ! -newermt 2022-10-11 -print -quit)
+fileK=$(find "$HOME_PATH" -type f ! -newermt 2022-10-10 -print -quit)
+fileL=$(find "$HOME_PATH" -type f -newermt 2022-10-10 -print -quit)
+fileZ=$(find "$folderVar" -type f -name "ian*" -name "*lark*" -user emcd4 -newermt 2022-10-09 ! -newermt 2022-10-10 -print -quit)

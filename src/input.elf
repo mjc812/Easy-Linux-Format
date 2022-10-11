@@ -1,16 +1,20 @@
-path = get path /home/c/cwl/cs-410/Documents;
+path = get path /home/e/emcd4/cs-410/Canucks;
+folder folderVar = get folder where name is Coaches;
+file fileA = get file where name is quinnhughes.txt;
+file fileB = get file where name contains ill;
+file fileC = get file where name prefix pet;
+file fileD = get file where name suffix .png;
+file fileE = get file where in folder folderVar;
+file fileF = get file where at path /Mascots/Finn.txt;
+file fileG = get file where name contains mill, AND name contains iller;
+file fileH = get file where name prefix F_, AND name contains iller;
+file fileI = get file where owned by emcd4;
+file fileJ = get file where date modified on 2022-10-10;
+file fileK = get file where date modified before 2022-10-10;
+file fileL = get file where date modified after 2022-10-09;
 
-folder homeworkFolder = get folder where name is Homework;
-file igneousFile = get file where name is igneous.jpg, AND in folder homeworkFolder;
-rename igneousFile as igneous-rock.jpg;
-
-folder archivedRocks = get folder where at path /Archive/Rock Photos;
-files rockFiles = get all files where name contains rock, AND in folder homeworkFolder;
-move all from rockFiles to archivedRocks;
-
-files oldHwk = get all files recursively where name prefix SFU;
-folder archivedHwk = get folder where at path /Archive/Homework;
-move all from oldHwk to archivedHwk;
-
-folder schoolFolder = get folder where at path /Homework/School2020;
-delete schoolFolder;
+file fileZ = get file where in folder folderVar,
+    AND name prefix ian,
+    AND owned by emcd4,
+    AND date modified on 2022-10-09,
+    AND name contains lark;

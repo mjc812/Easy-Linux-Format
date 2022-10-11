@@ -157,7 +157,7 @@ public class ELFParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitModifiedClause(ELFParser.ModifiedClauseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOwnedClause(ELFParser.OwnedClauseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

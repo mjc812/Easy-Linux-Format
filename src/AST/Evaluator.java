@@ -4,12 +4,16 @@ import AST.Clauses.*;
 import AST.Program.*;
 import AST.Statements.*;
 import AST.Statements.Commands.*;
+import Exceptions.ClauseException;
+import Exceptions.InvalidDateException;
 import Parser.ELFLexer;
 import Parser.ELFParser;
 
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static Parser.ELFLexer.MOVE;
@@ -22,6 +26,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     // TODO: possibly make map value some sort of Variable object so we can retain info like recursive, and stuff
     // Map to store current variable assignments, with value being the variables's path representation
     private final Map<String, String> variables = new HashMap<>();
+    private final Map<String, List<String>> listOfPaths = new HashMap<>();
 
     @Override
     public String visit(Program p, PrintWriter writer) {
@@ -43,18 +48,30 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     public String visit(Get g, PrintWriter writer) {
         // TODO: finish implementing
 
-        if (g.getGetVariableType() == ELFLexer.GETFOLDER || g.getGetVariableType() == ELFLexer.GETFILE) {
-            String filePath = processFilePathClauses(g);
-
-            // TODO: Process Date clause, Modified clause
-            variables.put(g.getVariable(), filePath);
-            writer.println(String.format("%s=\"%s\"", g.getVariable(), filePath));
+        String findCommand;
+        try {
+            findCommand = FindCommand.createFindCommand(g, writer, variables);
+        } catch (ClauseException e) {
+            // TODO: static error - clause exception
+            System.err.println("ERROR - Clause Exception: " + e.toString());
+            return null;
         }
+
+        String var = g.getVariable();
+        if (g.getGetVariableType() == ELFLexer.GETFILES) {
+            // TODO - print get files case
+            writer.println("GET FILES");
+        } else {
+            variables.put(var, null);
+            writer.println(var + "=" + findCommand);
+        }
+
         return null;
     }
 
     /**
      * returns a file path to use based on the given statement's at path, folder, and name clauses
+     *
      * @param s statement
      * @return the file path filtered by given name and folder clauses
      */
@@ -98,7 +115,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
                     filePath.append("/").append(nc.getName());
                 } else if (nc.getCondition() == ELFLexer.PREFIX) {
                     // TODO: prefix
-                    filePath.append("/").append(nc.getName()+ "*");
+                    filePath.append("/").append(nc.getName() + "*");
                 } else if (nc.getCondition() == ELFLexer.SUFFIX) {
                     // TODO: suffix
                     filePath.append("/").append("*" + nc.getName());
@@ -198,7 +215,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
     }
 
     @Override
-    public String visit(ModifiedByUserClause m, PrintWriter param) {
+    public String visit(OwnedByUserClause m, PrintWriter param) {
         return null;
     }
 
@@ -214,5 +231,189 @@ public class Evaluator implements ASTVisitor<PrintWriter, String> {
 
     private boolean isVarDeclared(String variable) {
         return variables.containsKey((variable));
+    }
+
+
+    public static class FindCommand {
+        public static String createFindCommand(Get g, PrintWriter writer, Map<String, String> variables) throws ClauseException {
+            Map<Integer, List<Clause>> clauseMap = new HashMap<>();
+
+            StringBuilder findCommand = new StringBuilder();
+            String type = getType(g);
+            findCommand.append("$(find");
+
+            for (Clause c : g.getClauseList()) {
+                if (!clauseMap.containsKey(c.getType())) {
+                    clauseMap.put(c.getType(), new ArrayList<>());
+                }
+                clauseMap.get(c.getType()).add(c);
+            }
+
+            String result = processAtPathClause(clauseMap, g, writer, variables, findCommand);
+            if (result != null) return result;
+            processInFolderClause(clauseMap, variables, findCommand, type);
+            processNameClause(clauseMap, findCommand);
+            processOwnedByUserClause(clauseMap, findCommand);
+            processDateClause(clauseMap, findCommand);
+
+            endFindCommand(g, findCommand);
+            return findCommand.toString();
+        }
+
+        private static void processDateClause(Map<Integer, List<Clause>> clauseMap, StringBuilder findCommand) throws ClauseException {
+            if (clauseMap.containsKey(ELFLexer.DATE)) {
+                List<Clause> dateClauseList = clauseMap.get(ELFLexer.DATE);
+                if (dateClauseList.size() > 1) {
+                    throw new ClauseException("Cannot have multiple date clauses");
+                }
+                DateModifiedClause dc = (DateModifiedClause) dateClauseList.get(0);
+
+                Date date;
+                try {
+                    date = createDate(dc.getDate());
+                } catch (InvalidDateException e) {
+                    throw new ClauseException("Invalid date");
+                }
+
+                String dateStr = formatDate(date);
+                Date dayAfter = getDayAfter(date);
+                String dayAfterDateStr = formatDate(dayAfter);
+                switch (dc.getCondition()) {
+                    case ELFLexer.ON:
+                        findCommand.append(" -newermt ").append(dateStr).append(" ! -newermt ").append(dayAfterDateStr);
+                        break;
+                    case ELFLexer.BEFORE:
+                        findCommand.append(" ! -newermt ").append(dateStr);
+                        break;
+                    case ELFLexer.AFTER:
+                        findCommand.append(" -newermt ").append(dayAfterDateStr);
+                        break;
+                }
+            }
+        }
+
+        private static void processOwnedByUserClause(Map<Integer, List<Clause>> clauseMap, StringBuilder findCommandStr) throws ClauseException {
+            if (!clauseMap.containsKey(ELFLexer.OWNED)) {
+                return;
+            }
+            List<Clause> ownedClauseList = clauseMap.get(ELFLexer.OWNED);
+            if (ownedClauseList.size() > 1) {
+                throw new ClauseException("Cannot have multiple \"owned by\" clauses");
+            }
+            OwnedByUserClause oc = (OwnedByUserClause) ownedClauseList.get(0);
+            findCommandStr.append(" -user ").append(oc.getUser());
+        }
+
+        private static void processNameClause(Map<Integer, List<Clause>> clauseMap, StringBuilder findCommandStr) throws ClauseException {
+            if (!clauseMap.containsKey(ELFParser.NAME)) {
+                return;
+            }
+
+            List<Clause> nameClauseList = clauseMap.get(ELFParser.NAME);
+            boolean hasPrefixClause = false;
+            boolean hasSuffixClause = false;
+
+            for (Clause c : nameClauseList) {
+                NameClause nc = (NameClause) c;
+                findCommandStr.append(" -name ");
+                switch (nc.getCondition()) {
+                    case ELFLexer.IS:
+                        if (nameClauseList.size() > 1) {
+                            throw new ClauseException("Cannot have multiple name clauses when one is a \"name is\" clauses");
+                        }
+                        findCommandStr.append("\"").append(nc.getName()).append("\"");
+                        break;
+                    case ELFLexer.CONTAINS:
+                        findCommandStr.append("\"*").append(nc.getName()).append("*\"");
+                        break;
+                    case ELFLexer.PREFIX:
+                        if (hasPrefixClause) {
+                            throw new ClauseException("Cannot have multiple \"prefix\" clauses");
+                        }
+                        findCommandStr.append("\"").append(nc.getName()).append("*\"");
+                        hasPrefixClause = true;
+                        break;
+                    case ELFLexer.SUFFIX:
+                        if (hasSuffixClause) {
+                            throw new ClauseException("Cannot have multiple \"suffix\" clauses");
+                        }
+                        findCommandStr.append("\"*").append(nc.getName()).append("\"");
+                        hasSuffixClause = true;
+                        break;
+                }
+            }
+        }
+
+        private static void processInFolderClause(Map<Integer, List<Clause>> clauseMap, Map<String, String> variables, StringBuilder findCommandStr, String type) throws ClauseException {
+            if (!clauseMap.containsKey(ELFParser.INFOLDER)) {
+                findCommandStr.append(" \"").append("$HOME_PATH").append("\"").append(" -type ").append(type);
+                return;
+            }
+
+            List<Clause> inFolderClauses = clauseMap.get(ELFParser.INFOLDER);
+            if (inFolderClauses.size() > 1) {
+                throw new ClauseException("Cannot have multiple \"in folder\" clauses");
+            }
+            InFolderClause inFolderClause = (InFolderClause) inFolderClauses.get(0);
+            String folderVar = inFolderClause.getFolder();
+            if (!variables.containsKey(folderVar)) {
+                throw new ClauseException("Tried to access folder variable that does not exist");
+            } else {
+                findCommandStr.append(" \"").append("$").append(folderVar).append("\"").append(" -type ").append(type);
+            }
+        }
+
+        private static String processAtPathClause(Map<Integer, List<Clause>> clauseMap, Get g, PrintWriter writer, Map<String, String> variables, StringBuilder findCommandStr) throws ClauseException {
+            if (!clauseMap.containsKey(ELFParser.ATPATH)) {
+                return null;
+            }
+
+            if (clauseMap.size() > 1) {
+                throw new ClauseException("Cannot have multiple clauses when one is an \"at path\" clause");
+            }
+            AtPathClause apc = (AtPathClause) clauseMap.get(ELFParser.ATPATH).get(0);
+            String filePath = "\"$HOME_PATH\"" + apc.getPath();
+            writer.println("filePath=" + filePath);
+            variables.put("filePath", filePath);
+            findCommandStr.append(" \"").append("$filePath").append("\"");
+            endFindCommand(g, findCommandStr);
+            return findCommandStr.toString();
+        }
+
+        private static void endFindCommand(Get g, StringBuilder findCommand) {
+            if (!(g.getGetVariableType() == ELFLexer.GETFILES)) {
+                findCommand.append(" -print -quit");
+            }
+            findCommand.append(")");
+        }
+
+        private static Date createDate(String dateStr) throws InvalidDateException {
+            SimpleDateFormat sdfrmt = new SimpleDateFormat("yyyy-MM-dd");
+            sdfrmt.setLenient(false);
+            try {
+                return sdfrmt.parse(dateStr);
+            } catch (ParseException e) {
+                throw new InvalidDateException("");
+            }
+        }
+
+        private static Date getDayAfter(Date date) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, 1);
+            return c.getTime();
+        }
+
+        private static String formatDate(Date date) {
+            SimpleDateFormat sdfrmt = new SimpleDateFormat("yyyy-MM-dd");
+            return sdfrmt.format(date);
+        }
+
+        private static String getType(Get g) {
+            if (g.getGetVariableType() == ELFLexer.GETFOLDER) {
+                return "d";
+            }
+            return "f";
+        }
     }
 }

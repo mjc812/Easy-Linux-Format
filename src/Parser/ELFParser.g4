@@ -20,11 +20,11 @@ copy: copyChoice VAR_TEXT TO VAR_TEXT;
 copyChoice: COPY | COPYALLFROM;
 rename: RENAME VAR_TEXT AS TEXT;
 
-getClause: nameClause | modifiedClause | dateClause | folderClause | pathClause;
-commandClause: nameClause | modifiedClause | dateClause;
+getClause: nameClause | ownedClause | dateClause | folderClause | pathClause;
+commandClause: nameClause | ownedClause | dateClause;
 nameClause: NAME nameCondition TEXT;
 nameCondition: IS | CONTAINS | PREFIX | SUFFIX;
-modifiedClause: MODIFIED BY TEXT;
+ownedClause: OWNED BY TEXT;
 dateClause: DATE MODIFIED dateCondition TEXT;
 dateCondition: BEFORE | ON | AFTER;
 folderClause: INFOLDER TEXT;

@@ -208,15 +208,15 @@ public interface ELFParserListener extends ParseTreeListener {
 	 */
 	void exitNameCondition(ELFParser.NameConditionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ELFParser#modifiedClause}.
+	 * Enter a parse tree produced by {@link ELFParser#ownedClause}.
 	 * @param ctx the parse tree
 	 */
-	void enterModifiedClause(ELFParser.ModifiedClauseContext ctx);
+	void enterOwnedClause(ELFParser.OwnedClauseContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ELFParser#modifiedClause}.
+	 * Exit a parse tree produced by {@link ELFParser#ownedClause}.
 	 * @param ctx the parse tree
 	 */
-	void exitModifiedClause(ELFParser.ModifiedClauseContext ctx);
+	void exitOwnedClause(ELFParser.OwnedClauseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ELFParser#dateClause}.
 	 * @param ctx the parse tree
