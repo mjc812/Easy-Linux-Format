@@ -62,7 +62,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + toVar + " which does not exist");
             return false;
-        }else if (varNotDeclared(fromVar)) {
+        } else if (varNotDeclared(fromVar)) {
             System.err.println("ERROR - Variable Exception: attempted to access variable "
                     + fromVar + " which does not exist");
             return false;
@@ -84,13 +84,16 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
                 System.err.println("ERROR - Type Error: first parameter of \"copy all\" command must be a list type");
                 return false;
             }
-            writer.println("for file in $" + fromVar);
-            writer.println("do");
-            writer.println("\tcp \"$file\" \"$" + toVar + "\"");
-            writer.println("done");
+            printLoop(writer, "cp", fromVar, toVar);
         }
 
         return true;
+    }
+
+    private void printLoop(PrintWriter writer, String command, String source, String destination) {
+        writer.println(String.format("echo \"$%s\" | while IFS=\"\" read -r -d \"\" file; do", source));
+        writer.println(String.format("\t%s \"$file\" \"$%s\"", command, destination));
+        writer.println("done");
     }
 
     @Override
@@ -114,10 +117,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
                 System.err.println("ERROR - Type Error: parameter of \"delete\" command must be a list type");
                 return false;
             }
-            writer.println("for file in $" + var);
-            writer.println("do");
-            writer.println("\trm -r \"$file\"");
-            writer.println("done");
+            printLoop(writer, "rm -r", var, "");
         }
 
         return true;
@@ -154,10 +154,7 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
                 System.err.println("ERROR - Type Error: first parameter of \"move all\" command must be a list type");
                 return false;
             }
-            writer.println("for file in $" + fromVar);
-            writer.println("do");
-            writer.println("\tmv \"$file\" \"$" + toVar + "\"");
-            writer.println("done");
+            printLoop(writer, "mv", fromVar, toVar);
         }
 
         return true;
@@ -191,14 +188,6 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             date = createDate(d.getDate());
         } catch (InvalidDateException e) {
             return false;
-        }
-        String dateStr = formatDate(date);
-        Date dayAfter = getDayAfter(date);
-        String dayAfterDateStr = formatDate(dayAfter);
-        switch (d.getCondition()) {
-            case ELFLexer.ON -> writer.print(" -newermt " + dateStr + " ! -newermt " + dayAfterDateStr);
-            case ELFLexer.BEFORE -> writer.print(" ! -newermt " + dateStr);
-            case ELFLexer.AFTER ->  writer.print(" -newermt " + dayAfterDateStr);
         }
         return true;
     }
@@ -234,7 +223,8 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
 
     @Override
     public Boolean visit(AtPathClause p, PrintWriter writer) {
-        writer.print(" \"$HOME_PATH\"" + p.getPath());
+//        writer.print(" \"$HOME_PATH\"" + p.getPath());
+        writer.print(String.format(" \"$%s%s\"", HOME_PATH_VAR, p.getPath()));
         return true;
     }
 
@@ -359,8 +349,9 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
     }
 
     private void endFindCommand(Get g, PrintWriter writer) {
+        writer.print(" -print0");
         if (!(g.getGetVariableType() == ELFLexer.GETFILES)) {
-            writer.print(" -print -quit");
+            writer.print(" -quit");
         }
         writer.print(")\n");
     }
