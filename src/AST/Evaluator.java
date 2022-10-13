@@ -43,10 +43,10 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         try {
             printFindCommand(g, writer);
         } catch (ClauseException e) {
-            System.err.println("ERROR - Clause Exception: " + e);
+            System.err.println("ERROR - Clause Exception: " + e.getMessage());
             return false;
         } catch (VariableNotDeclaredException e) {
-            System.err.println("ERROR - Variable Exception: " + e);
+            System.err.println("ERROR - Variable Exception: " + e.getMessage());
             return false;
         }
         variables.put(var, g.getVariableType());
