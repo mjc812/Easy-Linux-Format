@@ -264,7 +264,10 @@ We are currently on schedule according to our roadmap and the only changes have 
 - Still working on video
 
 ## Status/results of final user study
-TODO
+- Completed final user study where participant interacted with our DSL
+- They wrote and ran the code succesfully and responded well to the errors they would get when doing something that our language doesn't allow
+- Found the english-like syntax to be easy to understand
+- Dependent on past programming experience -- types could be a point of confusion if they haven't worked with them in the past
 
 ## Any changes to the language design
 - We’ve chosen to change our language so that you can only use clauses (i.e. querying based on different properties) with the get function only and not with the commands like copy, delete, move just to simplify the language design since you can accomplish the same functionality using the clauses with get as you could with the commands.
