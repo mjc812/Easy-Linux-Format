@@ -256,4 +256,23 @@ We are currently on schedule according to our roadmap and the only changes have 
 - We hope to finish the implementation, static and dynamic checks by October 14th so that we can carry out our user study on the 15th
 - We will be creating the video after the 14th
 
+# Milestone 5
 
+## Status of implementation
+- Currently 90% done implementation
+- We are in the testing / debugging phase of our roadmap
+- Still working on video
+
+## Status/results of final user study
+- Completed final user study where participant interacted with our DSL
+- They wrote and ran the code succesfully and responded well to the errors they would get when doing something that our language doesn't allow
+- Found the english-like syntax to be easy to understand
+- Dependent on past programming experience -- types could be a point of confusion if they haven't worked with them in the past
+
+## Any changes to the language design
+- We’ve chosen to change our language so that you can only use clauses (i.e. querying based on different properties) with the get function only and not with the commands like copy, delete, move just to simplify the language design since you can accomplish the same functionality using the clauses with get as you could with the commands.
+
+## Planned timeline for the remaining days
+- Finish debugging and testing
+- Finish video
+- Work on any stretch goals if time allows for it
