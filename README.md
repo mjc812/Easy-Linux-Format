@@ -11,3 +11,5 @@
 #### Click 'Generate Antlr Recognizer' for both ELFLexer and ELFParser
 
 #### Make sure to add antlr-4.10.1-complete in the library
+
+#### To run .sh files use `zsh <fileName>.sh`
