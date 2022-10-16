@@ -38,6 +38,11 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
 
     @Override
     public Boolean visit(Get g, PrintWriter writer) {
+        if (!isTypeMatched(g)) {
+            System.err.println("ERROR - Type Error: declared variable type does not match type in get statement");
+            return false;
+        }
+
         String var = g.getVariable();
         writer.print(var + "=");
         try {
@@ -189,13 +194,21 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
         } catch (InvalidDateException e) {
             return false;
         }
+        String dateStr = formatDate(date);
+        Date dayAfter = getDayAfter(date);
+        String dayAfterDateStr = formatDate(dayAfter);
+        switch (d.getCondition()) {
+            case ELFLexer.ON -> writer.print(" -newermt " + dateStr + " ! -newermt " + dayAfterDateStr);
+            case ELFLexer.BEFORE -> writer.print(" ! -newermt " + dateStr);
+            case ELFLexer.AFTER ->  writer.print(" -newermt " + dayAfterDateStr);
+        }
         return true;
     }
 
     @Override
     public Boolean visit(InFolderClause f, PrintWriter writer) {
         String folderVar = f.getFolder();
-        if (!variables.containsKey(folderVar)) {
+        if (!variables.containsKey(folderVar) || variables.get(folderVar) != ELFLexer.FOLDER) {
             return false;
         } else {
             writer.print(" \"$" + folderVar + "\"");
@@ -383,5 +396,14 @@ public class Evaluator implements ASTVisitor<PrintWriter, Boolean> {
             return "d";
         }
         return "f";
+    }
+
+    private boolean isTypeMatched(Get g) {
+        int varType = g.getVariableType();
+        int varGetType = g.getGetVariableType();
+
+        return (varType == ELFLexer.FILE && varGetType == ELFLexer.GETFILE) ||
+        (varType == ELFLexer.FILES && varGetType == ELFLexer.GETFILES) ||
+        (varType == ELFLexer.FOLDER && varGetType == ELFLexer.GETFOLDER);
     }
 }
