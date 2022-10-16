@@ -53,7 +53,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileSuccess_IsName() throws IOException {
+    public void TestGetSuccess_FileIsName() throws IOException {
         String input = "file myFile = get file where name is dude;";
         testWriter.write(input);
         testWriter.close();
@@ -68,23 +68,41 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileSuccess_MultipleContainsName() throws IOException {
-        String input = "file myFile = get file where name contains dude, AND name contains someone, AND name contains hi;";
+    public void TestGetSuccess_Files() throws IOException {
+        String input = "files myFiles = get all files where name is dude;";
         testWriter.write(input);
         testWriter.close();
-        String expected = "myFile=$(find \"$HOME_PATH\" -maxdepth 1 -type f -name \"*dude*\" -name \"*someone*\" -name \"*hi*\" -print0 -quit)";
 
         boolean success = parseInput();
         assertTrue(success);
 
         BufferedReader br = new BufferedReader(new FileReader(new File(TEST_OUTPUT_FILE)));
         String output = readLastLine(br);
-        assertEquals(expected, output);
+        assertTrue(output.contains("-maxdepth 1"));
+        assertFalse(output.contains("-quit"));
         br.close();
     }
 
     @Test
-    public void TestGetFileSuccess_ContainsPrefixSuffixName() throws IOException {
+    public void TestGetSuccess_FileMultipleContainsName() throws IOException {
+        String input = "file myFile = get file where name contains dude, AND name contains someone, AND name contains hi;";
+        testWriter.write(input);
+        testWriter.close();
+        String[] expectedFlags = {"\"$HOME_PATH\"", "-maxdepth 1", "-type f", "-name \"*dude*\"", "-name \"*someone*\"", "-name \"*hi*\"", "-quit"};
+
+        boolean success = parseInput();
+        assertTrue(success);
+
+        BufferedReader br = new BufferedReader(new FileReader(new File(TEST_OUTPUT_FILE)));
+        String output = readLastLine(br);
+        for (String flag : expectedFlags) {
+            assertTrue(output.contains(flag));
+        }
+        br.close();
+    }
+
+    @Test
+    public void TestGetSuccess_FileContainsPrefixSuffixName() throws IOException {
         String input = "file myFile = get file where name contains dude, AND name contains someone, AND name prefix hi, AND name suffix bye;";
         testWriter.write(input);
         testWriter.close();
@@ -102,7 +120,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileFail_MultipleNameConditionsWithIs() throws IOException {
+    public void TestGetFail_FileMultipleNameConditionsWithIs() throws IOException {
         String input = "file myFile = get file where name is dude, AND name contains someone, AND name prefix hi, AND name prefix bye;";
         testWriter.write(input);
         testWriter.close();
@@ -112,7 +130,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileFail_MultiplePrefix() throws IOException {
+    public void TestGetFail_FileMultiplePrefix() throws IOException {
         String input = "file myFile = get file where name is dude, AND name prefix someone, AND name prefix hi;";
         testWriter.write(input);
         testWriter.close();
@@ -122,7 +140,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileFail_MultipleSuffix() throws IOException {
+    public void TestGetFail_FileMultipleSuffix() throws IOException {
         String input = "file myFile = get file where name suffix dude, AND name suffix someone;";
         testWriter.write(input);
         testWriter.close();
@@ -132,7 +150,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void TestGetFileSuccess_RecursivelyOnFile() throws IOException {
+    public void TestGetSuccess_FileRecursivelyOnFile() throws IOException {
         String input = "file myFile = get file recursively where name is dude;";
         testWriter.write(input);
         testWriter.close();
@@ -527,6 +545,81 @@ public class EvaluatorTests {
                 file myFile = get file where name is hi;
                 file myFolder = get folder name contains hi;
                 copy all from myFile to myFolder;
+                """;
+        testWriter.write(input);
+        testWriter.close();
+
+        boolean success = parseInput();
+        assertFalse(success);
+    }
+
+    @Test
+    public void TestDeleteSuccess_File() throws IOException {
+        String input =
+                """
+                file myFile = get file where name is hi;
+                delete myFIle;
+                """;
+        testWriter.write(input);
+        testWriter.close();
+
+        boolean success = parseInput();
+        assertFalse(success);
+    }
+
+    @Test
+    public void TestDeleteSuccess_Folder() throws IOException {
+        String input =
+                """
+                file myFolder = get folder name contains hi;
+                delete myFolder;
+                """;
+        testWriter.write(input);
+        testWriter.close();
+
+        boolean success = parseInput();
+        assertFalse(success);
+    }
+
+    @Test
+    public void TestDeleteSuccess_Files() throws IOException {
+        String input =
+                """
+                files myFiles = get all files where name is hey;
+                delete all from myFiles;
+                """;
+        testWriter.write(input);
+        testWriter.close();
+
+        boolean success = parseInput();
+        assertTrue(success);
+    }
+
+    @Test
+    public void TestDeleteFail_MismatchTypeFile() throws IOException {
+        String input =
+                """
+                files myFiles = get all files where name is hey;
+                delete myFiles;
+                """;
+        testWriter.write(input);
+        testWriter.close();
+
+        boolean success = parseInput();
+        assertFalse(success);
+
+        BufferedReader br = new BufferedReader(new FileReader(new File(TEST_OUTPUT_FILE)));
+        String output = readLastLine(br);
+        assertFalse(output.contains("rm"));
+        br.close();
+    }
+
+    @Test
+    public void TestDeleteFail_MismatchTypeFiles() throws IOException {
+        String input =
+                """
+                file myFile = get file where name is hey;
+                delete all from myFile;
                 """;
         testWriter.write(input);
         testWriter.close();
