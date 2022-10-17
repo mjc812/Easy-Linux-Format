@@ -18,6 +18,13 @@
 3. Place the output file in the root of the directory you are editing
 4. To run the .sh file use `zsh output.sh`
 
+### Test Environment
+#### This is to set up a test environment to base the elf script off of and to run the output:
+1. Clone this repo: https://github.com/kazhang123/rocks
+2. Run initialize.sh with `zsh initialize.sh`. This will initialize a file structure to work out of. You can rerun `initialize.sh` to reset the file structure after manipulating it.
+ `input_rocks.elf` is a sample `elf` script for the file structure
+3. When you have finished writing your elf script and retrieved the `output.sh` file, copy the file to the project's directory and run `zsh output.sh`.
+
 ### Example Script
 ```
 path = get path /home/e/emcd4/cs-410/Documents;
