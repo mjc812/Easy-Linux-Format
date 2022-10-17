@@ -9,7 +9,7 @@
 
 ## Description
 
-Our DSL – named **ELF** – is a language that would make writing scripts for bulk file manipulation more accessible and beginner friendly. Users can easily write re-usable executable scripts for linux machines that will move, copy, rename, and/or delete files en masse using our more human-readable commands.
+Our DSL – named **ELF** – is a language that would make writing scripts for bulk file manipulation more accessible and beginner friendly. We've designed ELF to be most suitable for Linux beginners. Users can easily write re-usable executable scripts for linux machines that will move, copy, rename, and/or delete files en masse using our more human-readable commands. 
 
 ## Ideas so far
 
