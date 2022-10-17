@@ -1,99 +1,117 @@
 # ELF Cheat Sheet
 
-A reference sheet for new users to ELF. For a better viewing experience: https://common-pyroraptor-456.notion.site/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc
+A reference sheet for new users to ELF.
 
 # Object Types
 
-These will be the things that you will be changing with ELF! You can perform actions on a single file and folder or multiple files!
+In ELF, you can use variables to store data values. There are different **types** of variables. 
 
-## 📁 Folder
+## Folder
 
 A directory located on your computer where files live
 
-## 📄 🎬 📷  File
+## File
 
- Think — a word document, a picture, a movie, a shell script file, and on and on and on! As long as it can fit in a folder then you’re good!
+Think — a word document, a picture, a movie, a shell script file, and on and on and on! As long as it can fit in a folder then you’re good!
+
+## Files
+
+A type to store a list of files. 
 
 <aside>
-💡 A file or folder is denoted with the **file** or **folder** keyword ahead of the name you give it!
+💡 A folder/file/files variable is denoted with the **folder,  file, or files** keyword ahead of the name you give it.
 
 ```reason
-file fileName ....
-folder folderName ...
+**folder** folderName ...
+**file** fileName ...
+**files** files ...
 ```
 
 </aside>
 
 # Actions
 
-These are the actions that you want to perform on our (aforementioned) objects! They’re format differs per object — but don’t worry we will show you how to use each of these with both folders and files and their expected format!
+These are the actions that you can perform on your variables and objects. You are able to **set your root path, assign variables**, and perform **commands** to modify your files
 
-### Path
+---
+
+### Set Root Path
 
 <aside>
-💡 Before doing anything in ELF, you need to specify a path to a folder that we can work out of! This folder will be the place where we will grab any files you want to use commands on as well as where we will be putting the altered files once you finish writing commands!
+💡 Before doing anything in ELF, you need to specify a root path you want to work out of
 
 </aside>
 
 **FORMAT:**
 
 ```bash
-path = get path C://This/is/your/path/;
+path = get path /home/this/is/your/path;
 ```
+
+---
 
 ## Assignment:
 
+These are ways to assign values to variables
+
 ### Get
 
-Get is our main assignment action — before you perform a command on any object you first have to use the “get” command — so ELF knows what object you’re referring to! 
+Use the assignment operator ( `=` ) to assign an object to your variable. Use `get` with the **object type** and the [**assignment filtering](https://www.notion.so/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc)** to specify the object(s) to retrieve. 
 
-<aside>
-💡 Once you call `get` on an object, you can then begin to use commands on it!
+In the example below, we assign the file whose file name is “Homework.docx” to the `file` variable called **fileA**
 
-</aside>
-
-**FORMAT:**
+**Examples:**
 
 ```markdown
-file yourFileName = **get** file where name is fileName;
-folder yourFolder = get folder where name is FolderName;
-files filesListName = get all files in yourFolder;
+file fileA = **get** **file** where name is Homework.docx;
 ```
 
-```jsx
-file yourFile = get file at path this/is/a/path;
-folder yourFolder = get folder at path this/is/another/path;
+Some examples for all object types: 
+
+```yaml
+**folder** yourFolder = **get** **folder** where name is CoolFolder;
+**files** filesList = **get all** **files** in yourFolder;
+**file** yourFile = **get file** at path /this/is/a/path;
 ```
 
-### Recursively
-
-Recursively is a special keyword you can place on a `get all files` command that tells us to check every folder within a folder for the file you’re wanting to get. If you don’t use this keyword we will only search the very first level for your file.
+**Recursively**
+Recursively is a special keyword you can place on a `get all files` command that tells us to check every folder within a folder for the file you’re wanting to get. If you don’t use this keyword we will only search the very first level of the folder for your file.
 
 ```markdown
+file fileA = get file **recursively** where name contains UBC;
+folder folderA = get folder **recursively** where name prefix My;
 files listA = get all files **recursively** where name is Brandon Symmers;
 ```
 
-> Later on we will show you how to advance your get statements to filter for things!
-> 
+### Assignment Filtering
 
-## Assignment Filtering
+You can get an object based on these criteria:
 
-### By name, modified, or date
+- **name**
+- **owned by**
+- **date modified**
+- **in folder**
+- **at path**
 
-**This can be used to specify a general filter based on the properties of the file or folder:**
+<aside>
+💡 For `file` and `folder` types, if multiple items match the filtering criteria, the first match will be returned
+
+</aside>
 
 To filter which files you receive, specify the `where` keyword
 
 `where` is followed by one of:
 
-- `Name`
-    - With `name` you must follow with either one of:
-        - `is`
-        - `contains`
-        - `prefix`
-        - `suffix`
+1. **`name`**
 
-**FORMAT SUMMARY:**
+This is used to filter based on the file/folder name
+
+You must follow `name` with either:
+
+- `is`
+- `contains`
+- `prefix`
+- `suffix`
 
 ```reason
 file fileA = get file where name **is** Harry Kane;
@@ -102,59 +120,70 @@ folder folderA = get folder where name **prefix** Harry Kane;
 folder folderB = get folder where name **suffix** Harry Kane;
 ```
 
-<aside>
-💡 The highlighted texts: **(created|modified) (before|on|after)** indicate that any combination of these can be used! Remember that the | symbol is analogous to “or” so when we say created|modified, what we mean is you can choose to put **created or modified** *(just one of them!)* in that part of the statement.
+1. `**owned by**`
 
-</aside>
+This is used to filter based on the user who owns the file or directory
 
-### By date
+`owned by` is followed by the name of a user
 
-This is used to filter based on date
+```yaml
+files harryFiles = get all files where **modified by** hkane;
+```
 
-**`With date`** must be followed by one of:
+1. **`date modified`**
 
-- `Modified`
-    - After you type `modified` you must follow the keyword with:
-        - `before`
-        - `on`
-        - `after`
-        
-        ```markdown
-        files fileA = get all files with date **modified** **before** 2020-03-22;
-        files fileA = get all files with date **modified** **on** 2020-03-22;
-        files fileA = get all files with date **modified** **after** 2020-03-22;
-        ```
-        
-- Then you end the statement with the date you in which you are filtering on!
+This is used to filter based on the date the file/folder was last modified
+
+You must follow the `date modified` with either:
+
+- `before`
+- `on`
+- `after`
+- Then you end the statement with the date for which you are filtering on
 - The format is `YYYY-MM-DD`
 
-**FORMAT SUMMARY:**
-
-```reason
-files fileA = get all files with date modified (before|on|after) 2020-03-22;
+```yaml
+files fileA = get all files where date **modified** **before** 2020-03-22;
+files fileA = get all files where date **modified** **on** 2020-03-22;
+files fileA = get all files where date **modified** **after** 2020-03-22;
 ```
+
+1. **`in folder`**
+
+This is used to retrieve an object of type `files` that live in a `folder` variable
+
+Follow `in folder` with the name of your **folder** variable 
+
+```yaml
+folder myFolder = get folder where name is MyFolder;
+files myFiles = get all files where **in folder myFolder**;
+```
+
+1. `**at path**`
+
+This is used to retrieve an object at a specified path
+
+Follow `at path` with your relative path (starting with ‘/’)
+
+```yaml
+file fileA = get file **at path** /School/homework.docx;
+```
+
+---
 
 ## Commands
 
-> To enact these commands on all files within a folder, you can use the **`all`** keyword
-> 
+These are the commands you can use to modify your files. You can **rename, delete, copy, or move** files and folders.
 
 ### Rename
 
-Use this when you want to change the name of your file!
+Use this when you want to change the name of a single file or a folder.
 
-<aside>
-🛑 You cannot use the **all** keyword for the rename command
-
-</aside>
-
-yourFolderName → a folder that you’ve previously called `get` on 
-
-yourFileName → a file that you’ve previously called `get` on 
+In the example below, we rename the file assigned to  `yourFileName` to the name “new_file_name.txt”
 
 ```markdown
-rename yourFileName to newFileName;
-rename yourFolderName to newFolderName;
+file yourFileName = get file where name is file_name.txt;
+**rename** yourFileName as new_file_name.txt;
 ```
 
 ### Delete
@@ -162,9 +191,9 @@ rename yourFolderName to newFolderName;
 Use this when you want to delete your files!
 
 ```reason
-delete yourFileName;
-delete yourFolderName;
-delete all from yourFolderName;
+**delete** yourFileVariable;
+**delete** yourFolderVariable;
+**delete** all from yourFolderVariable;
 ```
 
 ### Copy
@@ -172,9 +201,9 @@ delete all from yourFolderName;
 Use this when you want to copy your files!
 
 ```markdown
-copy yourFileName to yourOtherFolderName;
-copy yourFolderName to yourOtherFolderName;
-copy all from yourFolderName;
+**copy** yourFileVariable to yourOtherFolderVariable;
+**copy** yourFolderVariable to yourOtherFolderVariable;
+**copy** all from yourFilesVariable to yourOtherFolderVariable;
 ```
 
 ### Move
@@ -182,27 +211,31 @@ copy all from yourFolderName;
 Use this when you want to move your files!
 
 ```markdown
-move yourFileName to yourOtherFolderName;
-move yourFolderName to yourOtherFolderName;
-move all from yourFolderName;
+**move** yourFileVariable to yourOtherFolderVariable;
+**move** yourFolderVariable to yourOtherFolderVariable;
+**move** all from yourFilesVariable to yourOtherFolderVariable;
 ```
 
-## Command Filtering
+### Command Filtering
 
-We offer statements you can add on to the end of your commands to help you filter which files and folders you want to direct your actions towards!
+Only do the specified command if a certain condition is met
 
-### IF
+You can filter based on: 
 
-This can be used to tell us that you only want to do the specified command if a certain condition is met
+- **name**
+- **owned by**
+- **date modified**
 
-**IF** must be followed by one of:
+**To filter, use the keyword `if`**
 
-- `name`
-    - After you type **name** you must follow it with one of:
+`if` must be followed by one of:
+
+1. `**name**`
+    - you must follow `name` with one of:
         - `contains`
         - `prefix`
         - `suffix`
-    - Then input the name you wish to filter based on
+    - then input the name you wish to filter on
     
     ```markdown
     move fileA to folderA if **name is** UBC;
@@ -211,56 +244,27 @@ This can be used to tell us that you only want to do the specified command if a 
     move fileA to folderA if **name suffix** UBC;
     ```
     
-- `created`
-    - After you type created ****you must follow it with:
-        - `by`
-    - Then input the name you wish to filter based on
+
+1. `**owned by**` then input the user to filter on
     
-    ```markdown
-    move fileA to folderA if **created** **by**  Harry Kane;
+    ```yaml
+    move fileA to folderA if **owned by** John Doe;
     ```
     
-- `Modified`
-    - After you type **modified** you must follow it with:
-        - `by` then input the name to filter on
-        - `with date` then input the date to filter on
-    - Then input the name you wish to filter based on
+2. `**date modified**` then input the date and range to filter on
     
-    ```markdown
-    move fileA to folderA if **modified** **by** Harry Kane;
-    move fileB to folderB if **modified** **with date** before 2022-02-10;
+    ```yaml
+    move fileB to folderB if **date modified** before 2022-02-10;
     ```
     
-- [With date](https://www.notion.so/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc) (see above for specification on how to use it!)
 
-**FORMAT SUMMARY:**
+> For more examples of filtering see [Assignment Filtering](https://www.notion.so/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc)
+> 
 
-```markdown
-move fileA to folderA if name (is|contains|prefix|suffix)? UBC;
-move fileA to folderA if (created|modified) by  Harry Kane;
-move fileA to folderA if with date modified (before|on|after) 2020-03-22;
-```
-
-<aside>
-💡 The highlighted texts: **(created|modified) (before|on|after)** indicate that any combination of these can be used! Remember that the | symbol is analogous to “or” so when we say created|modified, what we mean is you can choose to put **created or modified** *(just one of them!)* in that part of the statement.
-
-</aside>
-
-### And
-
-The `and` keyword can be used to specify multiple conditions
+**Conjoined conditions** 
+The `**AND**` keyword can be used to specify multiple conditions. 
+In the below example, we will only move files in `myFiles` to `folderA` if the file contains “UBC” in their name **and** if they have been modified since 2021-11-22. 
 
 ```yaml
-move fileA to folderA if name contains UBC**,** **and** with date ****modified after 2020-03-22;
+move all from myFiles to folderA if name contains UBC**,** **AND** date ****modified after 2021-11-22;
 ```
-
-<aside>
-🛑 You cannot have contradictory properties in your AND statements
-
-For example:
-
-```jsx
-move fileA to folderA if name contains UBC**,** **and** name contains SFU
-```
-
-</aside>
