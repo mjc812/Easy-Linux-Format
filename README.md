@@ -1,4 +1,4 @@
-# Project1Group16
+# ELF
 
 ## How to set up enviroment in IntelliJ
 
@@ -12,7 +12,7 @@
 
 #### Make sure to add antlr-4.10.1-complete in the library
 
-## How to use the project
+## How to use the program
 1.  Write your elf script in `src/input.elf`. Refer to https://www.notion.so/ELF-Cheat-Sheet-5499fa84b8b5460e991a75b3d6f95dfc#bab23b7c92cb43c3bbd428c71735a9e0 and the example below for help creating the script.
 2.  Once you are done writing your script, run the project in IntelliJ and it will output a file called `output.sh`. This is the file that will execute your commands.
 3. Place the output file in the root of the directory you are editing
